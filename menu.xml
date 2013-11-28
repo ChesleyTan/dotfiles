@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openbox_menu xmlns="http://openbox.org/" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://openbox.org/                 file:///usr/share/openbox/menu.xsd">
+	<menu id="root-menu" label="Openbox 3">
+		<item label="Run Program">
+			<action name="Execute">
+				<execute>
+                    gmrun
+                </execute>
+			</action>
+		</item>
+		<separator/>
+		<item label="Terminal">
+			<action name="Execute">
+				<execute>xfce4-terminal</execute>
+			</action>
+		</item>
+		<item label="Firefox">
+			<action name="Execute">
+				<execute>firefox</execute>
+			</action>
+		</item>
+		<item label="Web Browser">
+			<action name="Execute">
+				<execute>google-chrome</execute>
+			</action>
+		</item>
+		<item label="File Manager">
+			<action name="Execute">
+				<execute>nautilus --no-desktop</execute>
+			</action>
+		</item>
+		<item label="Text Editor">
+			<action name="Execute">
+				<execute>gedit</execute>
+			</action>
+		</item>
+		<item label="Media Player">
+			<action name="Execute">
+				<execute>
+                    vlc
+                </execute>
+			</action>
+		</item>
+		<separator/>
+		<menu id="accessories" label="Accessories">
+			<item label="Catfish File Search">
+				<action name="Execute">
+					<execute>
+                        catfish
+                    </execute>
+				</action>
+			</item>
+			<item label="Archive Manager">
+				<action name="Execute">
+					<execute>
+                        file-roller
+                    </execute>
+				</action>
+			</item>
+			<item label="gEdit">
+				<action name="Execute">
+					<execute>gedit</execute>
+				</action>
+			</item>
+			<item label="Xfce Terminal">
+				<action name="Execute">
+					<execute>xfce4-terminal</execute>
+				</action>
+			</item>
+			<item label="Gnome Terminal">
+				<action name="Execute">
+					<execute>gnome-terminal</execute>
+				</action>
+			</item>
+			<item label="Nautilus File Manager">
+				<action name="Execute">
+					<execute>nautilus</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="graphics" label="Graphics">
+			<item label="GIMP">
+				<action name="Execute">
+					<execute>
+                        gimp
+                    </execute>
+				</action>
+			</item>
+			<item label="Image Viewer">
+				<action name="Execute">
+					<execute>eog</execute>
+				</action>
+			</item>
+			<menu id="graphicsScreenshots" label="Take Screenshot">
+				<item label="Screenshooter">
+					<action name="Execute">
+						<execute>
+                            xfce4-screenshooter
+                        </execute>
+					</action>
+				</item>
+				<separator label="scrot"/>
+				<item label="Now">
+					<action name="Execute">
+						<execute>
+                            scrot '%Y-%m-%d--%s_$wx$h_scrot.png' -e 'mv $f ~/images/ &amp; viewnior ~/images/$f'
+                        </execute>
+					</action>
+				</item>
+				<item label="In 5 Seconds...">
+					<action name="Execute">
+						<execute>
+                            scrot -d 5 '%Y-%m-%d--%s_$wx$h_scrot.png' -e 'mv $f ~/images/ &amp; viewnior ~/images/$f'
+                        </execute>
+					</action>
+				</item>
+				<item label="In 10 Seconds...">
+					<action name="Execute">
+						<execute>
+                            scrot -d 10 '%Y-%m-%d--%s_$wx$h_scrot.png' -e 'mv $f ~/images/ &amp; viewnior ~/images/$f'
+                        </execute>
+					</action>
+				</item>
+				<item label="Selected Area... (click &amp; drag mouse)">
+					<action name="Execute">
+						<execute>
+                            scrot -s '%Y-%m-%d--%s_$wx$h_scrot.png' -e 'mv $f ~/images/ &amp; viewnior ~/images/$f'
+                        </execute>
+					</action>
+				</item>
+			</menu>
+		</menu>
+		<menu id="multimedia" label="Multimedia">
+			<item label="VLC">
+				<action name="Execute">
+					<execute>vlc</execute>
+				</action>
+			</item>
+			<item label="Cheese">
+				<action name="Execute">
+					<execute>cheese</execute>
+				</action>
+			</item>
+			<item label="Totem Media Player">
+				<action name="Execute">
+					<execute>totem</execute>
+				</action>
+			</item>
+			<item label="Brasero">
+				<action name="Execute">
+					<execute>brasero</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="root-menu-394519" label="Internet">
+			<item label="Google Chrome">
+				<action name="Execute">
+					<execute>google-chrome</execute>
+				</action>
+			</item>
+			<item label="Firefox">
+				<action name="Execute">
+					<execute>firefox</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="office" label="Office">
+			<menu execute="" id="libreoffice" label="LibreOffice"/>
+			<item label="AbiWord Word Processor">
+				<action name="Execute">
+					<execute/>
+				</action>
+			</item>
+			<item label="Gnumeric Spreadsheet">
+				<action name="Execute">
+					<execute/>
+				</action>
+			</item>
+			<item label="Calculator">
+				<action name="Execute">
+					<execute>
+                        gnome-calculator
+                    </execute>
+				</action>
+			</item>
+			<item label="Evince PDF Viewer">
+				<action name="Execute">
+					<execute/>
+				</action>
+			</item>
+		</menu>
+		<separator/>
+		<menu id="settings" label="Settings">
+			<menu id="settings-33371" label="Compton Compositor">
+				<item label="Compton WM Config">
+					<action name="Execute">
+						<execute>gedit ~/.config/compton.conf</execute>
+					</action>
+				</item>
+				<item label="Start Compton">
+					<action name="Execute">
+						<execute>compton &amp;</execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="conkyconfig" label="Conky">
+				<item label="Edit .conkyrc">
+					<action name="Execute">
+						<execute>gedit ~/.conkyrc</execute>
+					</action>
+				</item>
+				<item label="Kill Conky">
+					<action name="Execute">
+						<execute>pkill -x conky</execute>
+					</action>
+				</item>
+				<item label="Start Conky">
+					<action name="Execute">
+						<execute>conky &amp;</execute>
+					</action>
+				</item>
+				<separator label="Help?"/>
+				<item label="man page">
+					<action name="Execute">
+						<execute>xfce4-terminal --command=&quot;man conky&quot;</execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="gmrunconfig" label="gmrun">
+				<item label="Edit config file">
+					<action name="Execute">
+						<execute>
+                            gedit ~/.gmrunrc
+                        </execute>
+					</action>
+				</item>
+				<separator label="Help?"/>
+				<item label="man page">
+					<action name="Execute">
+						<execute>
+                            xfce4-terminal --command=&quot;man gmrun&quot;
+                        </execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="obConfig" label="Openbox">
+				<item label="Edit menu.xml">
+					<action name="Execute">
+						<execute>gedit ~/.config/openbox/menu.xml</execute>
+					</action>
+				</item>
+				<item label="Edit rc.xml">
+					<action name="Execute">
+						<execute>gedit ~/.config/openbox/rc.xml</execute>
+					</action>
+				</item>
+				<item label="Edit autostart">
+					<action name="Execute">
+						<execute>gedit ~/.config/openbox/autostart</execute>
+					</action>
+				</item>
+				<item label="GUI Menu Editor">
+					<action name="Execute">
+						<execute>
+                            obmenu
+                        </execute>
+					</action>
+				</item>
+				<item label="GUI Config Tool">
+					<action name="Execute">
+						<execute>
+                            obconf
+                        </execute>
+					</action>
+				</item>
+				<item label="Reconfigure">
+					<action name="Reconfigure"/>
+				</item>
+				<item label="Restart">
+					<action name="Restart"/>
+				</item>
+			</menu>
+			<menu id="tint2config" label="tint2">
+				<item label="Edit config file">
+					<action name="Execute">
+						<execute>
+                            gedit ~/.config/tint2/tint2rc
+                        </execute>
+					</action>
+				</item>
+				<separator label="Help?"/>
+				<item label="man page">
+					<action name="Execute">
+						<execute>
+                            xfce4-terminal --command=&quot;man tint2&quot;
+                        </execute>
+					</action>
+				</item>
+				<item label="Online Help">
+					<action name="Execute">
+						<execute>
+                            x-www-browser http://code.google.com/p/tint2/wiki/Welcome
+                        </execute>
+					</action>
+				</item>
+			</menu>
+			<menu id="DisplaySettings" label="Display Settings">
+				<item label="Adjust with grandr">
+					<action name="Execute">
+						<execute>
+                            grandr
+                        </execute>
+					</action>
+				</item>
+				<separator label="Help?"/>
+				<item label="man xrandr">
+					<action name="Execute">
+						<execute>xfce4-terminal --command=&quot;man xrandr&quot;</execute>
+					</action>
+				</item>
+			</menu>
+			<item label="Edit Default Applications">
+				<action name="Execute">
+					<execute>xfce4-terminal --command=&quot;sudo update-alternatives --all&quot;</execute>
+				</action>
+			</item>
+			<item label="User Interface Settings">
+				<action name="Execute">
+					<execute>
+                        lxappearance
+                    </execute>
+				</action>
+			</item>
+			<item label="Choose Wallpaper">
+				<action name="Execute">
+					<execute>nitrogen</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="system" label="System">
+			<item label="Sound Control">
+				<action name="Execute">
+					<execute>gnome-control-center sound</execute>
+				</action>
+			</item>
+			<item label="GParted">
+				<action name="Execute">
+					<execute>
+                        gksudo gparted
+                    </execute>
+				</action>
+			</item>
+			<item label="User Login Settings">
+				<action name="Execute">
+					<execute>
+                        gksudo gdmsetup
+                    </execute>
+				</action>
+			</item>
+			<item label="Disk Usage Analyzer">
+				<action name="Execute">
+					<execute>baobab</execute>
+				</action>
+			</item>
+			<item label="Gnome Settings Control Center">
+				<action name="Execute">
+					<execute>gnome-control-center</execute>
+				</action>
+			</item>
+		</menu>
+		<menu id="exit-menu" label="Exit">
+			<item label="Log Out">
+				<action name="Execute">
+					<command>openbox --exit</command>
+				</action>
+			</item>
+			<item label="Shutdown">
+				<action name="Execute">
+					<command>systemctl poweroff</command>
+				</action>
+			</item>
+			<item label="Restart">
+				<action name="Execute">
+					<command>systemctl reboot</command>
+				</action>
+			</item>
+			<item label="Suspend">
+				<action name="Execute">
+					<command>systemctl suspend</command>
+				</action>
+			</item>
+			<item label="Hibernate">
+				<action name="Execute">
+					<command>systemctl hibernate</command>
+				</action>
+			</item>
+		</menu>
+		<!--<menu id="help" label="Help" execute="cb-help-pipemenu" />-->
+		<separator/>
+	</menu>
+</openbox_menu>
