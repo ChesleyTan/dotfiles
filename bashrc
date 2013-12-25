@@ -1,10 +1,3 @@
-# If id command returns zero, you’ve root access.
-#if [ $(id -u) -eq 0 ];
-#then # you are root, set red colour prompt
-#  PS1="\\[$(tput setaf 1)\\]\\u@\\h:\\w #\\[$(tput sgr0)\\]"
-#else # normal
-#  PS1="[\\u@\\h:\\w] $"
-#fi
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -67,12 +60,21 @@ fi
 #fi
 #unset color_prompt force_color_prompt
 
+# Recognize color support in terminal
+export TERM='xterm-256color'
+#export TERM='xterm-color'
+############ Custom Bash Prompt ###############
 
-# Custom Bash Prompt
-PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
-# With Hostname
+#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+### 256 color version ###
+PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u:\[$(tput smul)\]\[$(tput setaf 39)\]\\w\[$(tput rmul)\]\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+
+############ Prompt With Hostname ###############
 #PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+### 256 color version ###
+#PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput smul)\]\[$(tput setaf 39)\]\\w\[$(tput rmul)\]\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
 
+###############################################
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
 xterm*|rxvt*)
