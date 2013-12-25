@@ -128,3 +128,15 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 
+function reminder(){
+	PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
+	for word in "$@"
+	do
+		PS1="$PS1$word "
+	done
+	PS1="${PS1:0:$[${#PS1}-1]})\[$(tput sgr0)\] " # Remove trailing space, reset font color, add close parentheses
+	echo "Reminder set: $@"
+}
+function sourcebash(){
+	source ~/.bashrc
+}
