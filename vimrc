@@ -11,6 +11,9 @@ set undolevels=500 " Levels of undo
 set wildignore=*.class
 set tabstop=4
 set shiftwidth=4
+set laststatus=2
+set pastetoggle=<F3>
+set t_Co=256 " Enable 256 colors
 syntax on
 filetype indent on
 filetype plugin on
@@ -19,3 +22,17 @@ colorscheme default
 :command W w
 " Allow saving when forgetting to start vim with sudo
 cmap w!! w !sudo tee > /dev/null %
+call pathogen#infect()
+set statusline=%t       "tail of the filename
+set statusline+=[%{strlen(&fenc)?&fenc:'none'}, "file encoding
+set statusline+=%{&ff}] "file format
+set statusline+=%h      "help file flag
+set statusline+=%m      "modified flag
+set statusline+=%r      "read only flag
+set statusline+=%y      "filetype
+set statusline+=%=      "left/right separator
+set statusline+=%c,     "cursor column
+set statusline+=%l/%L   "cursor line/total lines
+set statusline+=\ %P    "percent through file
+hi StatusLine ctermfg=239
+hi StatusLine ctermbg=118
