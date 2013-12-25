@@ -1,6 +1,7 @@
-" :!top to execute top in shell
-" !!top -b -n 1 to insert single top output
 set tabstop=4
 set shiftwidth=4
+colorscheme default
 :command Q q
-
+:command W w
+" Allow saving when forgetting to start vim with sudo
+cmap w!! w !sudo tee > /dev/null %
