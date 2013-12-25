@@ -70,6 +70,8 @@ fi
 
 # Custom Bash Prompt
 PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+# With Hostname
+#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 
 # If this is an xterm set the title to user@host:dir
 case "$TERM" in
@@ -125,3 +127,4 @@ fi
 if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
+
