@@ -20,6 +20,8 @@ filetype plugin on
 colorscheme default
 :command Q q
 :command W w
+"This unsets the "last search pattern" register by hitting return
+nnoremap <CR> :noh<CR><CR>
 " Allow saving when forgetting to start vim with sudo
 cmap w!! w !sudo tee > /dev/null %
 call pathogen#infect()
