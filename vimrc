@@ -57,13 +57,13 @@ hi User3 ctermfg=39 ctermbg=239 "Darker Blue
 hi User4 ctermfg=255 ctermbg=239 "Off-White
 "hi User5 ctermfg=226 ctermbg=239 "Yellow
 set statusline=%t      "tail of the filename
-set statusline+=%1*%r%*      "read only flag
-set statusline+=%2*%m\%*\        "modified flag
-set statusline+=%4*[%*%Y%4*]%*\       "filetype
+set statusline+=%y      "filetype
 if winwidth(0) > 85
-	set statusline+=%4*[%*Enc:\ %{strlen(&fenc)?&fenc:'none'}\ %4*\|%*\   "file encoding
-	set statusline+=Fmt:\ %{&ff}%4*]%* "file format
+	set statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  "file encoding
+	set statusline+=%{&ff}] "file format
 endif
+set statusline+=%1*%r%*      "read only flag
+set statusline+=%2*%m\%*       "modified flag
 set statusline+=%h      "help file flag
 set statusline+=\ Buffer:%n "Buffer number
 if winwidth(0) > 130
