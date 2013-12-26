@@ -28,9 +28,7 @@ cmap w!! w !sudo tee > /dev/null %
 call pathogen#infect()
 function GitBranch()
 	let	output=system('git branch')
-	if output=~"fatal" "For some reason, VIM does not recognize/receive a 'fatal' from git prior to runtime, so this statement never triggers. However, it works during runtime. ?
-		return "Not a Git Repository"
-	elseif output[0 : strlen(output)-2] == ""
+	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
 		return "[Not a Git Repository]"
 	else
 		return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
@@ -38,16 +36,14 @@ function GitBranch()
 endfunction
 function GitStatus()
 	let output=system('git status')
-	if output=~"fatal" "For some reason, VIM does not recognize/receive a 'fatal' from git prior to runtime, so this statement never triggers. However, it works during runtime. ?
+	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
 		return ""
 	elseif output=~"Changes to be committed"
 		return "Status: Commits not yet pushed]"
 	elseif output=~"modified"
 		return "Status: Changes not yet committed]"
-	elseif output=~"nothing"
+	else	
 		return "Status: Up to date]"
-	else
-		return ""
 	endif
 endfunction
 let g:gitbranch=GitBranch()
