@@ -65,14 +65,14 @@ export TERM='xterm-256color'
 #export TERM='xterm-color'
 ############ Custom Bash Prompt ###############
 
-#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u:\[$(tput smul)\]\[$(tput setaf 39)\]\\w\[$(tput rmul)\]\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
 
 ############ Prompt With Hostname ###############
-#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput smul)\]\[$(tput setaf 6)\]\\w\[$(tput rmul)\]\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-#PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput smul)\]\[$(tput setaf 39)\]\\w\[$(tput rmul)\]\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+#PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
 
 ###############################################
 # If this is an xterm set the title to user@host:dir
