@@ -61,8 +61,9 @@ fi
 #unset color_prompt force_color_prompt
 
 # Recognize color support in terminal
-export TERM='xterm-256color'
-#export TERM='xterm-color'
+if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
+    export TERM=xterm-256color
+fi
 ############ Custom Bash Prompt ###############
 
 #PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
