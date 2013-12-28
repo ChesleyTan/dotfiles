@@ -36,7 +36,7 @@ function GitBranch()
 endfunction
 function GitStatus()
 	let output=system('git status')
-	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
+	if output=="" 
 		return ""
 	elseif output=~"Changes to be committed"
 		return "Status: Commits not yet pushed]"
@@ -46,8 +46,24 @@ function GitStatus()
 		return "Status: Up to date]"
 	endif
 endfunction
+function GitRemote() " Note: this function takes a while to execute
+	let remotes=split(system("git remote")) " Get names of remotes
+	if remotes==[] " End if no remotes found or error
+		return ""
+	else
+		let remotename=remotes[0] " Get name of first remote
+	endif
+	let output=system("git remote show " . remotename)
+	if output=="" " Checkpoint for error
+		return ""
+	elseif output =~ "local out of date"
+		return "(!)Local repo out of date: Use git pull"
+	else
+		return ""
+	endif
+endfunction
 let g:gitbranch=GitBranch()
-let g:gitstatus=GitStatus()
+let g:gitstatus=GitStatus() . " " . GitRemote()
 hi User1 ctermfg=202 ctermbg=239 "Orange
 hi User2 ctermfg=51 ctermbg=239 "Sky Blue
 hi User3 ctermfg=39 ctermbg=239 "Darker Blue
@@ -77,4 +93,3 @@ hi StatusLine ctermfg=239 ctermbg=118
 hi StatusLineNC ctermfg=239 ctermbg=255 "Status line color for noncurrent window
 hi LineNr ctermfg=118 ctermbg=239
 hi VertSplit ctermfg=239 ctermbg=118 "Vertical split divider
-
