@@ -21,6 +21,7 @@ filetype plugin on
 colorscheme default
 :command Q q
 :command W w
+nnoremap t :tabnew
 "This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
 " Allow saving when forgetting to start vim with sudo
@@ -64,10 +65,10 @@ function GitRemote() " Note: this function takes a while to execute
 endfunction
 let g:gitbranch=GitBranch()
 let g:gitstatus=GitStatus() . " " . GitRemote()
-hi User1 ctermfg=202 ctermbg=239 "Orange
-hi User2 ctermfg=51 ctermbg=239 "Sky Blue
-hi User3 ctermfg=39 ctermbg=239 "Darker Blue
-hi User4 ctermfg=255 ctermbg=239 "Off-White
+hi User1 ctermfg=202 ctermbg=239 cterm=bold term=bold "Orange
+hi User2 ctermfg=51 ctermbg=239 cterm=bold term=bold "Sky Blue
+hi User3 ctermfg=39 ctermbg=239 cterm=bold term=bold "Darker Blue
+hi User4 ctermfg=255 ctermbg=239 cterm=bold term=bold "Off-White
 "hi User5 ctermfg=226 ctermbg=239 "Yellow
 set statusline=%t      "tail of the filename
 set statusline+=%y      "filetype
@@ -89,7 +90,10 @@ set statusline+=Col:%c\      "cursor column
 set statusline+=Row:%l/%L\    "cursor line/total lines
 set statusline+=%4*\|%*\ %p   "percent through file
 set statusline+=%% " Add percent symbol 
-hi StatusLine ctermfg=239 ctermbg=118
+hi StatusLine ctermfg=239 ctermbg=118 "Status line of current window
 hi StatusLineNC ctermfg=239 ctermbg=255 "Status line color for noncurrent window
-hi LineNr ctermfg=118 ctermbg=239
+hi LineNr ctermfg=118 ctermbg=239 "Line numbers
 hi VertSplit ctermfg=239 ctermbg=118 "Vertical split divider
+hi TabLine ctermbg=239 ctermfg=118 cterm=none "Nonselected tabs
+hi TabLineFill ctermfg=239 "Empty space on tab bar
+hi TabLineSel ctermbg=239 ctermfg=45 "Selected tab
