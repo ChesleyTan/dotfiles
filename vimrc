@@ -97,3 +97,5 @@ hi VertSplit ctermfg=239 ctermbg=118 "Vertical split divider
 hi TabLine ctermbg=239 ctermfg=118 cterm=none "Nonselected tabs
 hi TabLineFill ctermfg=239 "Empty space on tab bar
 hi TabLineSel ctermbg=239 ctermfg=45 "Selected tab
+
+let g:ConqueTerm_FastMode = 0
