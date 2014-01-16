@@ -28,7 +28,7 @@ nnoremap <CR> :noh<CR><CR>
 cmap w!! w !sudo tee > /dev/null %
 call pathogen#infect()
 function GitBranch()
-	let	output=system('git branch')
+	let	output=system('git branch | grep "*"')
 	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
 		return "[Not a Git Repository]"
 	else
@@ -98,4 +98,4 @@ hi TabLine ctermbg=239 ctermfg=118 cterm=none "Nonselected tabs
 hi TabLineFill ctermfg=239 "Empty space on tab bar
 hi TabLineSel ctermbg=239 ctermfg=45 "Selected tab
 
-let g:ConqueTerm_FastMode = 0
+let g:ConqueTerm_Color = 1
