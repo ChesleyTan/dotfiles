@@ -47,14 +47,14 @@ function GitStatus()
 		return "Status: Up to date]"
 	endif
 endfunction
-function GitRemote() " Note: this function takes a while to execute
+function GitRemote(branch) " Note: this function takes a while to execute
 	let remotes=split(system("git remote")) " Get names of remotes
 	if remotes==[] " End if no remotes found or error
 		return ""
 	else
 		let remotename=remotes[0] " Get name of first remote
 	endif
-	let output=system("git remote show " . remotename)
+	let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
 	if output=="" " Checkpoint for error
 		return ""
 	elseif output =~ "local out of date"
@@ -64,7 +64,7 @@ function GitRemote() " Note: this function takes a while to execute
 	endif
 endfunction
 let g:gitbranch=GitBranch()
-let g:gitstatus=GitStatus() . " " . GitRemote()
+let g:gitstatus=GitStatus() . " " . GitRemote(gitbranch)
 hi User1 ctermfg=202 ctermbg=239 cterm=bold term=bold "Orange
 hi User2 ctermfg=51 ctermbg=239 cterm=bold term=bold "Sky Blue
 hi User3 ctermfg=39 ctermbg=239 cterm=bold term=bold "Darker Blue
