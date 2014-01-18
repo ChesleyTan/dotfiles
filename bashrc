@@ -105,6 +105,29 @@ function clearapachelog(){
 		echo "" > /var/log/apache2/error.log
 	fi
 }
+function removeClassFiles(){
+	if [ $# == 0 ]; then
+		echo "No arguments given. Aborted."
+	elif [ $# != 1 ]; then
+		echo "Too many arguments."
+	else
+		files=$(find $1 | grep '.class')
+		if [[ $files == "" ]]; then
+			echo "No files to remove"
+			return
+		fi
+		echo "Files to be removed:"
+		echo "$files"
+		echo "Are you sure want to delete these files? [y/n]"
+		read ans
+		if [ $ans == "y" ]; then
+			rm -v $files
+			echo "Files removed."
+		else
+			echo "Removal aborted."
+		fi
+	fi
+}
 # some more ls aliases
 #alias sudo='sudo ' # Allow use sudo on aliases because aliases are only checked on the first word in the command
 alias ll='ls -alF'
