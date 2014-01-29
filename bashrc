@@ -63,13 +63,28 @@ fi
 # Recognize color support in terminal
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
+elif [ "$TERM" == "screen" ]; then
+	export TERM=screen-256color
 fi
+
 ############ Custom Bash Prompt ###############
+
+function SensorTemp(){ 
+	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+	# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
+	echo "$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -3 | tail -1)"
+}
+function GitBranch(){
+	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+	if [ -d ".git" ]; then # Checks if .git/ directory exists
+		echo " $(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
+	fi
+}
+
 
 #PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
-
+PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 166)\]<\[\$(SensorTemp)\]> \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
 ############ Prompt With Hostname ###############
 #PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
@@ -100,7 +115,7 @@ fi
 
 function clearapachelog(){
 	if [ "$(id -u)" != "0" ]; then
-   		echo "This script must be run as root" 1>&2
+   		echo "This script must be run as root" 
 	else
 		echo "" > /var/log/apache2/error.log
 	fi
@@ -166,3 +181,4 @@ function reminder(){
 function sourcebash(){
 	source ~/.bashrc
 }
+

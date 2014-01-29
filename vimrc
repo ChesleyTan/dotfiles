@@ -28,7 +28,7 @@ nnoremap <CR> :noh<CR><CR>
 cmap w!! w !sudo tee > /dev/null %
 call pathogen#infect()
 function GitBranch()
-	let	output=system('git branch | grep "*"')
+	let	output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
 	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
 		return "[Not a Git Repository]"
 	else
@@ -99,3 +99,5 @@ hi TabLineFill ctermfg=239 "Empty space on tab bar
 hi TabLineSel ctermbg=239 ctermfg=45 "Selected tab
 
 let g:ConqueTerm_Color = 1
+let g:Powerline_symbols = 'fancy'
+"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
