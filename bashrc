@@ -80,15 +80,24 @@ function GitBranch(){
 		echo " $(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
 	fi
 }
+function ramUsage(){
+	echo $(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB
+}
 
 
-#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\@]<\[\$(SensorTemp)\] | \$(ramUsage)> \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 166)\]<\[\$(SensorTemp)\]> \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 166)\]<\[\$(SensorTemp)\] | \$(ramUsage)> \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
 ############ Prompt With Hostname ###############
-#PS1="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
+prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-#PS1="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+
+if [ "$TERM" == "linux" ]; then
+	export PS1=$prompt1
+else
+	export PS1=$prompt2
+fi
 
 ###############################################
 # If this is an xterm set the title to user@host:dir
