@@ -83,11 +83,20 @@ function GitBranch(){
 function ramUsage(){
 	echo $(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB
 }
+function batteryInfo(){
+	data=$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
+	perc=$(echo $data | grep -Eo "[0-9]*%")
+	batTime=$(echo $data | grep -Eo "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
+	if [ "$batTime" == "" ]; then
+		batTime="Full"
+	fi
+	echo "$perc ($batTime)"
+}
 
 
 prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\@]<\[\$(SensorTemp)\] | \$(ramUsage)> \[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
-prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 166)\]<\[\$(SensorTemp)\] | \$(ramUsage)> \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] $\[$(tput sgr0)\] "
+prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\@] \[$(tput setaf 166)\]<\[\$(SensorTemp)\] | \$(ramUsage) | \$(batteryInfo)> \[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] $\[$(tput sgr0)\] \n>> "
 ############ Prompt With Hostname ###############
 prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\@] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] $\[$(tput sgr0)\] "
 ### 256 color version ###
