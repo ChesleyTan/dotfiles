@@ -11,9 +11,14 @@ set history=1000 " Command history
 set undolevels=500 " Levels of undo
 set wildignore=*.class
 set tabstop=4
+set expandtab " Spaces instead of tabs
+set softtabstop=4 " Treat n spaces as a tab
 set shiftwidth=4
 set laststatus=2
 set pastetoggle=<F3>
+set mouse=a " Allow using mouse to change cursor position
+" Easy toggle for paste
+nnoremap <C-p> <F3>
 set t_Co=256 " Enable 256 colors
 syntax on
 filetype indent on
@@ -21,11 +26,33 @@ filetype plugin on
 colorscheme default
 :command Q q
 :command W w
+map Q <Nop>
+" Prevent Ex Mode
 nnoremap t :tabnew
 "This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
 " Allow saving when forgetting to start vim with sudo
 cmap w!! w !sudo tee > /dev/null %
+" Easy page up/down
+nnoremap <C-Up> <C-u>
+nnoremap <C-Down> <C-d>
+" Allow window commands in insert mode
+imap <C-w> <C-o><C-w>
+nnoremap <A-Up> <C-w><Up>
+nnoremap <A-Down> <C-w><Down>
+nnoremap <A-Left> <C-w><Left>
+nnoremap <A-Right> <C-w><Right>
+" Note: <bar> denotes |
+" Shortcuts for window commands
+nnoremap <bar> <C-w>v
+nnoremap _ <C-w>n
+nnoremap - <C-w>-
+nnoremap + <C-w>+
+nnoremap > <C-w>>
+nnoremap < <C-w><
+autocmd InsertEnter * exe RefreshColors(17)
+autocmd InsertLeave * exe RefreshColors(239)
+
 call pathogen#infect()
 function GitBranch()
 	let	output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
@@ -63,13 +90,35 @@ function GitRemote(branch) " Note: this function takes a while to execute
 		return ""
 	endif
 endfunction
-let g:gitbranch=GitBranch()
-let g:gitstatus=GitStatus() . " " . GitRemote(gitbranch)
-hi User1 ctermfg=202 ctermbg=239 cterm=bold term=bold "Orange
-hi User2 ctermfg=51 ctermbg=239 cterm=bold term=bold "Sky Blue
-hi User3 ctermfg=39 ctermbg=239 cterm=bold term=bold "Darker Blue
-hi User4 ctermfg=255 ctermbg=239 cterm=bold term=bold "Off-White
-"hi User5 ctermfg=226 ctermbg=239 "Yellow
+let g:gitBranch=GitBranch()
+let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
+" Note that these highlight themes have to formed with concatenation and then
+" be evaluated with :execute because :hi does not accept variables as arguments
+"Orange
+function RefreshColors(statusLineColor)
+    exe 'hi User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    "Sky Blue
+    exe 'hi User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    "Darker Blue
+    exe 'hi User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    "Off-White
+    exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold'
+    "Status line of current window
+    exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 
+    "Status line color for noncurrent window
+    exe 'hi StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 
+    "Line numbers
+    exe 'hi LineNr ctermfg=118 ctermbg=' . a:statusLineColor
+    "Vertical split divider
+    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' a:statusLineColor
+    "Nonselected tabs
+    exe 'hi TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
+    "Empty space on tab bar
+    exe 'hi TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
+    "Selected tab
+    exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
+endfunction
+exe RefreshColors(239)
 set statusline=%t      "tail of the filename
 set statusline+=%y      "filetype
 if winwidth(0) > 85
@@ -81,8 +130,8 @@ set statusline+=%2*%m\%*       "modified flag
 set statusline+=%h      "help file flag
 set statusline+=\ Buffer:%n "Buffer number
 if winwidth(0) > 130
-	set statusline+=\ %1*%{gitbranch}%* "Git branch
-	set statusline+=%1*%{gitstatus}%* "Git status
+	set statusline+=\ %1*%{gitBranch}%* "Git branch
+	set statusline+=%1*%{gitStatus}%* "Git status
 endif
 set statusline+=%=      "left/right separator
 set statusline+=%3*%F%*\ %4*\|%*\  	"file path
@@ -90,14 +139,7 @@ set statusline+=Col:%c\      "cursor column
 set statusline+=Row:%l/%L\    "cursor line/total lines
 set statusline+=%4*\|%*\ %p   "percent through file
 set statusline+=%% " Add percent symbol 
-hi StatusLine ctermfg=239 ctermbg=118 "Status line of current window
-hi StatusLineNC ctermfg=239 ctermbg=255 "Status line color for noncurrent window
-hi LineNr ctermfg=118 ctermbg=239 "Line numbers
-hi VertSplit ctermfg=239 ctermbg=118 "Vertical split divider
-hi TabLine ctermbg=239 ctermfg=118 cterm=none "Nonselected tabs
-hi TabLineFill ctermfg=239 "Empty space on tab bar
-hi TabLineSel ctermbg=239 ctermfg=45 "Selected tab
 
 let g:ConqueTerm_Color = 1
-let g:Powerline_symbols = 'fancy'
-"set rtp+=$HOME/.local/lib/python2.7/site-packages/powerline/bindings/vim/
+let g:ConqueTerm_TERM = 'xterm-256color'
+let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
