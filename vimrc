@@ -50,52 +50,52 @@ nnoremap - <C-w>-
 nnoremap + <C-w>+
 nnoremap > <C-w>>
 nnoremap < <C-w><
-autocmd InsertEnter * exe RefreshColors(17)
-autocmd InsertLeave * exe RefreshColors(239)
+autocmd InsertEnter * call RefreshColors(17)
+autocmd InsertLeave * call RefreshColors(239)
 
 call pathogen#infect()
 function GitBranch()
-	let	output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
-	if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
-		return "[Not a Git Repository]"
-	else
-		return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
-	endif
+    let output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
+    if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
+        return "[Not a Git Repository]"
+    else
+        return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
+    endif
 endfunction
 function GitStatus()
-	let output=system('git status')
-	if output=="" 
-		return ""
-	elseif output=~"Changes to be committed"
-		return "Status: Commits not yet pushed]"
-	elseif output=~"modified"
-		return "Status: Changes not yet committed]"
-	else	
-		return "Status: Up to date]"
-	endif
+    let output=system('git status')
+    if output=="" 
+        return ""
+    elseif output=~"Changes to be committed"
+        return "Status: Commits not yet pushed]"
+    elseif output=~"modified"
+        return "Status: Changes not yet committed]"
+    else    
+        return "Status: Up to date]"
+    endif
 endfunction
 function GitRemote(branch) " Note: this function takes a while to execute
-	let remotes=split(system("git remote")) " Get names of remotes
-	if remotes==[] " End if no remotes found or error
-		return ""
-	else
-		let remotename=remotes[0] " Get name of first remote
-	endif
-	let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
-	if output=="" " Checkpoint for error
-		return ""
-	elseif output =~ "local out of date"
-		return "(!)Local repo out of date: Use git pull"
-	else
-		return ""
-	endif
+    let remotes=split(system("git remote")) " Get names of remotes
+    if remotes==[] " End if no remotes found or error
+        return ""
+    else
+        let remotename=remotes[0] " Get name of first remote
+    endif
+    let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
+    if output=="" " Checkpoint for error
+        return ""
+    elseif output =~ "local out of date"
+        return "(!)Local repo out of date: Use git pull"
+    else
+        return ""
+    endif
 endfunction
 let g:gitBranch=GitBranch()
 let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :hi does not accept variables as arguments
-"Orange
 function RefreshColors(statusLineColor)
+    "Orange
     exe 'hi User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
     "Sky Blue
     exe 'hi User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
@@ -117,24 +117,26 @@ function RefreshColors(statusLineColor)
     exe 'hi TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
     "Selected tab
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
+    "indentLine plugin
+    exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 exe RefreshColors(239)
 set statusline=%t      "tail of the filename
 set statusline+=%y      "filetype
 if winwidth(0) > 85
-	set statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  "file encoding
-	set statusline+=%{&ff}] "file format
+    set statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  "file encoding
+    set statusline+=%{&ff}] "file format
 endif
 set statusline+=%1*%r%*      "read only flag
 set statusline+=%2*%m\%*       "modified flag
 set statusline+=%h      "help file flag
 set statusline+=\ Buffer:%n "Buffer number
 if winwidth(0) > 130
-	set statusline+=\ %1*%{gitBranch}%* "Git branch
-	set statusline+=%1*%{gitStatus}%* "Git status
+    set statusline+=\ %1*%{gitBranch}%* "Git branch
+    set statusline+=%1*%{gitStatus}%* "Git status
 endif
 set statusline+=%=      "left/right separator
-set statusline+=%3*%F%*\ %4*\|%*\  	"file path
+set statusline+=%3*%F%*\ %4*\|%*\   "file path
 set statusline+=Col:%c\      "cursor column
 set statusline+=Row:%l/%L\    "cursor line/total lines
 set statusline+=%4*\|%*\ %p   "percent through file
@@ -143,3 +145,4 @@ set statusline+=%% " Add percent symbol
 let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+let g:indentLine_char = '┆'
