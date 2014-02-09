@@ -52,6 +52,10 @@ nnoremap > <C-w>>
 nnoremap < <C-w><
 autocmd InsertEnter * call RefreshColors(17)
 autocmd InsertLeave * call RefreshColors(239)
+" Easy system clipboard copy/paste
+vnoremap <C-c> "*y
+vnoremap <C-x> "*x
+nnoremap <C-v> "*p
 
 call pathogen#infect()
 function GitBranch()
