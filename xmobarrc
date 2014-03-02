@@ -1,0 +1,17 @@
+Config { font = "-misc-fixed-*-*-*-*-10-*-*-*-*-*-*-*"
+       , position = TopSize C 100 25
+       , bgColor = "black"
+       , fgColor = "white"
+       , lowerOnStart = True
+       , commands = [ Run Weather "KLGA" ["-t","Weather: <tempF>°F","-L","40","-H","80","--normal","green","--high","red","--low","lightblue"] 36000
+                    , Run Cpu ["-L","5","-H","50","-l", "green", "--normal","orange","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%", "-L", "20", "-H", "60", "-l", "green", "-h", "red"] 10
+                    , Run Battery ["-t", "<left>% | <timeleft>", "-L", "20", "-H", "80", "-l", "red", "-h", "green"] 100
+                    , Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+                    , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 10 
+                    , Run DiskU [("/", "/: <usedp>%"), ("/home", "/home: <usedp>%")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
+                    ]
+       , sepChar = "%"
+       , alignSep = "}{"
+       , template = "%cpu% | %memory% <fc=#00ffff>>></fc> %disku% <fc=#00ffff>>></fc> Temp: %sensortemp%}{ <fc=#ee9a00>%date%</fc> | %KLGA% | %battery%"
+       }
