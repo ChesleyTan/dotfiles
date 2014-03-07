@@ -55,13 +55,12 @@ autocmd InsertLeave * call RefreshColors(239)
 " Easy system clipboard copy/paste
 vnoremap <C-c> "*y
 vnoremap <C-x> "*x
-nnoremap <C-v> "*p
 
 call pathogen#infect()
 function GitBranch()
     let output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
     if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
-        return "[Not a Git Repository]"
+        return ""
     else
         return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
     endif
