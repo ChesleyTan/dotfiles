@@ -79,7 +79,7 @@ function SensorTemp(){
 function GitBranch(){
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
-        echo "$(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
+        echo " $(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
 	fi
 }
 function GitUpToDate(){
@@ -107,13 +107,13 @@ function batteryInfo(){
 }
 
 ############ Regular Prompt ###############
-prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\[\$(SensorTemp)\]\$(ramUsage)\$(batteryInfo)\[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w \$(GitBranch)\[$(tput setaf 4)\] \$\[$(tput sgr0)\] \n>> "
+prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\[\$(SensorTemp)\]\$(ramUsage)\$(batteryInfo)\[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\] \$\[$(tput sgr0)\] \n>> "
 ### 256 color version ###
-prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w \$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
+prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
 ############ Prompt With Hostname ###############
 ##prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] \$\[$(tput sgr0)\] "
 ### 256 color version ###
-prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w \$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
+prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
 
 if [ "$TERM" == "linux" ]; then
 	export PS1=$prompt1
