@@ -53,8 +53,9 @@ nnoremap < <C-w><
 autocmd InsertEnter * call RefreshColors(17)
 autocmd InsertLeave * call RefreshColors(239)
 " Easy system clipboard copy/paste
-vnoremap <C-c> "*y
-vnoremap <C-x> "*x
+vnoremap <C-c> "+y
+vnoremap <C-x> "+x
+
 " Easy buffer switching
 nnoremap <F5> :buffers<CR>:buffer<Space>
 
