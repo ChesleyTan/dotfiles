@@ -4,3 +4,9 @@
 [submodule "vim/bundle/indentLine"]
 	path = vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine
+[submodule "vim/bundle/vim-easytags"]
+	path = vim/bundle/vim-easytags
+	url = http://github.com/xolox/vim-easytags
+[submodule "vim/bundle/vim-misc"]
+	path = vim/bundle/vim-misc
+	url = http://github.com/xolox/vim-misc
