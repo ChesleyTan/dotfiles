@@ -55,6 +55,8 @@ autocmd InsertLeave * call RefreshColors(239)
 " Easy system clipboard copy/paste
 vnoremap <C-c> "*y
 vnoremap <C-x> "*x
+" Easy buffer switching
+nnoremap <F5> :buffers<CR>:buffer<Space>
 
 call pathogen#infect()
 function GitBranch()
@@ -149,3 +151,8 @@ let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
+
+set completeopt=longest,menuone
+autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+inoremap <C-O> <C-X><C-O>
