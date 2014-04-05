@@ -1,3 +1,5 @@
+" General configuration {{{
+" vim:fdm=marker
 set nocp
 set hidden " Hides buffers instead of closing them, allows opening new buffers when current has unsaved changes
 set title " Show title in terminal
@@ -24,6 +26,10 @@ syntax on
 filetype indent on
 filetype plugin on
 colorscheme default
+autocmd InsertEnter * call RefreshColors(17)
+autocmd InsertLeave * call RefreshColors(239)
+" }}}
+" Custom mappings {{{
 :command Q q
 :command W w
 map Q <Nop>
@@ -50,16 +56,14 @@ nnoremap - <C-w>-
 nnoremap + <C-w>+
 nnoremap > <C-w>>
 nnoremap < <C-w><
-autocmd InsertEnter * call RefreshColors(17)
-autocmd InsertLeave * call RefreshColors(239)
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
 
 " Easy buffer switching
 nnoremap <F5> :buffers<CR>:buffer<Space>
-
-call pathogen#infect()
+" }}}
+" Functions for generating statusline {{{
 function GitBranch()
     let output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
     if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
@@ -98,6 +102,8 @@ function GitRemote(branch) " Note: this function takes a while to execute
 endfunction
 let g:gitBranch=GitBranch()
 let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
+" }}}
+" Colorscheme changing function {{{ 
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :hi does not accept variables as arguments
 function RefreshColors(statusLineColor)
@@ -109,6 +115,8 @@ function RefreshColors(statusLineColor)
     exe 'hi User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
     "Off-White
     exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold'
+    "Red
+    exe 'hi User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold'
     "Status line of current window
     exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 
     "Status line color for noncurrent window
@@ -123,10 +131,14 @@ function RefreshColors(statusLineColor)
     exe 'hi TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
     "Selected tab
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
+    "Folds colorscheme
+    hi Folded ctermfg=255 ctermbg=129
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 exe RefreshColors(239)
+" }}}
+" Custom statusline {{{
 set statusline=%t      "tail of the filename
 set statusline+=%y      "filetype
 if winwidth(0) > 85
@@ -136,28 +148,105 @@ endif
 set statusline+=%1*%r%*      "read only flag
 set statusline+=%2*%m\%*       "modified flag
 set statusline+=%h      "help file flag
-set statusline+=\ Buffer:%n "Buffer number
-if winwidth(0) > 130
+set statusline+=\ B:%n "Buffer number
+if winwidth(0) > 100
     set statusline+=\ %1*%{gitBranch}%* "Git branch
     set statusline+=%1*%{gitStatus}%* "Git status
 endif
 set statusline+=%=      "left/right separator
-set statusline+=%3*%F%*\ %4*\|%*\   "file path
-set statusline+=Col:%c\      "cursor column
-set statusline+=Row:%l/%L\    "cursor line/total lines
+"set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
+set statusline+=%3*%{pathshorten(expand('%:p'))}%*\ %4*\|%*\   "file path with truncated names
+set statusline+=C:%c\      "cursor column
+set statusline+=R:%l/%L\    "cursor line/total lines
 set statusline+=%4*\|%*\ %p   "percent through file
 set statusline+=%% " Add percent symbol 
-
+" }}}
+" tabline from StackOverflow {{{
+set tabline+=%!MyTabLine()
+function MyTabLine()
+        let s = '' " complete tabline goes here
+        " loop through each tab page
+        for t in range(tabpagenr('$'))
+                " set highlight
+                if t + 1 == tabpagenr()
+                        let s .= '%#TabLineSel#'
+                else
+                        let s .= '%#TabLine#'
+                endif
+                " set the tab page number (for mouse clicks)
+                let s .= '%' . (t + 1) . 'T'
+                let s .= ' '
+                " set page number string
+                let s .= t + 1 . ' '
+                " get buffer names and statuses
+                let n = ''      "temp string for buffer names while we loop and check buftype
+                let m = 0       " &modified counter
+                let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
+                " loop through each buffer in a tab
+                for b in tabpagebuflist(t + 1)
+                        " buffer types: quickfix gets a [Q], help gets [H]{base fname}
+                        " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+                        if getbufvar( b, "&buftype" ) == 'help'
+                                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+                        elseif getbufvar( b, "&buftype" ) == 'quickfix'
+                                let n .= '[Q]'
+                        else
+                                let n .= pathshorten(bufname(b))
+                        endif
+                        " check and ++ tab's &modified count
+                        if getbufvar( b, "&modified" )
+                                let m += 1
+                        endif
+                        " no final ' ' added...formatting looks better done later
+                        if bc > 1
+                                let n .= ' '
+                        endif
+                        let bc -= 1
+                endfor
+                " add modified label [n+] where n pages in tab are modified
+                if m > 0
+                        let s .= '[' . m . '+]'
+                endif
+                " select the highlighting for the buffer names
+                " my default highlighting only underlines the active tab
+                " buffer names.
+                if t + 1 == tabpagenr()
+                        let s .= '%#TabLineSel#'
+                else
+                        let s .= '%#TabLine#'
+                endif
+                " add buffer names
+                if n == ''
+                        let s.= '[New]'
+                else
+                        let s .= n
+                endif
+                " switch to no underlining and add final space to buffer list
+                let s .= ' '
+        endfor
+        " after the last tab fill with TabLineFill and reset tab page nr
+        let s .= '%#TabLineFill#%T'
+        " right-align the label to close the current tab page
+        if tabpagenr('$') > 1
+                let s .= '%=%#TabLineFill#%5*%999XClose%*'
+        endif
+        return s
+endfunction
+" }}}
+" Plugins configuration {{{
+call pathogen#infect()
 let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
-
+" }}}
+" Omnicomplete {{{
 set completeopt=longest,menuone
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
 autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 inoremap <C-O> <C-X><C-O>
-
+" }}}
+" TMUX support {{{
 " Allow vim to recognize key sequences in screen terminal
 if &term =~ '^screen' && exists('$TMUX')
     set mouse+=a
@@ -187,3 +276,4 @@ if &term =~ '^screen' && exists('$TMUX')
     execute "set <F11>=\e[23;*~"
     execute "set <F12>=\e[24;*~"
 endif
+" }}}
