@@ -4,14 +4,14 @@ Config { font = "xft:Liberation Mono:size=12:antialias=true"
        , fgColor = "#e8e8e8"
        , lowerOnStart = True
        , commands = [ Run Weather "KLGA" ["-t","Weather: <tempF>°F","-L","40","-H","80","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Cpu ["-L","5","-H","50","-l", "green", "--normal","orange","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%", "-L", "20", "-H", "60", "-l", "green", "-h", "red"] 50
-                    , Run Battery ["-t", "<left>% <fc=#00ffff>|</fc> <timeleft>", "-L", "20", "-H", "80", "-l", "red", "-h", "green"] 100
+                    , Run Cpu ["-L","10","-H","50","-l", "green", "--normal","orange","--high","red"] 10
+                    , Run Memory ["-t","Mem: <usedratio>%", "-L", "25", "-H", "60", "-l", "green", "-h", "red", "--normal", "orange"] 50
+                    , Run Battery ["-t", "<left>% <fc=#0dbfff>(</fc><timeleft><fc=#0dbfff>)</fc>", "-L", "20", "-H", "80", "-l", "red", "-h", "green", "--normal", "orange"] 100
                     , Run Date "%a %b %_d %Y %r" "date" 10
                     , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 20 
-                    , Run DiskU [("/", "/: <usedp>% <fc=#00ffff>|</fc>"), ("/home", "/home: <usedp>%")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
+                    , Run DiskU [("/", "/: <usedp>% <fc=#0dbfff>|</fc>"), ("/home", "/home: <usedp>%")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% <fc=#00ffff>>></fc> %memory% <fc=#00ffff>>></fc> %disku% <fc=#00ffff>>></fc> Temp: %sensortemp%}{ <fc=#ee9a00>%date%</fc> <fc=#00ffff><<</fc> %KLGA% <fc=#00ffff><<</fc> %battery%"
+       , template = "%cpu% <fc=#0dbfff>>></fc> %memory% <fc=#0dbfff>>></fc> %disku% <fc=#0dbfff>>></fc> Temp: %sensortemp% <fc=#0dbfff>>></fc> %battery%}{ %KLGA% <fc=#0dbfff><<</fc> <fc=#0dbfff>%date%</fc>"
        }
