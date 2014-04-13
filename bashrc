@@ -1,7 +1,4 @@
-# ~/.bashrc: executed by bash(1) for non-login shells.
-# see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
-# for examples
-
+# General Configuration {{{
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
@@ -13,7 +10,7 @@ HISTCONTROL=ignoreboth
 shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
-HISTSIZE=1000
+HISTSIZE=5000
 HISTFILESIZE=2000
 
 # check the window size after each command and, if necessary,
@@ -27,74 +24,51 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-# set variable identifying the chroot you work in (used in the prompt below)
-if [ -z "$debian_chroot" ] && [ -r /etc/debian_chroot ]; then
-    debian_chroot=$(cat /etc/debian_chroot)
-fi
-
-# set a fancy prompt (non-color, unless we know we "want" color)
-#case "$TERM" in
-#    xterm-color) color_prompt=yes;;
-#esac
-
-# uncomment for a colored prompt, if the terminal has the capability; turned
-# off by default to not distract the user: the focus in a terminal window
-# should be on the output of commands, not on the prompt
-#force_color_prompt=yes
-#
-#if [ -n "$force_color_prompt" ]; then
-#    if [ -x /usr/bin/tput ] && tput setaf 1 >&/dev/null; then
-#	# We have color support; assume it's compliant with Ecma-48
-#	# (ISO/IEC-6429). (Lack of such support is extremely rare, and such
-#	# a case would tend to support setf rather than setaf.)
-#	color_prompt=yes
-#    else
-#	color_prompt=
-#    fi
-#fi
-
-#if [ "$color_prompt" = yes ]; then
-#    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
-#else
-#    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
-#fi
-#unset color_prompt force_color_prompt
-
-# Recognize color support in terminal
+# Color support {{{
+# Force color in terminal 
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
 elif [ "$TERM" == "screen" ]; then
 	export TERM=screen-256color
 fi
+# enable color support of ls and also add handy aliases
+if [ -x /usr/bin/dircolors ]; then
+    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
+    alias ls='ls --color=auto'
+    alias grep='grep --color=auto'
+    alias fgrep='fgrep --color=auto'
+    alias egrep='egrep --color=auto'
+fi
+# }}}
+# }}}
+# Custom Bash Prompt {{{
 
-############ Custom Bash Prompt ###############
-
-function SensorTemp(){ 
+function SensorTemp() { 
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
 	# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
 	if [ $showSysInfo == true ]; then
-        echo "<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -3 | tail -1) | "
+        echo "<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | "
     fi
 }
-function GitBranch(){
+function GitBranch() {
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
         echo " $(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
 	fi
 }
-function GitUpToDate(){
+function GitUpToDate() {
     if [[ $(git status) =~ "Changes to be committed" ]]; then
         echo -e "\u2718"
     else
         echo -e "\u2714"
     fi
 }
-function ramUsage(){
+function ramUsage() {
 	if [ $showSysInfo == true ]; then
 	    echo "$(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB | "
     fi
 }
-function batteryInfo(){
+function batteryInfo() {
 	if [ $showSysInfo == true ]; then
         data=$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
         perc=$(echo $data | grep -Eo "[0-9]*%")
@@ -105,15 +79,32 @@ function batteryInfo(){
         echo "$perc ($batTime)> "
     fi
 }
+function CatchExitCode() {
+    status=$?
+}
+function Sign() {
+    if [ $UID == 0 ]; then
+        echo "$(tput setaf 196) #"
+    else
+        if [[ $status == 0 ]]; then
+            echo "$(tput setaf 15) $"
+        else
+            echo "$(tput setaf 196) $"
+        fi
+    fi
+}
 
+# Store last exit status code before generating a prompt
+status=0
+PROMPT_COMMAND="CatchExitCode"
 ############ Regular Prompt ###############
-prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\[\$(SensorTemp)\]\$(ramUsage)\$(batteryInfo)\[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\] \$\[$(tput sgr0)\] \n>> "
+prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\[\$(SensorTemp)\]\$(ramUsage)\$(batteryInfo)\[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
 ### 256 color version ###
-prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
+prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
 ############ Prompt With Hostname ###############
-##prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\] \$\[$(tput sgr0)\] "
+##prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\]\[\$(Sign)\]\[$(tput sgr0)\] "
 ### 256 color version ###
-prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\] \$\[$(tput sgr0)\] \n>> "
+prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
 
 if [ "$TERM" == "linux" ]; then
 	export PS1=$prompt1
@@ -121,29 +112,25 @@ else
 	export PS1=$prompt2
 fi
 
-###############################################
-# If this is an xterm set the title to user@host:dir
+export showSysInfo=true
+alias syson="export showSysInfo=true"
+alias sysoff="export showSysInfo=false"
+
+# }}}
+# Custom xterm Title {{{
 case "$TERM" in
-xterm*|rxvt*)
-    PS1="\[\e]0;${debian_chroot:+($debian_chroot)}\u@\h: \w\a\]$PS1"
+xterm*)
+    PS1="\[\e]0;[\u@\h]: \w\a\]$PS1"
+    # Note \e expands to ASCII escape \033 and \a expands to ASCII bell \007
     ;;
 *)
     ;;
 esac
-
-
-# enable color support of ls and also add handy aliases
-if [ -x /usr/bin/dircolors ]; then
-    test -r ~/.dircolors && eval "$(dircolors -b ~/.dircolors)" || eval "$(dircolors -b)"
-    alias ls='ls --color=auto'
-    #alias dir='dir --color=auto'
-    #alias vdir='vdir --color=auto'
-
-    alias grep='grep --color=auto'
-    alias fgrep='fgrep --color=auto'
-    alias egrep='egrep --color=auto'
-fi
-
+# }}}
+# Global functions {{{
+function back() {
+    eval cd $(echo $OLDPWD | sed -r 's/[ ]+/\\ /g')
+}
 function clearapachelog(){
 	if [ "$(id -u)" != "0" ]; then
    		echo "This script must be run as root" 
@@ -174,35 +161,6 @@ function removeClassFiles(){
 		fi
 	fi
 }
-# some more ls aliases
-#alias sudo='sudo ' # Allow use sudo on aliases because aliases are only checked on the first word in the command
-alias ll='ls -alF'
-alias la='ls -A'
-alias l='ls -CF'
-alias rm='rm -I'
-# Add an "alert" alias for long running commands.  Use like so:
-#   sleep 10; alert
-alias alert='notify-send --urgency=low -i "$([ $? = 0 ] && echo terminal || echo error)" "$(history|tail -n1|sed -e '\''s/^\s*[0-9]\+\s*//;s/[;&|]\s*alert$//'\'')"'
-function back() {
-    eval cd $(echo $OLDPWD | sed -r 's/[ ]+/\\ /g')
-}
-# Alias definitions.
-# You may want to put all your additions into a separate file like
-# ~/.bash_aliases, instead of adding them here directly.
-# See /usr/share/doc/bash-doc/examples in the bash-doc package.
-
-if [ -f ~/.bash_aliases ]; then
-    . ~/.bash_aliases
-fi
-
-
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
-    . /etc/bash_completion
-fi
-
 function reminder(){
 	PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
 	for word in "$@"
@@ -215,8 +173,26 @@ function reminder(){
 function sourcebash(){
 	source ~/.bashrc
 }
-
-export showSysInfo=true
-alias syson="export showSysInfo=true"
-alias sysoff="export showSysInfo=false"
-
+# }}}
+# Global aliases {{{
+#alias sudo='sudo ' # Allow use sudo on aliases because aliases are only checked on the first word in the command
+alias ll='ls -alF'
+alias la='ls -A'
+alias lh='ls -ahl'
+alias l='ls -CF'
+alias rm='rm -I'
+# }}}
+# Local aliases {{{
+if [ -f ~/.bash_aliases ]; then
+    . ~/.bash_aliases
+fi
+# }}}
+# Bash completion {{{
+# enable programmable completion features (you don't need to enable
+# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
+# sources /etc/bash.bashrc).
+if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
+    . /etc/bash_completion
+fi
+# }}}
+# vim:fdm=marker

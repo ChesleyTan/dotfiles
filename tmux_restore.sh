@@ -6,9 +6,9 @@ tmux has-session -t $SESSIONNAME &> /dev/null
 if [ $? != 0 ] 
 then
     tmux new-session -s $SESSIONNAME -n main -d
-    tmux clock
     tmux split-window -h
-    tmux clock
+    tmux split-window -h
+    tmux select-layout tiled
     tmux new-window -n aux
     tmux clock
     tmux select-window -t 1
