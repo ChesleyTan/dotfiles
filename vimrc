@@ -59,9 +59,10 @@ nnoremap < <C-w><
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
-
 " Easy buffer switching
 nnoremap <F5> :buffers<CR>:buffer<Space>
+" Quick change syntax highlighting color for dark background
+nnoremap <C-i> :call ReverseColors()<CR>
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
@@ -137,6 +138,15 @@ function RefreshColors(statusLineColor)
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 exe RefreshColors(239)
+
+function ReverseColors()
+    if &background == "light"
+        set background=dark
+    else
+        set background=light
+    endif
+    exe RefreshColors(239)
+endfunction
 " }}}
 " Custom statusline {{{
 set statusline=%t      "tail of the filename
