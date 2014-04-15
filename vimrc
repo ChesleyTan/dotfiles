@@ -27,7 +27,7 @@ filetype indent on
 filetype plugin on
 colorscheme default
 autocmd InsertEnter * call RefreshColors(17)
-autocmd InsertLeave * call RefreshColors(239)
+autocmd InsertLeave * call RefreshColors(235)
 " }}}
 " Custom mappings {{{
 :command Q q
@@ -137,7 +137,7 @@ function RefreshColors(statusLineColor)
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
-exe RefreshColors(239)
+call RefreshColors(235)
 
 function ReverseColors()
     if &background == "light"
@@ -145,7 +145,7 @@ function ReverseColors()
     else
         set background=light
     endif
-    exe RefreshColors(239)
+    call RefreshColors(235)
 endfunction
 " }}}
 " Custom statusline {{{
