@@ -26,8 +26,8 @@ syntax on
 filetype indent on
 filetype plugin on
 colorscheme default
-autocmd InsertEnter * call RefreshColors(17)
-autocmd InsertLeave * call RefreshColors(235)
+autocmd InsertEnter * call RefreshColors(17, '#00005f')
+autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
 " Custom mappings {{{
 :command Q q
@@ -107,25 +107,25 @@ let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
 " Colorscheme changing function {{{ 
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :hi does not accept variables as arguments
-function RefreshColors(statusLineColor)
+function RefreshColors(statusLineColor, gui_statusLineColor)
     "Orange
-    exe 'hi User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    exe 'hi User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
     "Sky Blue
-    exe 'hi User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    exe 'hi User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor 
     "Darker Blue
-    exe 'hi User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold' 
+    exe 'hi User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor 
     "Off-White
-    exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold'
+    exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Red
-    exe 'hi User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold'
+    exe 'hi User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
     "Status line of current window
-    exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 
+    exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Status line color for noncurrent window
-    exe 'hi StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 
+    exe 'hi StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 'guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Line numbers
-    exe 'hi LineNr ctermfg=118 ctermbg=' . a:statusLineColor
+    exe 'hi LineNr ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Vertical split divider
-    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' a:statusLineColor
+    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Nonselected tabs
     exe 'hi TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
     "Empty space on tab bar
@@ -133,11 +133,11 @@ function RefreshColors(statusLineColor)
     "Selected tab
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
     "Folds colorscheme
-    hi Folded ctermfg=255 ctermbg=129
+    hi Folded ctermfg=255 ctermbg=129 guifg=gray100 guibg=#af00ff
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
-call RefreshColors(235)
+call RefreshColors(235, '#262626')
 
 function ReverseColors()
     if &background == "light"
@@ -145,7 +145,7 @@ function ReverseColors()
     else
         set background=light
     endif
-    call RefreshColors(235)
+    call RefreshColors(235, '#262626')
 endfunction
 " }}}
 " Custom statusline {{{
