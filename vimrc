@@ -62,7 +62,7 @@ vnoremap <C-x> "+x
 " Easy buffer switching
 nnoremap <F5> :buffers<CR>:buffer<Space>
 " Quick change syntax highlighting color for dark background
-nnoremap <C-i> :call ReverseColors()<CR>
+nnoremap <S-i> :call ReverseColors()<CR>
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
