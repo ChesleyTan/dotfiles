@@ -43,13 +43,6 @@ fi
 # }}}
 # Custom Bash Prompt {{{
 
-function SensorTemp() { 
-	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
-	# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
-	if [ $showSysInfo == true ]; then
-        echo "<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | "
-    fi
-}
 function GitBranch() {
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
@@ -63,56 +56,104 @@ function GitUpToDate() {
         echo -e "\u2714"
     fi
 }
-function ramUsage() {
+function SensorTemp() { 
+	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+	# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
 	if [ $showSysInfo == true ]; then
-	    echo "$(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB | "
+        echo "$(tput bold)$(tput setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(tput sgr0)"
+    fi
+}
+function ramUsage() {
+	if [[ $showSysInfo == true ]]; then
+        echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB | $(tput sgr0)"
     fi
 }
 function batteryInfo() {
-	if [ $showSysInfo == true ]; then
+	if [[ $showSysInfo == true ]]; then
         data=$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
         perc=$(echo $data | grep -Eo "[0-9]*%")
         batTime=$(echo $data | grep -Eo "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
         if [ "$batTime" == "" ]; then
             batTime="Full"
         fi
-        echo "$perc ($batTime)> "
+        echo "$(tput bold)$(tput setaf 166)$perc ($batTime)> $(tput sgr0)"
     fi
 }
 function CatchExitCode() {
     status=$?
 }
 function Sign() {
-    if [ $UID == 0 ]; then
-        echo "$(tput setaf 196) #"
+    if [[ $UID == 0 ]]; then
+        echo "$(tput bold)$(tput setaf 9) #$(tput sgr0)"
     else
         if [[ $status == 0 ]]; then
-            echo "$(tput setaf 15) $"
+            echo "$(tput bold)$(tput setaf 15) \$$(tput sgr0)"
         else
-            echo "$(tput setaf 196) $"
+            echo "$(tput bold)$(tput setaf 9) \$$(tput sgr0)"
         fi
     fi
+}
+function Pwd() {
+    if [[ $is256ColorTerm == true ]]; then
+        color=39
+    else
+        color=6
+    fi
+    echo -n "$(tput bold)$(tput setaf $color)"
+    if [[ $shortenPath == true ]]; then
+        echo -n "$PWD" | sed -r "s/\/home\/$USER/~/g" | sed -r "s/\/(.)[^/]*/\/\1/g" # (.) holds the first letter and \1 recalls it
+    else
+        echo -n "$PWD" | sed -r "s/\/home\/$USER/~/g"
+    fi    
+    echo "$(tput sgr0)"
+}
+function DateTime() {
+    if [[ $showTime != true ]]; then
+        return
+    fi
+    date=$(date "+%I:%M %P")
+    if [[ $is256ColorTerm == false ]]; then
+        echo "$(tput bold)$(tput setaf 1)[$date] $(tput sgr0)"
+    else
+        echo "$(tput bold)$(tput setaf 196)[$date] $(tput sgr0)"
+    fi
+}
+function User() {
+    if [[ $is256ColorTerm == true ]]; then
+        color=118
+    else
+        color=2
+    fi
+    echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
+    if [[ $showHostname == true ]]; then
+        echo -n "$(tput bold)$(tput setaf 8)@$(hostname)$(tput sgr0)"
+    fi
+    echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
 }
 
 # Store last exit status code before generating a prompt
 status=0
 PROMPT_COMMAND="CatchExitCode"
-############ Regular Prompt ###############
-prompt1="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\[\$(SensorTemp)\]\$(ramUsage)\$(batteryInfo)\[$(tput setaf 2)\]\\u:\[$(tput setaf 6)\]\\w\$(GitBranch)\[$(tput setaf 4)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
-### 256 color version ###
-prompt2="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
-############ Prompt With Hostname ###############
-##prompt3="\[$(tput bold)\]\[$(tput setaf 1)\][\D{%I:%M %P}] \[$(tput setaf 2)\]\\u@\H:\[$(tput setaf 6)\]\\w\[$(tput setaf 4)\]\[\$(Sign)\]\[$(tput sgr0)\] "
-### 256 color version ###
-prompt4="\[$(tput bold)\]\[$(tput setaf 196)\][\D{%I:%M %P}] \[$(tput setaf 166)\]\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\[$(tput setaf 118)\]\\u\[$(tput setaf 243)\]@\H:\[$(tput setaf 39)\]\\w\$(GitBranch)\[$(tput setaf 15)\]\[\$(Sign)\]\[$(tput sgr0)\] \n>> "
-
-if [ "$TERM" == "linux" ]; then
-	export PS1=$prompt1
+if [[ "$TERM" == "xterm-256color" ]]; then
+    is256ColorTerm=true
 else
-	export PS1=$prompt2
+    is256ColorTerm=false
 fi
 
-export showSysInfo=true
+prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(GitBranch)\$(Sign)\n>> "
+PS1=$prompt1
+
+#if [ "$TERM" == "linux" ]; then
+#	export PS1=$prompt1
+#else
+#	export PS1=$prompt2
+#fi
+
+# Configuration options
+showTime=true
+showSysInfo=false
+shortenPath=false
+showHostname=false
 alias syson="export showSysInfo=true"
 alias sysoff="export showSysInfo=false"
 
