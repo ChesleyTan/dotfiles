@@ -134,7 +134,7 @@ function User() {
 # Store last exit status code before generating a prompt
 status=0
 PROMPT_COMMAND="CatchExitCode"
-if [[ "$TERM" == "xterm-256color" ]]; then
+if [[ "$TERM" =~ "256color" ]]; then
     is256ColorTerm=true
 else
     is256ColorTerm=false
