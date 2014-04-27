@@ -46,15 +46,20 @@ fi
 function GitBranch() {
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
-        echo " $(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
+        echo " $(tput bold)$(tput setaf 34)($(git branch | grep '*' | grep -o ' '[A-Za-z]* | cut -c2-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes and using cut to remove preceding space
 	fi
 }
 function GitUpToDate() {
-    if [[ $(git status) =~ "Changes to be committed" ]]; then
-        echo -e "\u2718"
+    status=$(git status)
+    if [[ $status =~ "Changes to be committed" ]]; then
+        echo -ne "\u2718" # unicode character cross
     else
-        echo -e "\u2714"
+        echo -ne "\u2714" # unicode character check
     fi
+    if [[ $status =~ "Changes not staged for commit" ]]; then
+        echo -ne " \u0394" # unicode character delta
+    fi
+    echo -ne "\n"
 }
 function SensorTemp() { 
 	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
