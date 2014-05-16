@@ -3340,3 +3340,8 @@ GtkOverlay.osd {
                 inset  1px  0px shade(@button_border, 0.80);
 
 }
+
+/* Workaround for white background on menuitems */
+.menuitem *{
+    background-color: transparent;
+}
