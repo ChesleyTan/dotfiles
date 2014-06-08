@@ -136,6 +136,12 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     hi Folded ctermfg=255 ctermbg=129 guifg=gray100 guibg=#af00ff
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
+    hi Visual ctermbg=247 guibg=#9e9e9e
+    "Visual mode selection color 
+    hi SpellBad ctermbg=160 guibg=#d70000
+    hi SpellCap ctermbg=214 guibg=#ffaf00
+    hi SpellRare ctermbg=195 guibg=#dfffff
+    "Spell-check highlights
 endfunction
 call RefreshColors(235, '#262626')
 
@@ -286,4 +292,17 @@ if &term =~ '^screen' && exists('$TMUX')
     execute "set <F11>=\e[23;*~"
     execute "set <F12>=\e[24;*~"
 endif
+" }}}
+" Custom Functions {{{
+function WordProcessorMode() 
+  setlocal formatoptions=1 
+  setlocal noexpandtab 
+  setlocal spell spelllang=en_us 
+  set spellcapcheck=""
+  set dictionary=/usr/share/dict/words
+  set complete+=k
+  setlocal wrap 
+  setlocal linebreak 
+endfunction 
+command WP call WordProcessorMode()
 " }}}
