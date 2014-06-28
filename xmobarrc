@@ -1,17 +1,17 @@
 Config { font = "xft:Liberation Mono:size=12:antialias=true"
-       , position = TopSize C 100 25
+       , position = BottomSize C 100 25
        , bgColor = "#191919"
-       , fgColor = "#e8e8e8"
+       , fgColor = "#cccccc"
        , lowerOnStart = True
-       , commands = [ Run Weather "KLGA" ["-t","Weather: <tempF>°F","-L","40","-H","80","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Cpu ["-L","10","-H","50","-l", "green", "--normal","orange","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%", "-L", "25", "-H", "60", "-l", "green", "-h", "red", "--normal", "orange"] 50
-                    , Run Battery ["-t", "<left>% <fc=#0dbfff>(</fc><timeleft><fc=#0dbfff>)</fc>", "-L", "20", "-H", "80", "-l", "red", "-h", "green", "--normal", "orange"] 100
-                    , Run Date "%a %b %_d %Y %r" "date" 10
+       , commands = [ Run Weather "KLGA" ["-t","Weather: <tempF>°F rh <rh>%","-L","40","-H","80","--normal","green","--high","red","--low","lightblue"] 36000
+                    , Run Cpu ["-t", "<fc=#555555>C:</fc> <total><fc=#555555>%</fc>", "-L","10","-H","50","-l", "green", "--normal","orange","--high","red"] 10
+                    , Run Memory ["-t","<fc=#555555>M:</fc> <usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "-l", "green", "-h", "red", "--normal", "orange"] 50
+                    , Run Battery ["-t", "<left><fc=#555555>%</fc> <fc=#0099FF>(</fc><timeleft><fc=#0099FF>)</fc>", "-L", "20", "-H", "80", "-l", "red", "-h", "green", "--normal", "orange"] 100
+                    , Run Date "%a %b %_d %r" "date" 10
                     , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 20 
-                    , Run DiskU [("/", "/: <usedp>% <fc=#0dbfff>|</fc>"), ("/home", "/home: <usedp>%")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
+                    , Run DiskU [("/", "<fc=#33CC33>/:</fc> <usedp><fc=#555555>%</fc> <fc=#0099FF>|</fc>"), ("/home", "<fc=#33CC33>/home:</fc> <usedp><fc=#555555>%</fc>")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%cpu% <fc=#0dbfff>>></fc> %memory% <fc=#0dbfff>>></fc> %disku% <fc=#0dbfff>>></fc> Temp: %sensortemp% <fc=#0dbfff>>></fc> %battery%}{ %KLGA% <fc=#0dbfff><<</fc> <fc=#0dbfff>%date%</fc>"
+       , template = "%cpu% <fc=#0099FF>>></fc> %memory% <fc=#0099FF>>></fc> %disku% <fc=#0099FF>>></fc> <fc=#555555>T:</fc> %sensortemp% <fc=#0099FF>>></fc> %battery%}{ %KLGA% <fc=#0099FF><<</fc> <fc=#0099FF>%date%</fc>"
        }
