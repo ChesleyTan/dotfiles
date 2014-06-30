@@ -137,7 +137,7 @@ style "default" {
 		prelight_shade		= .90 # shade level for scrollbar's slider, comboboxstyle(1), and prelight state with gradient_colors
 		progressbarstyle	= 0
 		reliefstyle			= 2 # 0 = flat, 1 = inset, 2 = shadow, 3 = shadow with gradient, 4 = stronger shadow with gradient
-		rgba				= FALSE	# alpha transparency
+		rgba				= TRUE	# alpha transparency
 		roundness			= 3 # 0 = square
 		scrollbarstyle		= 0	# 0 = nothing, 1 = circles, 2 = handles, 3 = diagonal stripes, 4 = diagonal stripes and handles, 5 = horizontal stripes, 6 = horizontal stripes and handles
 		separatorstyle 		= 1	# 0 = Hard seperators 1 = Smooth seperators
@@ -883,13 +883,13 @@ widget "*swt*toolbar*"			style "default"
 # Xfce panel theming
 # ---------------------------------
 style "xfce-panel" {
-    fg[NORMAL]          = @fg_color
+    fg[NORMAL]          = "#eeeeee"
     fg[PRELIGHT]        = @selected_fg_color
     fg[ACTIVE]          = @selected_fg_color
     fg[SELECTED]        = @selected_fg_color
 
-    bg[NORMAL]          = shade (1.00, @theme_bg_dark_color)
-    bg[PRELIGHT]        = shade (0.60, @theme_bg_dark_color)
+    bg[NORMAL]          = shade (0.60, @theme_bg_dark_color)
+    bg[PRELIGHT]        = shade (1.20, @selected_bg_color)
     bg[ACTIVE]          = shade (0.80, mix(0.30, @bg_color, @selected_bg_color))
     bg[SELECTED]        = shade (1.20, @selected_bg_color)
     engine "murrine" {
