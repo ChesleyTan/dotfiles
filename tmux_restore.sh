@@ -9,9 +9,27 @@ then
     tmux split-window -h -c "$PWD"
     tmux split-window -h -c "$PWD"
     tmux select-layout tiled
+    tmux new-window -n feeds
+    tmux split-window -h -c "$PWD"
+    tmux split-window -h -c "$PWD"
+    tmux select-layout tiled
     tmux new-window -n aux
     tmux clock
     tmux select-window -t 1
-fi
 
+    tmux set-window-option -t:"feeds" monitor-activity off
+    # Run pianobar if exists
+    if hash pianobar 2> /dev/null ; then
+        tmux respawn-pane -t "feeds".0 -k "pianobar"
+    fi
+    # Run newsbeuter if exists
+    if hash newsbeuter 2> /dev/null ; then
+        tmux respawn-pane -t "feeds".1 -k "newsbeuter"
+    fi
+    # Run mutt if exists
+    if hash mutt 2> /dev/null ; then
+        tmux respawn-pane -t "feeds".2 -k "mutt"
+    fi
+fi
 tmux attach -t $SESSIONNAME
+

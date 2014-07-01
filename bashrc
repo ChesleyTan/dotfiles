@@ -11,7 +11,7 @@ shopt -s histappend
 
 # for setting history length see HISTSIZE and HISTFILESIZE in bash(1)
 HISTSIZE=5000
-HISTFILESIZE=2000
+HISTFILESIZE=5000
 
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
@@ -23,6 +23,8 @@ shopt -s checkwinsize
 
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
+
+export EDITOR=vim
 
 # Color support {{{
 # Force color in terminal 
@@ -143,6 +145,7 @@ function User() {
 # Store last exit status code before generating a prompt
 status=0
 PROMPT_COMMAND="CatchExitCode"
+#Note: the prompt function is not allowed to globally change any variable values; only the PROMPT_COMMAND is able
 if [[ "$TERM" =~ "256color" ]]; then
     is256ColorTerm=true
 else
