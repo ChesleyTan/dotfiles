@@ -1,16 +1,17 @@
 UnityDecoration {
-    -UnityDecoration-extents: 28px 1px 1px 1px;
+    -UnityDecoration-extents: 28px 0px 0px 0px;
     -UnityDecoration-input-extents: 10px;
 
     -UnityDecoration-shadow-offset-x: 1px;
     -UnityDecoration-shadow-offset-y: 1px;
     -UnityDecoration-active-shadow-color: rgba (0, 0, 0, 0.65);
-    -UnityDecoration-active-shadow-radius: 10px;
+    /*-UnityDecoration-active-shadow-color: rgba(30, 140, 30, 0.95); /* Green border shadow */
+    -UnityDecoration-active-shadow-radius: 10px; /* Match UnityDecoration border-radius */
     -UnityDecoration-inactive-shadow-color: rgba (0, 0, 0, 0.4);
-    -UnityDecoration-inactive-shadow-radius: 10px;
+    -UnityDecoration-inactive-shadow-radius: 10px; /* Match UnityDecoration border-radius */
 
     -UnityDecoration-glow-size: 10px;
-    -UnityDecoration-glow-color: rgb (221, 72, 20);
+    -UnityDecoration-glow-color: rgb (20, 250, 20); /* Neon green border glow in compiz scale */
 
     -UnityDecoration-title-indent: 10px;
     -UnityDecoration-title-fade: 35px;
@@ -19,7 +20,6 @@ UnityDecoration {
 
 UnityDecoration.top {
     border: 1px solid rgba (0, 3, 5, 0.03); /* shade (@dark_bg_color, 1.04) - shade (@dark_bg_color, 1.5) */
-    border-bottom-width: 1px;
     border-radius: 10px 10px 0 0;
     padding: 1px 6px 0 6px;
 
@@ -37,6 +37,7 @@ UnityDecoration.top {
 
 UnityPanelWidget,
 .unity-panel {
+    background-color: transparent;
     background-image: -gtk-gradient (linear, left top, left bottom,
                                      from (shade(@theme_bg_dark_color, 1.07)),                                     
                                      to   (shade(@theme_bg_dark_color, 1.00)));
@@ -67,6 +68,15 @@ UnityPanelWidget,
     /* icon-shadow: 0 1 shade (@bg_color, 1.06); */
 }
 
+.unity-panel.menubar:backdrop,
+.unity-panel .menubar *:backdrop {
+}
+
+
+.unity-panel.menubar.menuitem:hover,
+.unity-panel.menubar .menuitem *:hover {
+}
+
 /*
 .unity-panel.menubar.menuitem:hover,
 .unity-panel.menubar .menuitem *:hover {
@@ -85,4 +95,3 @@ UnityPanelWidget,
                                                  to (shade (@bg_color, 1.02)));
 }
 */
-
