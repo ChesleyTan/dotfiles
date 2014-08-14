@@ -294,15 +294,30 @@ if &term =~ '^screen' && exists('$TMUX')
 endif
 " }}}
 " Custom Functions {{{
+let g:current_mode="default"
 function WordProcessorMode() 
-  setlocal formatoptions=1 
-  setlocal noexpandtab 
-  setlocal spell spelllang=en_us 
-  set spellcapcheck=""
-  set dictionary=/usr/share/dict/words
-  set complete+=k
-  setlocal wrap 
-  setlocal linebreak 
+	if g:current_mode == "default"
+		let g:current_mode="wpm"
+		" Break line before one-letter words when possible
+		setlocal textwidth=80
+		setlocal formatoptions=t1 
+		setlocal noexpandtab 
+		setlocal spell spelllang=en_us 
+		set spellcapcheck=""
+		" Add dictionary to contextual completion
+		set dictionary=/usr/share/dict/words
+		set complete+=k
+		setlocal wrap 
+		setlocal linebreak
+	else
+		let g:current_mode="default"
+		setlocal formatoptions=tcq
+		setlocal expandtab
+		setlocal nospell
+		set complete-=k
+		setlocal nowrap
+		setlocal nolinebreak
+	endif
 endfunction 
 command WP call WordProcessorMode()
 " }}}
