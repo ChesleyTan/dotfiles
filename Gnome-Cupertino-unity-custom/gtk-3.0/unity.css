@@ -19,17 +19,16 @@ UnityDecoration {
 }
 
 UnityDecoration.top {
+    color: @theme_text_dark_color;
     border: 1px solid rgba (0, 3, 5, 0.03); /* shade (@dark_bg_color, 1.04) - shade (@dark_bg_color, 1.5) */
     border-radius: 10px 10px 0 0;
     padding: 1px 6px 0 6px;
 
     background-color: transparent;
     background-clip: border-box;
-/*
     background-image: -gtk-gradient (linear, left top, left bottom,
                                      from (shade (@bg_color, 0.9)),
                                      to (shade (@bg_color, .74)));
-*/
     background-image: -gtk-gradient (linear, left top, left bottom,
                                      from (rgba(235, 235, 235, 0.85)),
                                      to (rgba(220, 220, 220, 0.85)));
@@ -44,13 +43,13 @@ UnityPanelWidget,
 
     border-width: 0px;
     border-style: none;
-    color: rgba(0, 255, 0, 1);
+    color: @theme_pure_green;
 
 }
 
 .unity-panel.panel-title {
     /* color: rgba(240, 240, 240 ,1);  Gray */
-    color: rgba(0, 255, 0, 1);
+    color: @theme_pure_green; /* Green text color */
 }
 
 .unity-panel.menubar,
@@ -63,7 +62,7 @@ UnityPanelWidget,
 .unity-panel.menuitem,
 .unity-panel .menuitem {
     border-width: 0px;
-    color: rgba(0, 255, 0, 1);
+    color: @theme_pure_green; /* Green text color */
 
     /* icon-shadow: 0 1 shade (@bg_color, 1.06); */
 }

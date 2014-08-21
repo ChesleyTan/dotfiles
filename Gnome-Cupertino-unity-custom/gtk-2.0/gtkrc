@@ -1,10 +1,9 @@
-gtk-color-scheme = "base_color:#ffffff\nbg_color:#ededed"
-gtk-color-scheme = "text_color:#202020\nfg_color:#363636"
+gtk-color-scheme = "base_color:#e6e6e6\nbg_color:#cccccc"
+gtk-color-scheme = "text_color:#202020\nfg_color:#202020"
 gtk-color-scheme = "selected_bg_color:#3875d7\nselected_fg_color:#ffffff"
-gtk-color-scheme = "tooltip_bg_color:#2e3436\ntooltip_fg_color:#ffffff\nlink_color:#0033ff"
+gtk-color-scheme = "tooltip_bg_color:#303635\ntooltip_fg_color:#ffffff\nlink_color:#0033ff"
 gtk_color_scheme = "menu_gradient:#4455F6"
 gtk_color_scheme = "progressbar_color:#6ab2f5"
-gtk-color-scheme = "theme_bg_dark_color:#D5D5D5\ntheme_fg_dark_color:#323232\ntheme_text_dark_color:#202020"
 gtk-color-scheme = "sidebar_background:#e1e5eb"
 gtk-auto-mnemonics	= 1
 
@@ -365,7 +364,7 @@ style "menubar" {
 	ythickness	= 3
 
     fg[NORMAL]          = shade (1.4, @fg_color)
-	bg[NORMAL]			= @theme_bg_dark_color
+	bg[NORMAL]			= @bg_color
 
 	engine "murrine" {
 		gradient_shades     	= {1.00,0.95,0.96,0.92}
@@ -888,7 +887,7 @@ style "xfce-panel" {
     fg[ACTIVE]          = @selected_fg_color
     fg[SELECTED]        = @selected_fg_color
 
-    bg[NORMAL]          = shade (0.60, @theme_bg_dark_color)
+    bg[NORMAL]          = shade (0.60, @bg_color)
     bg[PRELIGHT]        = shade (1.20, @selected_bg_color)
     bg[ACTIVE]          = shade (0.80, mix(0.30, @bg_color, @selected_bg_color))
     bg[SELECTED]        = shade (1.20, @selected_bg_color)

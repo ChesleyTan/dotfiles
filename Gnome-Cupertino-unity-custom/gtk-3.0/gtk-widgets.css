@@ -233,13 +233,13 @@ GtkComboBox .separator {
 
 .button .separator,
 .button.separator {
-    border-color: alpha (#000, 0.00);
+    border-color: transparent;
 
 }
 
 .button .separator:insensitive,
 .button.separator:insensitive {
-    border-color: alpha (#000, 0.00);
+    border-color: transparent;
 
 }
 
@@ -338,8 +338,8 @@ GtkStatusbar {
     background-image: none;
     background-color: @insensitive_bg_color;
     border-style: solid;
-	border-color: alpha (#000, 0.00);
-    border-bottom-color: 	alpha (#000, 0.00);
+	border-color: transparent;
+    border-bottom-color:	transparent;
     border-image: none;
 	box-shadow:	inset  0px  1px @insensitive_border_color,
                 inset  1px  0px @insensitive_border_color,
@@ -910,8 +910,8 @@ GtkScrolledWindow.frame {
 .button:insensitive {
     background-image: none;
     background-color: @insensitive_bg_color;
-	border-color: alpha (#000, 0.00);
-    border-bottom-color: 	alpha (#000, 0.00);
+	border-color: transparent;
+    border-bottom-color: 	transparent;
     border-image: none;
 	box-shadow:	inset  0px  1px @insensitive_border_color,
                 inset  1px  0px @insensitive_border_color,
@@ -1883,7 +1883,7 @@ GtkSwitch.trough:backdrop {
     border: none;
     border-image: none;
     background: none;
-    color: transparent;
+    color: rgba(0, 0, 0, 0);
     box-shadow: none;
     background-image: url("assets/switch-off.png");
     background-size: 56px 20px;
@@ -1892,12 +1892,8 @@ GtkSwitch.trough:backdrop {
     text-shadow: none;
 }
 
-GtkSwitch.trough {
-    background-image: url("assets/switch-off.png");
-
-}
-
 GtkSwitch.trough:active {
+    color: rgba(0, 0, 0, 0);
     background-image: url("assets/switch-on.png");
 
 }
@@ -1914,7 +1910,6 @@ GtkSwitch.slider {
     border: none;
     border-image: none;
     background: none;
-    color: transparent;
     box-shadow: none;
 
 }
