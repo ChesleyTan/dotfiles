@@ -222,6 +222,7 @@
 @import url("gtk-widgets.css");
 @import url("menu.css");
 @import url("gtk-widgets-assets.css");
+@import url("nautilus.css");
 
 /* Select style for TABS 
 	1.- all tabs themed blue
