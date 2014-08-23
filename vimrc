@@ -19,6 +19,7 @@ set shiftwidth=4
 set laststatus=2
 set pastetoggle=<F3>
 set mouse=a " Allow using mouse to change cursor position
+set timeoutlen=300
 " Easy toggle for paste
 nnoremap <C-p> <F3>
 set t_Co=256 " Enable 256 colors
@@ -26,12 +27,13 @@ syntax on
 filetype indent on
 filetype plugin on
 colorscheme default
-autocmd InsertEnter * call RefreshColors(17, '#00005f')
+autocmd InsertEnter * call RefreshColors(17, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
 " Custom mappings {{{
 :command Q q
 :command W w
+cmap Q! q!
 map Q <Nop>
 " Prevent Ex Mode
 nnoremap t :tabnew
@@ -64,9 +66,17 @@ nnoremap <F5> :buffers<CR>:buffer<Space>
 " Quick change syntax highlighting color for dark background
 nnoremap <S-i> :call ReverseColors()<CR>
 " }}}
+" Plugins configuration {{{
+call pathogen#infect()
+let g:ConqueTerm_Color = 1
+let g:ConqueTerm_TERM = 'xterm-256color'
+let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+let g:indentLine_char = '┆'
+cmap tree NERDTree
+" }}}
 " Functions for generating statusline {{{
 function GitBranch()
-    let output=system("git branch | grep '*'| grep -o ' '[A-Za-z]* | cut -c2-")
+    let output=system("git branch | grep '*'| grep -o '[ ][A-Za-z]*' | cut -c2-")
     if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
         return ""
     else
@@ -141,6 +151,7 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     hi SpellBad ctermbg=160 guibg=#d70000
     hi SpellCap ctermbg=214 guibg=#ffaf00
     hi SpellRare ctermbg=195 guibg=#dfffff
+    hi Normal guibg=#073642 guifg=#00ff00
     "Spell-check highlights
 endfunction
 call RefreshColors(235, '#262626')
@@ -171,6 +182,7 @@ if winwidth(0) > 100
 endif
 set statusline+=%=      "left/right separator
 "set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
+set statusline+=%5*%{SyntasticStatuslineFlag()}%*\ 
 set statusline+=%3*%{pathshorten(expand('%:p'))}%*\ %4*\|%*\   "file path with truncated names
 set statusline+=C:%c\      "cursor column
 set statusline+=R:%l/%L\    "cursor line/total lines
@@ -249,13 +261,6 @@ function MyTabLine()
         return s
 endfunction
 " }}}
-" Plugins configuration {{{
-call pathogen#infect()
-let g:ConqueTerm_Color = 1
-let g:ConqueTerm_TERM = 'xterm-256color'
-let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
-let g:indentLine_char = '┆'
-" }}}
 " Omnicomplete {{{
 set completeopt=longest,menuone
 autocmd Filetype java setlocal omnifunc=javacomplete#Complete
@@ -320,4 +325,12 @@ function WordProcessorMode()
 	endif
 endfunction 
 command WP call WordProcessorMode()
+function! s:DiffWithSaved()
+  let filetype=&ft
+  diffthis
+  vnew | r # | normal! 1Gdd
+  diffthis
+  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+endfunction
+command! DiffSaved call s:DiffWithSaved()
 " }}}
