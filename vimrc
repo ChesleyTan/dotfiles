@@ -26,7 +26,6 @@ set t_Co=256 " Enable 256 colors
 syntax on
 filetype indent on
 filetype plugin on
-colorscheme default
 autocmd InsertEnter * call RefreshColors(17, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
@@ -35,6 +34,7 @@ autocmd InsertLeave * call RefreshColors(235, '#262626')
 :command W w
 cmap Q! q!
 map Q <Nop>
+:command B buffers
 " Prevent Ex Mode
 nnoremap t :tabnew
 "This unsets the "last search pattern" register by hitting return
@@ -151,10 +151,8 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     hi SpellBad ctermbg=160 guibg=#d70000
     hi SpellCap ctermbg=214 guibg=#ffaf00
     hi SpellRare ctermbg=195 guibg=#dfffff
-    hi Normal guibg=#073642 guifg=#00ff00
     "Spell-check highlights
 endfunction
-call RefreshColors(235, '#262626')
 
 function ReverseColors()
     if &background == "light"
@@ -333,4 +331,25 @@ function! s:DiffWithSaved()
   exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 command! DiffSaved call s:DiffWithSaved()
+function Molokai()
+    if !has("gui_running")
+        let g:rehash256 = 1
+    endif
+    colorscheme molokai
+    call RefreshColors(235, '#262626')
+endfunction
+command Molokai call Molokai()
+function Default()
+    colorscheme default
+    call RefreshColors(235, '#262626')
+endfunction
+command Default call Default()
+" }}}
+" Pre-start function calls {{{
+if has("gui_running")
+    call Molokai()
+else
+    call Default()
+endif
+
 " }}}

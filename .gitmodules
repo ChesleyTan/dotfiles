@@ -25,3 +25,6 @@
 [submodule "vim/bundle/vim-easymotion"]
 	path = vim/bundle/vim-easymotion
 	url = https://github.com/Lokaltog/vim-easymotion
+[submodule "vim/colors/molokai"]
+	path = vim/colors/molokai
+	url = https://github.com/tomasr/molokai
