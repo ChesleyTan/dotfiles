@@ -1,0 +1,21 @@
+set imap_user=<YOUR EMAIL>
+set imap_pass=<YOUR SUPER SECRET PASSWORD>
+set realname="<YOUR NAME>"
+set from=<YOUR EMAIL>
+set use_from=yes
+set smtp_url=smtps://$imap_user:$imap_pass@smtp.gmail.com
+set folder=imaps://imap.gmail.com:993
+set spoolfile=+INBOX
+set imap_check_subscribed
+set header_cache=~/.cache/mutt
+set postponed=+[Gmail]/Drafts
+unset imap_passive
+set imap_keepalive=300
+set mail_check=120
+unset record
+
+bind index G imap-fetch-mail
+bind index S sync-mailbox
+macro index M "<tag-pattern>~N|~O<enter><tag-prefix-cond><tag-prefix><clear-flag>N<tag-prefix><clear-flag>O<untag-pattern>~T<enter>" 
+
+source ~/.mutt/colors.muttrc

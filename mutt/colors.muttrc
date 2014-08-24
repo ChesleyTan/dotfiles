@@ -1,0 +1,36 @@
+# vim: filetype=muttrc
+
+color normal        color248        default        
+color error         color160        default        
+color tilde         color235        default        
+color message       color37         default        
+color markers       color160        color254        
+color attachment    color254        default        
+color search        color61         default        
+color status        color202        default       
+color indicator     color39        color235        
+color tree          color136        default                      
+
+mono  bold          bold
+mono  underline     underline
+mono  indicator     reverse
+mono  error         bold
+
+color hdrdefault    color245        default        
+color header        color33        default        "^(Date)"
+color header        color33        default        "^(From)"
+color header        color33        default        "^(To)"
+color header        color33         default        "^(Subject)"
+
+color body          color250        default         "."
+color body          color235        default         "[<][^<>]*[>]" # Filter html tags
+color quoted        color33         default        
+color quoted1       color37         default        
+color quoted2       color136        default        
+color quoted3       color160        default        
+color quoted4       color166        default        
+
+color signature     color240        default        
+color bold          color245        default        
+color underline     color245        default        
+color normal        color244        default        
