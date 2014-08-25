@@ -28,3 +28,6 @@
 [submodule "vim/colors/molokai"]
 	path = vim/colors/molokai
 	url = https://github.com/tomasr/molokai
+[submodule "vim/bundle/delimitMate"]
+	path = vim/bundle/delimitMate
+	url = https://github.com/Raimondi/delimitMate

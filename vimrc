@@ -12,17 +12,18 @@ set copyindent " Copy indent of previous line
 set history=1000 " Command history
 set undolevels=500 " Levels of undo
 set wildignore=*.class
-set tabstop=4
+set tabstop=4 " Tab size
 set expandtab " Spaces instead of tabs
 set softtabstop=4 " Treat n spaces as a tab
-set shiftwidth=4
-set laststatus=2
-set pastetoggle=<F3>
+set shiftwidth=4 " Tab size for automatic indentation
+set laststatus=2 " Always show statusline on last window
+set pastetoggle=<F3> " Toggle paste mode
 set mouse=a " Allow using mouse to change cursor position
-set timeoutlen=300
-" Easy toggle for paste
-nnoremap <C-p> <F3>
+set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
+set tw=80 " Maximum width in characters
+set foldmethod=marker
+set foldnestmax=2
 syntax on
 filetype indent on
 filetype plugin on
@@ -41,11 +42,13 @@ nnoremap t :tabnew
 nnoremap <CR> :noh<CR><CR>
 " Allow saving when forgetting to start vim with sudo
 cmap w!! w !sudo tee > /dev/null %
+" Easy toggle for paste
+nnoremap <C-p> :set paste!<CR>:echo "Paste mode: " . &paste<CR>
 " Easy page up/down
 nnoremap <C-Up> <C-u>
 nnoremap <C-Down> <C-d>
-" Allow window commands in insert mode
-imap <C-w> <C-o><C-w>
+" Allow window commands in insert mode (currently overridden by omnicomplete binding)
+" imap <C-w> <C-o><C-w>
 nnoremap <A-Up> <C-w><Up>
 nnoremap <A-Down> <C-w><Down>
 nnoremap <A-Left> <C-w><Left>
@@ -58,13 +61,25 @@ nnoremap - <C-w>-
 nnoremap + <C-w>+
 nnoremap > <C-w>>
 nnoremap < <C-w><
+" Mappings to move window splits
+nnoremap <Space><Left> <C-w>H
+nnoremap <Space><Right> <C-w>L
+nnoremap <Space><Up> <C-w>K
+nnoremap <Space><Down> <C-w>J
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
 " Easy buffer switching
 nnoremap <F5> :buffers<CR>:buffer<Space>
+" Mapping for autoformat
+nnoremap <C-f> gq
+vnoremap <C-f> gq
 " Quick change syntax highlighting color for dark background
 nnoremap <S-i> :call ReverseColors()<CR>
+" Quick toggle terminal background transparency
+nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
+" Quick toggle fold method
+nnoremap <S-f> :call ToggleFoldMethod()<CR>
 " }}}
 " Plugins configuration {{{
 call pathogen#infect()
@@ -72,7 +87,7 @@ let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
-cmap tree NERDTree
+command Tree NERDTree
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
@@ -143,14 +158,15 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     "Selected tab
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
     "Folds colorscheme
-    hi Folded ctermfg=255 ctermbg=129 guifg=gray100 guibg=#af00ff
+    hi Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
     hi Visual ctermbg=247 guibg=#9e9e9e
     "Visual mode selection color 
-    hi SpellBad ctermbg=160 guibg=#d70000
-    hi SpellCap ctermbg=214 guibg=#ffaf00
-    hi SpellRare ctermbg=195 guibg=#dfffff
+    hi SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
+    hi SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
+    hi SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
+    hi SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Spell-check highlights
 endfunction
 
@@ -322,7 +338,7 @@ function WordProcessorMode()
 		setlocal nolinebreak
 	endif
 endfunction 
-command WP call WordProcessorMode()
+command WPM call WordProcessorMode()
 function! s:DiffWithSaved()
   let filetype=&ft
   diffthis
@@ -331,6 +347,8 @@ function! s:DiffWithSaved()
   exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 command! DiffSaved call s:DiffWithSaved()
+" Close the diff and return to last modified buffer
+command! DiffQuit diffoff | b#
 function Molokai()
     if !has("gui_running")
         let g:rehash256 = 1
@@ -341,15 +359,39 @@ endfunction
 command Molokai call Molokai()
 function Default()
     colorscheme default
+    hi Normal ctermbg=235
     call RefreshColors(235, '#262626')
 endfunction
 command Default call Default()
+" Store default bg color
+let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
+function ToggleTransparentTerminalBackground()
+    if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == -1
+        if (g:original_bg_color == -1)
+            exe "hi Normal ctermbg=NONE"
+        else
+            exe "hi Normal ctermbg=" . g:original_bg_color
+        endif
+        let g:original_bg_color = -1
+    else
+        let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
+        hi Normal ctermbg=NONE
+    endif
+endfunction
+function ToggleFoldMethod()
+    if &foldmethod == "marker"
+        set foldmethod=syntax
+    elseif &foldmethod == "syntax"
+        set foldmethod=marker
+    endif
+    echo "Fold method set to: " . &foldmethod
+endfunction
 " }}}
 " Pre-start function calls {{{
 if has("gui_running")
     call Molokai()
 else
-    call Default()
+    call Default() | call ToggleTransparentTerminalBackground()
 endif
 
 " }}}
