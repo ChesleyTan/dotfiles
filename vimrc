@@ -24,6 +24,7 @@ set t_Co=256 " Enable 256 colors
 set tw=80 " Maximum width in characters
 set foldmethod=marker
 set foldnestmax=2
+set cursorline
 syntax on
 filetype indent on
 filetype plugin on
@@ -161,13 +162,16 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     hi Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
     "indentLine plugin
     exe 'let g:indentLine_color_term = ' . a:statusLineColor
-    hi Visual ctermbg=247 guibg=#9e9e9e
     "Visual mode selection color 
+    hi Visual ctermbg=247 guibg=#9e9e9e
+    "Spell-check highlights
     hi SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
     hi SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
     hi SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
     hi SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
-    "Spell-check highlights
+    "Current line highlighting
+    hi CursorLineNr ctermbg=232 guibg=#080808
+    hi CursorLine cterm=NONE gui=NONE 
 endfunction
 
 function ReverseColors()
