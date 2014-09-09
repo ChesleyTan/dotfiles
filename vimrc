@@ -24,7 +24,7 @@ set t_Co=256 " Enable 256 colors
 set tw=80 " Maximum width in characters
 set foldmethod=marker
 set foldnestmax=2
-set cursorline
+set nocursorline
 syntax on
 filetype indent on
 filetype plugin on
@@ -35,9 +35,11 @@ autocmd InsertLeave * call RefreshColors(235, '#262626')
 :command Q q
 :command W w
 cmap Q! q!
-map Q <Nop>
-:command B buffers
 " Prevent Ex Mode
+map Q <Nop>
+" Easy buffer switching
+:command B call feedkeys("\<F5>") "Use the <F5> mapping
+nmap <F5> :buffers<CR>:buffer<Space>
 nnoremap t :tabnew
 "This unsets the "last search pattern" register by hitting return
 nnoremap <CR> :noh<CR><CR>
@@ -70,8 +72,6 @@ nnoremap <Space><Down> <C-w>J
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
-" Easy buffer switching
-nnoremap <F5> :buffers<CR>:buffer<Space>
 " Mapping for autoformat
 nnoremap <C-f> gq
 vnoremap <C-f> gq
@@ -390,6 +390,10 @@ function ToggleFoldMethod()
     endif
     echo "Fold method set to: " . &foldmethod
 endfunction
+function Rot13()
+    normal mkggVGg?'k
+endfunction
+command Rot13 call Rot13()
 " }}}
 " Pre-start function calls {{{
 if has("gui_running")
