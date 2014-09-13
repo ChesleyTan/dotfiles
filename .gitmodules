@@ -5,10 +5,10 @@
 	path = vim/bundle/indentLine
 	url = https://github.com/Yggdroot/indentLine
 [submodule "vim/bundle/vim-easytags"]
-	path = vim/bundle/vim-easytags
+	path = vim/bundle-opt/vim-easytags
 	url = http://github.com/xolox/vim-easytags
 [submodule "vim/bundle/vim-misc"]
-	path = vim/bundle/vim-misc
+	path = vim/bundle-opt/vim-misc
 	url = http://github.com/xolox/vim-misc
 [submodule "vim/bundle/vim-multiple-cursors"]
 	path = vim/bundle/vim-multiple-cursors
@@ -34,3 +34,6 @@
 [submodule "vim/bundle/jedi-vim"]
 	path = vim/bundle/jedi-vim
 	url = https://github.com/davidhalter/jedi-vim
+[submodule "vim/bundle-opt/YouCompleteMe"]
+	path = vim/bundle-opt/YouCompleteMe
+	url = https://github.com/Valloric/YouCompleteMe
