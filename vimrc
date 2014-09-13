@@ -28,6 +28,7 @@ set nocursorline
 syntax on
 filetype indent on
 filetype plugin on
+autocmd VimEnter * call PluginConfig()
 autocmd InsertEnter * call RefreshColors(17, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
@@ -90,7 +91,8 @@ let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
 command Tree NERDTree
 let g:SuperTabDefaultCompletionType = 'context'
-let g:EclimCompletionMethod = 'omnifunc'
+" Disable easytag's warning about vim's updatetime being too low
+let g:easytags_updatetime_warn = 0
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
@@ -283,8 +285,6 @@ endfunction
 " }}}
 " Omnicomplete {{{
 set completeopt=longest,menuone
-"autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-"autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
 inoremap <C-O> <C-X><C-O>
 " }}}
 " TMUX support {{{
@@ -319,6 +319,26 @@ if &term =~ '^screen' && exists('$TMUX')
 endif
 " }}}
 " Custom Functions {{{
+function PluginConfig()
+    if !(eclim#PingEclim(0))
+        echo "Eclimd not started"
+    endif
+    if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
+        echo "Enabling javacomplete because eclimd is not started"
+        autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+        autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+        if &filetype == 'java'
+            setlocal omnifunc=javacomplete#Complete
+            setlocal completefunc=javacomplete#CompleteParamsInfo
+        endif
+    else
+        echo "Eclim enabled"
+        let g:EclimCompletionMethod = 'omnifunc'
+    endif
+    if exists(":NERDTree")
+        NERDTree
+    endif
+endfunction
 let g:current_mode="default"
 function WordProcessorMode() 
 	if g:current_mode == "default"
@@ -396,6 +416,7 @@ function Rot13()
     normal mkggVGg?'k
 endfunction
 command Rot13 call Rot13()
+
 " }}}
 " Pre-start function calls {{{
 if has("gui_running")
