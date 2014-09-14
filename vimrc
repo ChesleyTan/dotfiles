@@ -4,6 +4,8 @@ set nocp
 set hidden " Hides buffers instead of closing them, allows opening new buffers when current has unsaved changes
 set title " Show title in terminal
 set number " Show line numbers
+set wrap " Wrap lines
+set linebreak " Break line on word
 set hlsearch " Highlight search term in text
 set incsearch " Show search matches as you type
 set wrapscan " Automatically wrap search when hitting bottom
@@ -16,6 +18,7 @@ set tabstop=4 " Tab size
 set expandtab " Spaces instead of tabs
 set softtabstop=4 " Treat n spaces as a tab
 set shiftwidth=4 " Tab size for automatic indentation
+set shiftround " When using shift identation, round to multiple of shift width
 set laststatus=2 " Always show statusline on last window
 set pastetoggle=<F3> " Toggle paste mode
 set mouse=a " Allow using mouse to change cursor position
@@ -24,7 +27,9 @@ set t_Co=256 " Enable 256 colors
 set tw=80 " Maximum width in characters
 set foldmethod=marker
 set foldnestmax=2
-set nocursorline
+set noshowmatch " Do not temporarily jump to match when inserting an end brace
+set cursorline
+set lazyredraw " Conservative redrawing
 syntax on
 filetype indent on
 filetype plugin on
@@ -51,12 +56,19 @@ nnoremap <C-p> :set paste!<CR>:echo "Paste mode: " . &paste<CR>
 " Easy page up/down
 nnoremap <C-Up> <C-u>
 nnoremap <C-Down> <C-d>
+nnoremap <C-k> <C-u>
+nnoremap <C-j> <C-d>
 " Allow window commands in insert mode (currently overridden by omnicomplete binding)
 " imap <C-w> <C-o><C-w>
 nnoremap <A-Up> <C-w><Up>
 nnoremap <A-Down> <C-w><Down>
 nnoremap <A-Left> <C-w><Left>
 nnoremap <A-Right> <C-w><Right>
+" Mapping alt+(hjkl) doesn't work, so we use escape codes instead
+nnoremap k <C-w><Up>
+nnoremap j <C-w><Down>
+nnoremap h <C-w><Left>
+nnoremap l <C-w><Right>
 " Note: <bar> denotes |
 " Shortcuts for window commands
 nnoremap <bar> <C-w>v
@@ -70,6 +82,10 @@ nnoremap <Space><Left> <C-w>H
 nnoremap <Space><Right> <C-w>L
 nnoremap <Space><Up> <C-w>K
 nnoremap <Space><Down> <C-w>J
+nnoremap <Space>h <C-w>H
+nnoremap <Space>l <C-w>L
+nnoremap <Space>k <C-w>K
+nnoremap <Space>j <C-w>J
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
@@ -321,10 +337,10 @@ endif
 " Custom Functions {{{
 function PluginConfig()
     if !(eclim#PingEclim(0))
-        echo "Eclimd not started"
+        echom "Eclimd not started"
     endif
     if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
-        echo "Enabling javacomplete because eclimd is not started"
+        echom "Enabling javacomplete because eclimd is not started"
         autocmd Filetype java setlocal omnifunc=javacomplete#Complete
         autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
         if &filetype == 'java'
@@ -332,11 +348,13 @@ function PluginConfig()
             setlocal completefunc=javacomplete#CompleteParamsInfo
         endif
     else
-        echo "Eclim enabled"
+        echom "Eclim enabled"
         let g:EclimCompletionMethod = 'omnifunc'
     endif
     if exists(":NERDTree")
         NERDTree
+        " Switch focus back to main window
+        wincmd p
     endif
 endfunction
 let g:current_mode="default"
@@ -417,6 +435,20 @@ function Rot13()
 endfunction
 command Rot13 call Rot13()
 
+" }}}
+" Abbreviations {{{
+" }}}
+" Filetype-specific settings {{{
+autocmd filetype java call s:FileType_Java()
+function s:FileType_Java()
+    iabbrev psvm public static void main(String[] args)
+    iabbrev sysout System.out.println("");<esc>2hi
+    iabbrev syserr System.err.println("");<esc>2hi
+endfunction
+autocmd filetype c call s:FileType_C()
+function s:FileType_C()
+    iabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
+endfunction
 " }}}
 " Pre-start function calls {{{
 if has("gui_running")
