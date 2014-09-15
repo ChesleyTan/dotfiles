@@ -37,3 +37,9 @@
 [submodule "vim/bundle-opt/YouCompleteMe"]
 	path = vim/bundle-opt/YouCompleteMe
 	url = https://github.com/Valloric/YouCompleteMe
+[submodule "vim/bundle/vim-nerdtree-tabs"]
+	path = vim/bundle/vim-nerdtree-tabs
+	url = https://github.com/jistr/vim-nerdtree-tabs
+[submodule "vim/bundle/gundo.vim"]
+	path = vim/bundle/gundo.vim
+	url = http://github.com/sjl/gundo.vim.git

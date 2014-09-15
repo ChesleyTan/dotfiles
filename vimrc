@@ -92,6 +92,10 @@ vnoremap <C-x> "+x
 " Mapping for autoformat
 nnoremap <C-f> gq
 vnoremap <C-f> gq
+nnoremap <C-S-f> mkggVGgq'k
+" Spell ignore commands
+command SpellIgnoreOnce normal zG
+command SpellIgnore normal zg
 " Quick change syntax highlighting color for dark background
 nnoremap <S-i> :call ReverseColors()<CR>
 " Quick toggle terminal background transparency
@@ -105,15 +109,29 @@ let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
-command Tree NERDTree
+command Tree NERDTreeTabsToggle
 let g:SuperTabDefaultCompletionType = 'context'
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
+let g:nerdtree_tabs_open_on_gui_startup = 1
+let g:nerdtree_tabs_open_on_console_startup = 1
+let g:nerdtree_tabs_no_startup_for_diff = 1
+let g:nerdtree_tabs_smart_startup_focus = 1
+let g:nerdtree_tabs_open_on_new_tab = 1
+let g:nerdtree_tabs_meaningful_tab_names = 1
+let g:nerdtree_tabs_autoclose = 1
+let g:nerdtree_tabs_synchronize_view = 1
+let g:nerdtree_tabs_synchronize_focus = 1
+let g:gundo_width = 30
+let g:gundo_preview_height = 20
+let g:gundo_right = 1
+let g:gundo_preview_bottom = 1
+command DiffTree GundoToggle
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
     let output=system("git branch | grep '*'| grep -o '[ ][A-Za-z]*' | cut -c2-")
-    if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
+    if output=="" " git branch returns NOTHING i.e '' if not in a git repo
         return ""
     else
         return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
@@ -257,15 +275,23 @@ function MyTabLine()
                         elseif getbufvar( b, "&buftype" ) == 'quickfix'
                                 let n .= '[Q]'
                         else
+                            " Do not show NERDTree or Gundo in the bufferlist
+                            " Use a variable to keep track of whether a new name
+                            " was added
+                            let newBufNameAdded = 1 
+                            if bufname(b) =~ "NERD" || bufname(b) =~ "Gundo"
+                                let newBufNameAdded = 0
+                            else
                                 let n .= pathshorten(bufname(b))
+                            endif
                         endif
                         " check and ++ tab's &modified count
                         if getbufvar( b, "&modified" )
                                 let m += 1
                         endif
                         " no final ' ' added...formatting looks better done later
-                        if bc > 1
-                                let n .= ' '
+                        if bc > 1 && newBufNameAdded == 1
+                            let n .= ' '
                         endif
                         let bc -= 1
                 endfor
@@ -289,6 +315,8 @@ function MyTabLine()
                 endif
                 " switch to no underlining and add final space to buffer list
                 let s .= ' '
+                " Remove excess whitespace
+                let s = DeflateWhitespace(s)
         endfor
         " after the last tab fill with TabLineFill and reset tab page nr
         let s .= '%#TabLineFill#%T'
@@ -299,9 +327,12 @@ function MyTabLine()
         return s
 endfunction
 " }}}
-" Omnicomplete {{{
+" Autocompletion {{{
 set completeopt=longest,menuone
 inoremap <C-O> <C-X><C-O>
+inoremap <C-U> <C-X><C-U>
+inoremap <C-S> <C-X>s<Esc>
+nnoremap <C-S> <C-X>s
 " }}}
 " TMUX support {{{
 " Allow vim to recognize key sequences in screen terminal
@@ -335,12 +366,14 @@ if &term =~ '^screen' && exists('$TMUX')
 endif
 " }}}
 " Custom Functions {{{
+
+" This function is called by autocmd when vim starts
 function PluginConfig()
     if !(eclim#PingEclim(0))
         echom "Eclimd not started"
     endif
     if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
-        echom "Enabling javacomplete because eclimd is not started"
+        echom "Enabling javacomplete for java files because eclimd is not started"
         autocmd Filetype java setlocal omnifunc=javacomplete#Complete
         autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
         if &filetype == 'java'
@@ -350,11 +383,6 @@ function PluginConfig()
     else
         echom "Eclim enabled"
         let g:EclimCompletionMethod = 'omnifunc'
-    endif
-    if exists(":NERDTree")
-        NERDTree
-        " Switch focus back to main window
-        wincmd p
     endif
 endfunction
 let g:current_mode="default"
@@ -378,8 +406,6 @@ function WordProcessorMode()
 		setlocal expandtab
 		setlocal nospell
 		set complete-=k
-		setlocal nowrap
-		setlocal nolinebreak
 	endif
 endfunction 
 command WPM call WordProcessorMode()
@@ -434,6 +460,22 @@ function Rot13()
     normal mkggVGg?'k
 endfunction
 command Rot13 call Rot13()
+function DeflateWhitespace(string)
+    let i = 0
+    let newString = ""
+    while i < len(a:string)
+        if a:string[i] == " "
+            let newString .= " "
+            while a:string[i] == " "
+                let i += 1
+            endwhile
+        endif
+        let newString .= a:string[i]
+        let i += 1
+    endwhile
+    return newString
+endfunction
+
 
 " }}}
 " Abbreviations {{{
