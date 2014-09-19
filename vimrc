@@ -2,7 +2,7 @@
 " vim:fdm=marker
 set nocp
 set hidden " Hides buffers instead of closing them, allows opening new buffers when current has unsaved changes
-set title " Show title in terminal
+"set title " Show title in terminal
 set number " Show line numbers
 set wrap " Wrap lines
 set linebreak " Break line on word
@@ -91,11 +91,15 @@ vnoremap <C-c> "+y
 vnoremap <C-x> "+x
 " Mapping for autoformat
 nnoremap <C-f> gq
-vnoremap <C-f> gq
 nnoremap <C-S-f> mkggVGgq'k
 " Spell ignore commands
 command SpellIgnoreOnce normal zG
 command SpellIgnore normal zg
+" Navigation mappings
+" Jump to beginning of tag
+nnoremap {{ vat<Esc>'<
+" Jump to end of tag
+nnoremap }} vat<Esc>'>
 " Quick change syntax highlighting color for dark background
 nnoremap <S-i> :call ReverseColors()<CR>
 " Quick toggle terminal background transparency
@@ -131,7 +135,7 @@ command DiffTree GundoToggle
 " Functions for generating statusline {{{
 function GitBranch()
     let output=system("git branch | grep '*'| grep -o '[ ][A-Za-z]*' | cut -c2-")
-    if output=="" " git branch returns NOTHING i.e '' if not in a git repo
+    if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
         return ""
     else
         return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
@@ -331,8 +335,6 @@ endfunction
 set completeopt=longest,menuone
 inoremap <C-O> <C-X><C-O>
 inoremap <C-U> <C-X><C-U>
-inoremap <C-S> <C-X>s<Esc>
-nnoremap <C-S> <C-X>s
 " }}}
 " TMUX support {{{
 " Allow vim to recognize key sequences in screen terminal
