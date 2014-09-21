@@ -34,6 +34,9 @@ syntax on
 filetype indent on
 filetype plugin on
 autocmd VimEnter * call PluginConfig()
+" Change statusline color when entering insert mode:
+" 17 is regular blue
+" #073642 is solarized blue
 autocmd InsertEnter * call RefreshColors(17, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
@@ -43,6 +46,11 @@ autocmd InsertLeave * call RefreshColors(235, '#262626')
 cmap Q! q!
 " Prevent Ex Mode
 map Q <Nop>
+" Use jj to exit insert mode, rather than <Esc>
+inoremap <Esc> <Nop>
+inoremap jj <Esc>
+" Smart indent when entering insert mode
+nnoremap <expr> i SmartInsertModeEnter()
 " Easy buffer switching
 :command B call feedkeys("\<F5>") "Use the <F5> mapping
 nmap <F5> :buffers<CR>:buffer<Space>
@@ -72,7 +80,9 @@ nnoremap l <C-w><Right>
 " Note: <bar> denotes |
 " Shortcuts for window commands
 nnoremap <bar> <C-w>v
-nnoremap _ <C-w>n
+nnoremap <bar><bar> :vnew<CR><C-w>L
+nnoremap _ <C-w>s
+nnoremap __ <C-w>n
 nnoremap - <C-w>-
 nnoremap + <C-w>+
 nnoremap > <C-w>>
@@ -100,6 +110,8 @@ command SpellIgnore normal zg
 nnoremap {{ vat<Esc>'<
 " Jump to end of tag
 nnoremap }} vat<Esc>'>
+" Easy delete to black hole register
+nnoremap D "_dd
 " Quick change syntax highlighting color for dark background
 nnoremap <S-i> :call ReverseColors()<CR>
 " Quick toggle terminal background transparency
@@ -370,7 +382,7 @@ endif
 " Custom Functions {{{
 
 " This function is called by autocmd when vim starts
-function PluginConfig()
+function! PluginConfig()
     if !(eclim#PingEclim(0))
         echom "Eclimd not started"
     endif
@@ -388,7 +400,7 @@ function PluginConfig()
     endif
 endfunction
 let g:current_mode="default"
-function WordProcessorMode() 
+function! WordProcessorMode() 
 	if g:current_mode == "default"
 		let g:current_mode="wpm"
 		" Break line before one-letter words when possible
@@ -421,7 +433,7 @@ endfunction
 command! DiffSaved call s:DiffWithSaved()
 " Close the diff and return to last modified buffer
 command! DiffQuit diffoff | b#
-function Molokai()
+function! Molokai()
     if !has("gui_running")
         let g:rehash256 = 1
     endif
@@ -429,7 +441,7 @@ function Molokai()
     call RefreshColors(235, '#262626')
 endfunction
 command Molokai call Molokai()
-function Default()
+function! Default()
     colorscheme default
     hi Normal ctermbg=235
     call RefreshColors(235, '#262626')
@@ -437,7 +449,7 @@ endfunction
 command Default call Default()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
-function ToggleTransparentTerminalBackground()
+function! ToggleTransparentTerminalBackground()
     if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == -1
         if (g:original_bg_color == -1)
             exe "hi Normal ctermbg=NONE"
@@ -450,7 +462,7 @@ function ToggleTransparentTerminalBackground()
         hi Normal ctermbg=NONE
     endif
 endfunction
-function ToggleFoldMethod()
+function! ToggleFoldMethod()
     if &foldmethod == "marker"
         set foldmethod=syntax
     elseif &foldmethod == "syntax"
@@ -458,11 +470,11 @@ function ToggleFoldMethod()
     endif
     echo "Fold method set to: " . &foldmethod
 endfunction
-function Rot13()
+function! Rot13()
     normal mkggVGg?'k
 endfunction
 command Rot13 call Rot13()
-function DeflateWhitespace(string)
+function! DeflateWhitespace(string)
     let i = 0
     let newString = ""
     while i < len(a:string)
@@ -476,6 +488,13 @@ function DeflateWhitespace(string)
         let i += 1
     endwhile
     return newString
+endfunction
+function! SmartInsertModeEnter()
+    if len(getline('.')) == 0
+        return "cc"
+    else
+        return "i"
+    endif
 endfunction
 
 
@@ -498,7 +517,7 @@ endfunction
 if has("gui_running")
     call Molokai()
 else
-    call Default() | call ToggleTransparentTerminalBackground()
+    call Molokai() | call ToggleTransparentTerminalBackground()
 endif
 
 " }}}

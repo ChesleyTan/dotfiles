@@ -1,7 +1,0 @@
-color listnormal color242 default
-color listnormal_unread color248 default
-color listfocus  color39 color235 
-color listfocus_unread  color39 color235 
-color info       color202 default 
-color background color244 default
-color article    color248 default
