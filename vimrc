@@ -30,14 +30,17 @@ set foldnestmax=2
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set cursorline
 set lazyredraw " Conservative redrawing
+" Session options
+set ssop-=options    " Do not save global and local values
+set ssop-=folds      " Do not save folds
 syntax on
 filetype indent on
 filetype plugin on
 autocmd VimEnter * call PluginConfig()
 " Change statusline color when entering insert mode:
-" 17 is regular blue
+" 23 is a greenish-blue #005f5f
 " #073642 is solarized blue
-autocmd InsertEnter * call RefreshColors(17, '#073642')
+autocmd InsertEnter * call RefreshColors(23, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
 " Custom mappings {{{
@@ -47,8 +50,12 @@ cmap Q! q!
 " Prevent Ex Mode
 map Q <Nop>
 " Use jj to exit insert mode, rather than <Esc>
-inoremap <Esc> <Nop>
 inoremap jj <Esc>
+" Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
+inoremap <C-j> <Up>
+inoremap <C-k> <Down>
+inoremap <C-h> <Left>
+inoremap <C-l> <Right>
 " Smart indent when entering insert mode
 nnoremap <expr> i SmartInsertModeEnter()
 " Easy buffer switching
@@ -110,6 +117,7 @@ command SpellIgnore normal zg
 nnoremap {{ vat<Esc>'<
 " Jump to end of tag
 nnoremap }} vat<Esc>'>
+nnoremap <Tab> ==
 " Easy delete to black hole register
 nnoremap D "_dd
 " Quick change syntax highlighting color for dark background
