@@ -391,7 +391,7 @@ endif
 
 " This function is called by autocmd when vim starts
 function! PluginConfig()
-    if !(eclim#PingEclim(0))
+    if exists(":PingEclim") && !(eclim#PingEclim(0))
         echom "Eclimd not started"
     endif
     if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
@@ -416,10 +416,10 @@ function! WordProcessorMode()
 		setlocal formatoptions=t1 
 		setlocal noexpandtab 
 		setlocal spell spelllang=en_us 
-		set spellcapcheck=""
+		setlocal spellcapcheck=""
 		" Add dictionary to contextual completion
-		set dictionary=/usr/share/dict/words
-		set complete+=k
+		setlocal dictionary=/usr/share/dict/words
+		setlocal complete+=k
 		setlocal wrap 
 		setlocal linebreak
 	else
@@ -427,7 +427,7 @@ function! WordProcessorMode()
 		setlocal formatoptions=tcq
 		setlocal expandtab
 		setlocal nospell
-		set complete-=k
+		setlocal complete-=k
 	endif
 endfunction 
 command WPM call WordProcessorMode()
@@ -472,9 +472,9 @@ function! ToggleTransparentTerminalBackground()
 endfunction
 function! ToggleFoldMethod()
     if &foldmethod == "marker"
-        set foldmethod=syntax
+        setlocal foldmethod=syntax
     elseif &foldmethod == "syntax"
-        set foldmethod=marker
+        setlocal foldmethod=marker
     endif
     echo "Fold method set to: " . &foldmethod
 endfunction
