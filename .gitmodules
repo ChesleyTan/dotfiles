@@ -8,7 +8,7 @@
 	path = vim/bundle-opt/vim-easytags
 	url = http://github.com/xolox/vim-easytags
 [submodule "vim/bundle/vim-misc"]
-	path = vim/bundle-opt/vim-misc
+	path = vim/bundle/vim-misc
 	url = http://github.com/xolox/vim-misc
 [submodule "vim/bundle/vim-multiple-cursors"]
 	path = vim/bundle/vim-multiple-cursors
@@ -46,3 +46,6 @@
 [submodule "vim/bundle/vim-coloresque"]
 	path = vim/bundle/vim-coloresque
 	url = https://github.com/gorodinskiy/vim-coloresque
+[submodule "vim/bundle/vim-notes"]
+	path = vim/bundle/vim-notes
+	url = https://github.com/xolox/vim-notes

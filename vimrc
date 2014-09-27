@@ -151,6 +151,7 @@ let g:gundo_width = 30
 let g:gundo_preview_height = 20
 let g:gundo_right = 1
 let g:gundo_preview_bottom = 1
+let g:notes_directories = ['~/Dropbox/Shared Notes']
 command DiffTree GundoToggle
 " }}}
 " Functions for generating statusline {{{
