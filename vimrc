@@ -106,6 +106,7 @@ nnoremap <Space>j <C-w>J
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
+inoremap <C-S-v> <Esc>"+pi
 " Mapping for autoformat
 nnoremap <C-f> gq
 nnoremap <C-S-f> mkggVGgq'k
