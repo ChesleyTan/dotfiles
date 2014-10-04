@@ -215,7 +215,7 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     "Line numbers
     exe 'hi LineNr ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Vertical split divider
-    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
+    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=43 ctermbg=' a:statusLineColor 'guifg=#00d7af guibg=' . a:gui_statusLineColor
     "Nonselected tabs
     exe 'hi TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
     "Empty space on tab bar
@@ -224,18 +224,19 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
     "Folds colorscheme
     hi Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
-    "indentLine plugin
-    exe 'let g:indentLine_color_term = ' . a:statusLineColor
     "Visual mode selection color 
-    hi Visual ctermbg=247 guibg=#9e9e9e
+    hi Visual ctermbg=241 guibg=#626262
     "Spell-check highlights
     hi SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
     hi SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
     hi SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
     hi SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Current line highlighting
-    hi CursorLineNr ctermbg=232 guibg=#080808
+    hi CursorLineNr cterm=bold gui=bold ctermbg=238 guibg=#444444 ctermfg=43 guifg=#00d7af
     hi CursorLine cterm=NONE gui=NONE 
+    "PLUGINS
+    "indentLine plugin
+    exe 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 
 function ReverseColors()
@@ -542,3 +543,4 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
+
