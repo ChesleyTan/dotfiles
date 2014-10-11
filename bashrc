@@ -112,7 +112,7 @@ function Pwd() {
     fi
     echo -n "$(tput bold)$(tput setaf $color)"
     if [[ $shortenPath == true ]]; then
-        echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s/\/(.)[^/]*/\/\1/g" # (.) holds the first letter and \1 recalls it
+        echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s|/(.)[^/]*|/\1|g" # (.) holds the first letter and \1 recalls it
     else
         echo -n "$PWD" | sed -r "s|$HOME|~|g"
     fi    
