@@ -30,6 +30,11 @@ set foldnestmax=2
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set cursorline
 set lazyredraw " Conservative redrawing
+" GUI options
+set guioptions-=L "Remove left-hand scrollbar
+set guioptions-=r "Remove right-hand scrollbar
+set guioptions-=T "Remove toolbar
+set guifont=Monaco\ 10 "Set gui font
 " Session options
 set ssop-=options    " Do not save global and local values
 set ssop-=folds      " Do not save folds
@@ -458,6 +463,13 @@ function! Default()
     call RefreshColors(235, '#262626')
 endfunction
 command Default call Default()
+function! Solarized()
+    syntax enable
+    set background=dark
+    colorscheme solarized
+    call RefreshColors(235, '#262626')
+endfunction
+command Solarized call Solarized()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
