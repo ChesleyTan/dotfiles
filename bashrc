@@ -130,16 +130,18 @@ function DateTime() {
     fi
 }
 function User() {
-    if [[ $is256ColorTerm == true ]]; then
-        color=118
-    else
-        color=2
+    if [[ $showUsername == true ]]; then
+        if [[ $is256ColorTerm == true ]]; then
+            color=118
+        else
+            color=2
+        fi
+        echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
+        if [[ $showHostname == true ]]; then
+            echo -n "$(tput bold)$(tput setaf 8)@$(hostname)$(tput sgr0)"
+        fi
+        echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
     fi
-    echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
-    if [[ $showHostname == true ]]; then
-        echo -n "$(tput bold)$(tput setaf 8)@$(hostname)$(tput sgr0)"
-    fi
-    echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
 }
 
 # Store last exit status code before generating a prompt
@@ -166,6 +168,7 @@ showTime=true
 showSysInfo=false
 shortenPath=false
 showHostname=false
+showUsername=true
 alias syson="export showSysInfo=true"
 alias sysoff="export showSysInfo=false"
 
