@@ -161,24 +161,29 @@ command DiffTree GundoToggle
 " }}}
 " Functions for generating statusline {{{
 function GitBranch()
-    let output=system("git branch | grep '*'| grep -o '[ ][A-Za-z]*' | cut -c2-")
+    let output=system("git branch | grep '*' | grep -o '\\([A-Za-z0-9]\\+\\s\\?\\)\\+'")
     if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
         return ""
     else
-        return "[Git][Branch: " . output[0 : strlen(output)-2] . " | " " Strip newline ^@
+        return "[Git][" . output[0 : strlen(output)-2] . " " " Strip newline ^@
     endif
 endfunction
 function GitStatus()
     let output=system('git status')
+    let retStr=""
     if output=="" 
         return ""
-    elseif output=~"Changes to be committed"
-        return "Status: Commits not yet pushed]"
-    elseif output=~"modified"
-        return "Status: Changes not yet committed]"
-    else    
-        return "Status: Up to date]"
     endif
+    if output=~"Changes to be committed"
+        let retStr.="\u2718"
+    else
+        let retStr.="\u2714"
+    endif
+    if output=~"modified"
+        let retStr.=" \u0394"
+    endif
+    let retStr.="]"
+    return retStr
 endfunction
 function GitRemote(branch) " Note: this function takes a while to execute
     let remotes=split(system("git remote")) " Get names of remotes
@@ -213,6 +218,8 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Red
     exe 'hi User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
+    "Green
+    exe 'hi User6 ctermfg=34 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00af00 guibg=' . a:gui_statusLineColor
     "Status line of current window
     exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Status line color for noncurrent window
@@ -265,8 +272,8 @@ set statusline+=%2*%m\%*       "modified flag
 set statusline+=%h      "help file flag
 set statusline+=\ B:%n "Buffer number
 if winwidth(0) > 100
-    set statusline+=\ %1*%{gitBranch}%* "Git branch
-    set statusline+=%1*%{gitStatus}%* "Git status
+    set statusline+=\ %6*%{gitBranch}%* "Git branch
+    set statusline+=%6*%{gitStatus}%* "Git status
 endif
 set statusline+=%=      "left/right separator
 "set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
