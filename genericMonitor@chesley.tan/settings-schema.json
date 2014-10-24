@@ -1,0 +1,15 @@
+{
+    "commandToExecute": {
+        "type": "entry",
+        "default": "",
+        "description": "Command to execute"
+    },    
+    "refreshInterval":
+    { "type": "scale",
+        "default": 5,
+        "min": 1,
+        "max": 600,
+        "step": 1,
+        "description": "Update interval (seconds) \nNOTE: Low values may cause some system lag"
+  }
+}

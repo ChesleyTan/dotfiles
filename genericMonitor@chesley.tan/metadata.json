@@ -1,0 +1,7 @@
+{
+"uuid": "genericMonitor@chesley.tan",
+"name": "Generic Monitor",
+"description": "A generic monitor which displays the output of a command",
+"max-instances": 100,
+"version": "1.0.0"
+}
