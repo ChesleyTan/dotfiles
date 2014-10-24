@@ -1,17 +1,23 @@
-Config { font = "xft:Liberation Mono:size=12:antialias=true"
-       , position = BottomSize C 100 25
-       , bgColor = "#191919"
-       , fgColor = "#cccccc"
-       , lowerOnStart = True
-       , commands = [ Run Weather "KLGA" ["-t","Weather: <tempF>°F rh <rh>%","-L","40","-H","80","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Cpu ["-t", "<fc=#555555>C:</fc> <total><fc=#555555>%</fc>", "-L","10","-H","50","-l", "green", "--normal","orange","--high","red"] 10
-                    , Run Memory ["-t","<fc=#555555>M:</fc> <usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "-l", "green", "-h", "red", "--normal", "orange"] 50
-                    , Run Battery ["-t", "<left><fc=#555555>%</fc> <fc=#0099FF>(</fc><timeleft><fc=#0099FF>)</fc>", "-L", "20", "-H", "80", "-l", "red", "-h", "green", "--normal", "orange"] 100
-                    , Run Date "%a %b %_d %r" "date" 10
-                    , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 20 
-                    , Run DiskU [("/", "<fc=#33CC33>/:</fc> <usedp><fc=#555555>%</fc> <fc=#0099FF>|</fc>"), ("/home", "<fc=#33CC33>/home:</fc> <usedp><fc=#555555>%</fc>")] ["-L", "20", "-H", "80", "-l", "green", "-n", "orange", "-h", "red"] 6000
-                    ]
-       , sepChar = "%"
-       , alignSep = "}{"
-       , template = "%cpu% <fc=#0099FF>>></fc> %memory% <fc=#0099FF>>></fc> %disku% <fc=#0099FF>>></fc> <fc=#555555>T:</fc> %sensortemp% <fc=#0099FF>>></fc> %battery%}{ %KLGA% <fc=#0099FF><<</fc> <fc=#0099FF>%date%</fc>"
-       }
+Config { font = "xft:Liberation Mono:size=12:antialias=true",
+    position = BottomSize C 100 25,
+    bgColor = "#191919",
+    fgColor = "#cccccc",
+    lowerOnStart = True,
+    commands = [ 
+        Run StdinReader,
+        Run Weather "KLGA" ["-t","Weather: <tempF>°F rh <rh>%","-L","40","-H","80","--normal","#48D700","--high","red","--low","lightblue"] 36000,
+        Run Cpu ["-t", "<fc=#555555>C:</fc> <total><fc=#555555>%</fc>", "-L","10","-H","50","-l", "#48D700", "--normal","orange","--high","red"] 10,
+        Run Memory ["-t","<fc=#555555>M:</fc> <usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "-l", "#48D700", "-h", "red", "--normal", "orange"] 50,
+        Run Battery ["-t", "<left><fc=#555555>%</fc><fc=#555555>(</fc><timeleft><fc=#555555>)</fc>", "-L", "20", "-H", "80", "-l", "red", "-h", "#48D700", "--normal", "orange"] 100, 
+        Run Date "%a %b %_d %r" "date" 10,
+        Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 20,
+        Run DiskU [("/", "<fc=#33CC33>/:</fc><usedp><fc=#555555>%</fc>"), ("/home", "<fc=#33CC33>/home:</fc><usedp><fc=#555555>%</fc>")] ["-L", "20", "-H", "80", "-l", "#48D700", "-n", "orange", "-h", "red"] 6000,
+        Run DynNetwork ["-t", "<fc=#555555>▼</fc><rx><fc=#555555>K</fc> <fc=#555555>▲</fc><tx><fc=#555555>K</fc>"] 50,
+        Run DiskIO [("sda", "<fc=#555555>▲</fc><read> <fc=#555555>▼</fc><write>")] [] 50
+    ],
+         sepChar = "%",
+         alignSep = "}{",
+         template = "%StdinReader% }{ <fc=#0099FF>[</fc>%cpu% %memory%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%dynnetwork% %diskio%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%disku%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%sensortemp%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%battery%<fc=#0099FF>]</fc> <fc=#0099FF><<</fc> <fc=#00FFBB>%date%</fc>"
+}
+
+-- For weather, add %KLGA% to template
