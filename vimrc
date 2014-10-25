@@ -1,6 +1,6 @@
 " General configuration {{{
 " vim:fdm=marker
-set nocp
+set nocp " Disable Vi-compatibility settings
 set hidden " Hides buffers instead of closing them, allows opening new buffers when current has unsaved changes
 "set title " Show title in terminal
 set number " Show line numbers
@@ -9,11 +9,11 @@ set linebreak " Break line on word
 set hlsearch " Highlight search term in text
 set incsearch " Show search matches as you type
 set wrapscan " Automatically wrap search when hitting bottom
-set autoindent
-set copyindent " Copy indent of previous line
+set autoindent " Enable autoindenting
+set copyindent " Copy indent of previous line when autoindenting
 set history=1000 " Command history
 set undolevels=500 " Levels of undo
-set wildignore=*.class
+set wildignore=*.class " Ignore .class files
 set tabstop=4 " Tab size
 set expandtab " Spaces instead of tabs
 set softtabstop=4 " Treat n spaces as a tab
@@ -25,26 +25,38 @@ set mouse=a " Allow using mouse to change cursor position
 set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
 set tw=80 " Maximum width in characters
-set foldmethod=marker
-set foldnestmax=2
+set foldmethod=marker " Use vim markers for folding
+set foldnestmax=2 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
-set cursorline
+set cursorline " Highlight current line
 set lazyredraw " Conservative redrawing
-" GUI options
+syntax on " Enable syntax highlighting
+filetype indent on " Enable filetype-specific indentation
+filetype plugin on " Enable filetype-specific plugins
+
+" Backup settings
+set backup " Back up previous versions of files
+set backupdir+=$HOME/.vim/backup// " Store backups in a central directory
+set backupdir+=. " Alternatively, store backups in the same directory as the file
+" Create backup directory if it does not exist
+if !isdirectory($HOME . '/.vim/backup/')
+    call mkdir($HOME . '/.vim/backup/')
+endif
+
+" GUI settings
 set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
 set guioptions-=T "Remove toolbar
 set guifont=Monaco\ 10 "Set gui font
-" Session options
+
+" Session settings
 set ssop-=options    " Do not save global and local values
 set ssop-=folds      " Do not save folds
-syntax on
-filetype indent on
-filetype plugin on
+
+" Autocommands 
+" Execute runtime configurations for plugins
 autocmd VimEnter * call PluginConfig()
-" Change statusline color when entering insert mode:
-" 23 is a greenish-blue #005f5f
-" #073642 is solarized blue
+" Change statusline color when entering insert mode: (23 is a greenish-blue #005f5f, #073642 is solarized bluish)
 autocmd InsertEnter * call RefreshColors(23, '#073642')
 autocmd InsertLeave * call RefreshColors(235, '#262626')
 " }}}
@@ -124,6 +136,7 @@ nnoremap {{ vat<Esc>'<
 " Jump to end of tag
 nnoremap }} vat<Esc>'>
 nnoremap <Tab> ==
+vnoremap <Tab> =
 " Easy delete to black hole register
 nnoremap D "_dd
 " Quick change syntax highlighting color for dark background
