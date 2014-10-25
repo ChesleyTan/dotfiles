@@ -1,5 +1,11 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
+import XMonad.Layout.Spacing
+import XMonad.Layout.Named
+import XMonad.Layout.NoBorders
+import XMonad.Layout.MosaicAlt
+import XMonad.Layout.Grid
+import XMonad.Layout.TwoPane
 import Data.Monoid
 import System.Exit
 
@@ -39,12 +45,12 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1","2","3","4","5","6","7","8","9"]
+myWorkspaces    = ["1:main","2:web","3","4","5","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
 myNormalBorderColor  = "#353535"
-myFocusedBorderColor = "#87ff00"
+myFocusedBorderColor = "#48D700"
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -171,19 +177,24 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
 -- The available layouts.  Note that each layout is separated by |||,
 -- which denotes layout choice.
 --
-myLayout = tiled ||| Mirror tiled ||| Full
-  where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = spacing 3 $ Tall nmaster delta ratio
-
+baseLayout = Tall nmaster delta ratio where
      -- The default number of windows in the master pane
      nmaster = 1
-
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
-
      -- Percent of screen to increment by when resizing panes
      delta   = 1/100
+
+-- default tiling algorithm partitions the screen into two panes
+tallLayout   = named "tall"   (spacing 3 (baseLayout))
+wideLayout   = named "wide"   (spacing 3 (Mirror baseLayout))
+fullLayout   = named "full"   (noBorders Full)
+gridLayout   = named "grid"   (spacing 2 (Grid))
+mosaicLayout = named "mosaic" (spacing 2 (MosaicAlt M.empty))
+twoPaneLayout= named "two pane" (TwoPane (3/100) (1/2))
+
+myLayout = mosaicLayout ||| gridLayout ||| fullLayout ||| tallLayout ||| wideLayout ||| twoPaneLayout
+
 
 ------------------------------------------------------------------------
 -- Window rules:
@@ -247,7 +258,14 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "<" ">" }
+myPP = xmobarPP {
+    ppCurrent = xmobarColor "#429942" "" . wrap "[" "]",
+    ppHidden = xmobarColor "#555555" "",
+    ppUrgent = xmobarColor "#FF0000" "",
+    ppLayout = xmobarColor "Orange" "",
+    ppTitle = xmobarColor "#87FF00" "" . shorten 35,
+    ppSep = " "
+}
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
