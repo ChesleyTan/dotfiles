@@ -15,7 +15,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "xfce4-terminal"
+myTerminal      = "gnome-terminal"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -216,7 +216,8 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    , className =? "Google-chrome-stable" --> doShift "2:web"]
+    , className =? "Google-chrome-stable" --> doShift "2:web"
+    , className =? "Google-chrome" --> doShift "2:web"]
 
 ------------------------------------------------------------------------
 -- Event handling
@@ -255,7 +256,7 @@ myStartupHook = return ()
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey defaults
 
 -- Command to launch the bar.
-myBar = "xmobar"
+myBar = "xmobar ~/.xmobarrc_top"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP {
@@ -263,7 +264,7 @@ myPP = xmobarPP {
     ppHidden = xmobarColor "#555555" "",
     ppUrgent = xmobarColor "#FF0000" "",
     ppLayout = xmobarColor "Orange" "",
-    ppTitle = xmobarColor "#87FF00" "" . shorten 35,
+    ppTitle = xmobarColor "#87FF00" "" . shorten 150,
     ppSep = " "
 }
 

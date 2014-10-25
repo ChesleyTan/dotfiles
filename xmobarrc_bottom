@@ -4,7 +4,6 @@ Config { font = "xft:Liberation Mono:size=10:antialias=true",
     fgColor = "#cccccc",
     lowerOnStart = True,
     commands = [ 
-        Run StdinReader,
         Run Weather "KLGA" ["-t","Weather: <tempF>°F rh <rh>%","-L","40","-H","80","--normal","#48D700","--high","red","--low","lightblue"] 36000,
         Run Cpu ["-t", "<fc=#555555>C:</fc><total><fc=#555555>%</fc>", "-L","10","-H","50","-l", "#48D700", "--normal","orange","--high","red"] 20,
         Run Memory ["-t","<fc=#555555>M:</fc><usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "-l", "#48D700", "-h", "red", "--normal", "orange"] 50,
@@ -17,7 +16,7 @@ Config { font = "xft:Liberation Mono:size=10:antialias=true",
     ],
          sepChar = "%",
          alignSep = "}{",
-         template = "%StdinReader% }{ <fc=#0099FF>[</fc>%cpu% %memory%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%dynnetwork% %diskio%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%sensortemp%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%battery%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%disku%<fc=#0099FF>]</fc> <fc=#0099FF><<</fc> <fc=#00FFBB>%date%</fc>"
+         template = "<fc=#0099FF>[</fc>%cpu% %memory%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%sensortemp%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%battery%<fc=#0099FF>]</fc>}{<fc=#0099FF>[</fc>%dynnetwork% %diskio%<fc=#0099FF>]</fc><fc=#0099FF>[</fc>%disku%<fc=#0099FF>]</fc> <fc=#0099FF><<</fc> <fc=#00FFBB>%date%</fc>"
 }
 
 -- For weather, add %KLGA% to template
