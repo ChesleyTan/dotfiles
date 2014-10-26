@@ -15,7 +15,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "gnome-terminal"
+myTerminal      = "terminology"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -45,7 +45,7 @@ myModMask       = mod4Mask
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
 --
-myWorkspaces    = ["1:main","2:web","3","4","5","6","7","8","9"]
+myWorkspaces    = ["1:main","2:web","3:office","4","5","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 --
@@ -217,7 +217,8 @@ myManageHook = composeAll
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
     , className =? "Google-chrome-stable" --> doShift "2:web"
-    , className =? "Google-chrome" --> doShift "2:web"]
+    , className =? "Google-chrome" --> doShift "2:web"
+    , className =? "libreoffice-writer" --> doShift "3:office"]
 
 ------------------------------------------------------------------------
 -- Event handling

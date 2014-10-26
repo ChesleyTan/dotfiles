@@ -1,5 +1,5 @@
 Config { font = "xft:Liberation Mono:size=10:antialias=true",
-    position = TopSize C 100 25,
+    position = TopSize C 100 16,
     bgColor = "#191919",
     fgColor = "#cccccc",
     lowerOnStart = True,
