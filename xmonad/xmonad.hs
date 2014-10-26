@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.SetWMName
 import XMonad.Layout.Spacing
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
@@ -15,7 +16,7 @@ import qualified Data.Map        as M
 -- The preferred terminal program, which is used in a binding below and by
 -- certain contrib modules.
 --
-myTerminal      = "terminology"
+myTerminal      = "gnome-terminal"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -216,8 +217,8 @@ myManageHook = composeAll
     , className =? "Gimp"           --> doFloat
     , resource  =? "desktop_window" --> doIgnore
     , resource  =? "kdesktop"       --> doIgnore
-    , className =? "Google-chrome-stable" --> doShift "2:web"
-    , className =? "Google-chrome" --> doShift "2:web"
+    --, className =? "Google-chrome-stable" --> doShift "2:web"
+    --, className =? "Google-chrome" --> doShift "2:web"
     , className =? "libreoffice-writer" --> doShift "3:office"]
 
 ------------------------------------------------------------------------
@@ -246,8 +247,8 @@ myLogHook = return ()
 -- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
 -- per-workspace layout choices.
 --
--- By default, do nothing.
-myStartupHook = return ()
+-- Set WM name to "LG3D" for Java GUI applications compatibility
+myStartupHook = setWMName "LG3D"
 
 ------------------------------------------------------------------------
 -- Now run xmonad with all the defaults we set up.
