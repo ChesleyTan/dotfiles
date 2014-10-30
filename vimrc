@@ -36,7 +36,7 @@ filetype plugin on " Enable filetype-specific plugins
 
 " Backup settings
 set backup " Back up previous versions of files
-set backupdir+=$HOME/.vim/backup// " Store backups in a central directory
+set backupdir=$HOME/.vim/backup// " Store backups in a central directory
 set backupdir+=. " Alternatively, store backups in the same directory as the file
 " Create backup directory if it does not exist
 if !isdirectory($HOME . '/.vim/backup/')
