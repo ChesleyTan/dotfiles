@@ -124,6 +124,7 @@ nnoremap <Space>j <C-w>J
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
 inoremap <C-S-v> <Esc>"+pi
+iunmap <C-V>
 " Mapping for autoformat
 nnoremap <C-f> gq
 nnoremap <C-S-f> mkggVGgq'k
