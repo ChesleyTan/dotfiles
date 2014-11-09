@@ -175,6 +175,7 @@ let g:gundo_preview_height = 20
 let g:gundo_right = 1
 let g:gundo_preview_bottom = 1
 let g:notes_directories = ['~/Dropbox/Shared Notes']
+let g:EclimCompletionMethod = 'omnifunc'
 command DiffTree GundoToggle
 " }}}
 " Functions for generating statusline {{{
@@ -437,7 +438,6 @@ function! PluginConfig()
         endif
     else
         echom "Eclim enabled"
-        let g:EclimCompletionMethod = 'omnifunc'
     endif
 endfunction
 let g:current_mode="default"
@@ -575,7 +575,7 @@ function s:FileType_C()
     iabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
 " }}}
-" Pre-start function calls {{{
+" Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
     call Molokai()
 else
