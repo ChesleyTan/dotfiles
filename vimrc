@@ -58,7 +58,7 @@ set ssop-=folds      " Do not save folds
 autocmd VimEnter * call PluginConfig()
 " Change statusline color when entering insert mode: (23 is a greenish-blue #005f5f, #073642 is solarized bluish)
 autocmd InsertEnter * call RefreshColors(23, '#073642')
-autocmd InsertLeave * call RefreshColors(235, '#262626')
+autocmd InsertLeave * call ToggleStatuslineColor() 
 " }}}
 " Custom mappings {{{
 :command Q q
@@ -146,6 +146,10 @@ nnoremap <S-i> :call ReverseColors()<CR>
 nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
 " Quick toggle fold method
 nnoremap <S-f> :call ToggleFoldMethod()<CR>
+" }}}
+" {{{ Constants
+let g:defaultStatuslineColor_cterm = 235 
+let g:defaultStatuslineColor_gui = '#262626'
 " }}}
 " Plugins configuration {{{
 call pathogen#infect()
@@ -271,7 +275,7 @@ function ReverseColors()
     else
         set background=light
     endif
-    call RefreshColors(235, '#262626')
+    call ToggleStatuslineColor()
 endfunction
 " }}}
 " Custom statusline {{{
@@ -475,22 +479,36 @@ function! Molokai()
         let g:rehash256 = 1
     endif
     colorscheme molokai
-    call RefreshColors(235, '#262626')
+    call ToggleStatuslineColor()
 endfunction
 command Molokai call Molokai()
 function! Default()
     colorscheme default
     hi Normal ctermbg=235
-    call RefreshColors(235, '#262626')
+    call ToggleStatuslineColor()
 endfunction
 command Default call Default()
 function! Solarized()
     syntax enable
     set background=dark
     colorscheme solarized
-    call RefreshColors(235, '#262626')
+    call ToggleStatuslineColor()
 endfunction
 command Solarized call Solarized()
+function! ToggleStatuslineColor()
+    call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
+endfunction
+command ToggleStatuslineColor call ToggleStatuslineColor()
+function! FlatTown()
+    colorscheme flattown
+    call ToggleStatuslineColor()
+endfunction
+command FlatTown call FlatTown()
+function! Flattr()
+    colorscheme flattr
+    call ToggleStatuslineColor()
+endfunction
+command Flattr call Flattr()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
