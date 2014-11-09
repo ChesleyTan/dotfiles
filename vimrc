@@ -48,6 +48,7 @@ set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
 set guioptions-=T "Remove toolbar
 set guifont=Monaco\ 10 "Set gui font
+set winaltkeys=no "Disable use of alt key to access menu
 
 " Session settings
 set ssop-=options    " Do not save global and local values
@@ -92,11 +93,16 @@ nnoremap <C-k> <C-u>
 nnoremap <C-j> <C-d>
 " Allow window commands in insert mode (currently overridden by omnicomplete binding)
 " imap <C-w> <C-o><C-w>
+" Easy split navigation using alt key
 nnoremap <A-Up> <C-w><Up>
 nnoremap <A-Down> <C-w><Down>
 nnoremap <A-Left> <C-w><Left>
 nnoremap <A-Right> <C-w><Right>
-" Mapping alt+(hjkl) doesn't work, so we use escape codes instead
+nnoremap <A-k> <C-w><Up>
+nnoremap <A-j> <C-w><Down>
+nnoremap <A-h> <C-w><Left>
+nnoremap <A-l> <C-w><Right>
+" Mapping alt+(hjkl) doesn't work in terminal, so we use escape codes instead
 nnoremap k <C-w><Up>
 nnoremap j <C-w><Down>
 nnoremap h <C-w><Left>
@@ -223,7 +229,7 @@ endfunction
 let g:gitBranch=GitBranch()
 let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
 " }}}
-" Colorscheme changing function {{{ 
+" Statusline color changing function {{{ 
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :hi does not accept variables as arguments
 function RefreshColors(statusLineColor, gui_statusLineColor)
@@ -385,7 +391,7 @@ function MyTabLine()
         return s
 endfunction
 " }}}
-" Autocompletion {{{
+" Autocompletion general settings/bindings {{{
 set completeopt=longest,menuone
 inoremap <C-O> <C-X><C-O>
 inoremap <C-U> <C-X><C-U>
@@ -499,11 +505,6 @@ function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
 endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
-function! FlatTown()
-    colorscheme flattown
-    call ToggleStatuslineColor()
-endfunction
-command FlatTown call FlatTown()
 function! Flattr()
     colorscheme flattr
     call ToggleStatuslineColor()
@@ -561,9 +562,7 @@ endfunction
 
 
 " }}}
-" Abbreviations {{{
-" }}}
-" Filetype-specific settings {{{
+" Filetype-specific settings/abbreviations {{{
 autocmd filetype java call s:FileType_Java()
 function s:FileType_Java()
     iabbrev psvm public static void main(String[] args)
