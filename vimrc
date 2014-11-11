@@ -261,8 +261,6 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
     "Folds colorscheme
     hi Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
-    "Visual mode selection color 
-    hi Visual ctermbg=241 guibg=#626262
     "Spell-check highlights
     hi SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
     hi SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
@@ -490,7 +488,9 @@ endfunction
 command Molokai call Molokai()
 function! Default()
     colorscheme default
-    hi Normal ctermbg=235
+    "Visual mode selection color 
+    hi Visual ctermbg=241 guibg=#626262
+    hi CursorLine ctermbg=236 guibg=#303030
     call ToggleStatuslineColor()
 endfunction
 command Default call Default()
@@ -498,6 +498,7 @@ function! Solarized()
     syntax enable
     set background=dark
     colorscheme solarized
+    hi Folded term=NONE cterm=NONE gui=NONE
     call ToggleStatuslineColor()
 endfunction
 command Solarized call Solarized()
@@ -507,6 +508,7 @@ endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
 function! Flattr()
     colorscheme flattr
+    hi Normal ctermbg=NONE guibg=NONE
     call ToggleStatuslineColor()
 endfunction
 command Flattr call Flattr()
@@ -559,7 +561,16 @@ function! SmartInsertModeEnter()
         return "i"
     endif
 endfunction
-
+function! LAG()
+    set cursorline! " Toggle cursorline
+    set number! " Toggle line numbers
+    if &laststatus == 2
+        set laststatus=0 " Disable statusline
+    else
+        set laststatus=2 " Enable statusline
+    endif
+endfunction
+command LAG call LAG()
 
 " }}}
 " Filetype-specific settings/abbreviations {{{
