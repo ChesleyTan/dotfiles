@@ -1,6 +1,6 @@
 " General configuration {{{
 " vim:fdm=marker
-set nocp " Disable Vi-compatibility settings
+set nocompatible " Disable Vi-compatibility settings
 set hidden " Hides buffers instead of closing them, allows opening new buffers when current has unsaved changes
 "set title " Show title in terminal
 set number " Show line numbers
@@ -24,7 +24,7 @@ set pastetoggle=<F3> " Toggle paste mode
 set mouse=a " Allow using mouse to change cursor position
 set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
-set tw=80 " Maximum width in characters
+set textwidth=80 " Maximum width in characters
 set foldmethod=marker " Use vim markers for folding
 set foldnestmax=2 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
@@ -54,19 +54,24 @@ set guifont=Monaco\ 10 "Set gui font
 set winaltkeys=no "Disable use of alt key to access menu
 
 " Session settings
-set ssop-=options    " Do not save global and local values
-set ssop-=folds      " Do not save folds
+set sessionoptions-=options    " Do not save global and local values
+set sessionoptions-=folds      " Do not save folds
 
 " Autocommands 
-" Execute runtime configurations for plugins
-autocmd VimEnter * call PluginConfig()
-" Change statusline color when entering insert mode
-autocmd InsertEnter * call RefreshColors(g:insertModeStatuslineColor_cterm, g:insertModeStatuslineColor_gui)
-autocmd InsertLeave * call ToggleStatuslineColor() 
+augroup defaults
+    " Clear augroup
+    autocmd!
+    " Execute runtime configurations for plugins
+    autocmd VimEnter * call PluginConfig()
+    autocmd BufWritePost * call RefreshGitInfo()
+    " Change statusline color when entering insert mode
+    autocmd InsertEnter * call RefreshColors(g:insertModeStatuslineColor_cterm, g:insertModeStatuslineColor_gui)
+    autocmd InsertLeave * call ToggleStatuslineColor()
+augroup END
 
 " List/listchars
 set list
-exec "set listchars=tab:\u2592\u2592,trail:\u2591"
+execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
 " Custom mappings {{{
 :command Q q
@@ -174,7 +179,7 @@ function! PluginConfig()
         echom "Enabling javacomplete for java files because eclimd is not started"
         autocmd Filetype java setlocal omnifunc=javacomplete#Complete
         autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
-        if &filetype == 'java'
+        if &filetype ==? 'java'
             setlocal omnifunc=javacomplete#Complete
             setlocal completefunc=javacomplete#CompleteParamsInfo
         endif
@@ -184,26 +189,26 @@ function! PluginConfig()
 endfunction
 let g:current_mode="default"
 function! WordProcessorMode() 
-	if g:current_mode == "default"
-		let g:current_mode="wpm"
-		" Break line before one-letter words when possible
-		setlocal textwidth=80
-		setlocal formatoptions=t1 
-		setlocal noexpandtab 
-		setlocal spell spelllang=en_us 
-		setlocal spellcapcheck=""
-		" Add dictionary to contextual completion
-		setlocal dictionary=/usr/share/dict/words
-		setlocal complete+=k
-		setlocal wrap 
-		setlocal linebreak
-	else
-		let g:current_mode="default"
-		setlocal formatoptions=tcq
-		setlocal expandtab
-		setlocal nospell
-		setlocal complete-=k
-	endif
+    if g:current_mode ==# "default"
+        let g:current_mode="wpm"
+        " Break line before one-letter words when possible
+        setlocal textwidth=80
+        setlocal formatoptions=t1 
+        setlocal noexpandtab 
+        setlocal spell spelllang=en_us 
+        setlocal spellcapcheck=""
+        " Add dictionary to contextual completion
+        setlocal dictionary=/usr/share/dict/words
+        setlocal complete+=k
+        setlocal wrap 
+        setlocal linebreak
+    else
+        let g:current_mode="default"
+        setlocal formatoptions=tcq
+        setlocal expandtab
+        setlocal nospell
+        setlocal complete-=k
+    endif
 endfunction 
 command WPM call WordProcessorMode()
 function! s:DiffWithSaved()
@@ -211,7 +216,7 @@ function! s:DiffWithSaved()
   diffthis
   vnew | r # | normal! 1Gdd
   diffthis
-  exe "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+  execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
 endfunction
 command! DiffSaved call s:DiffWithSaved()
 " Close the diff and return to last modified buffer
@@ -227,8 +232,8 @@ command Molokai call Molokai()
 function! Default()
     colorscheme default
     "Visual mode selection color 
-    hi Visual ctermbg=241 guibg=#626262
-    hi CursorLine ctermbg=236 guibg=#303030
+    highlight Visual ctermbg=241 guibg=#626262
+    highlight CursorLine ctermbg=236 guibg=#303030
     call ToggleStatuslineColor()
 endfunction
 command Default call Default()
@@ -236,7 +241,7 @@ function! Solarized()
     syntax enable
     set background=dark
     colorscheme solarized
-    hi Folded term=NONE cterm=NONE gui=NONE
+    highlight Folded term=NONE cterm=NONE gui=NONE
     call ToggleStatuslineColor()
 endfunction
 command Solarized call Solarized()
@@ -246,7 +251,7 @@ endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
 function! Flattr()
     colorscheme flattr
-    hi Normal ctermbg=NONE guibg=NONE
+    highlight Normal ctermbg=NONE guibg=NONE
     call ToggleStatuslineColor()
 endfunction
 command Flattr call Flattr()
@@ -255,20 +260,20 @@ let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
     if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == -1
         if (g:original_bg_color == -1)
-            exe "hi Normal ctermbg=NONE"
+            execute "highlight Normal ctermbg=NONE"
         else
-            exe "hi Normal ctermbg=" . g:original_bg_color
+            execute "highlight Normal ctermbg=" . g:original_bg_color
         endif
         let g:original_bg_color = -1
     else
         let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
-        hi Normal ctermbg=NONE
+        highlight Normal ctermbg=NONE
     endif
 endfunction
 function! ToggleFoldMethod()
-    if &foldmethod == "marker"
+    if &foldmethod ==? "marker"
         setlocal foldmethod=syntax
-    elseif &foldmethod == "syntax"
+    elseif &foldmethod ==? "syntax"
         setlocal foldmethod=marker
     endif
     echo "Fold method set to: " . &foldmethod
@@ -354,8 +359,11 @@ function GitRemote(branch) " Note: this function takes a while to execute
         return ""
     endif
 endfunction
-let g:gitBranch=GitBranch()
-let g:gitStatus=GitStatus() . " " . GitRemote(gitBranch)
+function! RefreshGitInfo()
+    let g:gitBranch=GitBranch()
+    let g:gitStatus=GitStatus() . " " . GitRemote(g:gitBranch)
+endfunction
+call RefreshGitInfo()
 " }}}
 " Custom statusline {{{
 set statusline=%t      "tail of the filename
@@ -375,55 +383,55 @@ endif
 set statusline+=%=      "left/right separator
 "set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
 set statusline+=%5*%{SyntasticStatuslineFlag()}%*\ 
-set statusline+=%3*%{pathshorten(expand('%:p'))}%*\ %4*\|%*\   "file path with truncated names
-set statusline+=C:%c\      "cursor column
-set statusline+=R:%l/%L\    "cursor line/total lines
-set statusline+=%4*\|%*\ %p   "percent through file
+set statusline+=%3*%{pathshorten(expand('%:p'))}%*%4*\|%*  "file path with truncated names
+set statusline+=C:%2c\      "cursor column, reserve 2 spaces
+set statusline+=R:%3l/%3L   "cursor line/total lines, reserve 3 spaces for each
+set statusline+=%4*\|%*%3p   "percent through file, reserve 3 spaces
 set statusline+=%% " Add percent symbol 
 " }}}
 " Statusline color changing function {{{ 
 " Note that these highlight themes have to formed with concatenation and then
-" be evaluated with :execute because :hi does not accept variables as arguments
+" be evaluated with :execute because :highlight does not accept variables as arguments
 function RefreshColors(statusLineColor, gui_statusLineColor)
     "Orange
-    exe 'hi User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
+    execute 'highlight User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
     "Sky Blue
-    exe 'hi User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor 
+    execute 'highlight User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor 
     "Darker Blue
-    exe 'hi User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor 
+    execute 'highlight User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor 
     "Off-White
-    exe 'hi User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
+    execute 'highlight User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Red
-    exe 'hi User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
+    execute 'highlight User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
     "Green
-    exe 'hi User6 ctermfg=34 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00af00 guibg=' . a:gui_statusLineColor
+    execute 'highlight User6 ctermfg=34 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00af00 guibg=' . a:gui_statusLineColor
     "Status line of current window
-    exe 'hi StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
+    execute 'highlight StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Status line color for noncurrent window
-    exe 'hi StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 'guifg=#eeeeee guibg=' . a:gui_statusLineColor
+    execute 'highlight StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 'guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Line numbers
-    exe 'hi LineNr ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
+    execute 'highlight LineNr ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
     "Vertical split divider
-    exe 'hi VertSplit term=bold cterm=bold gui=bold ctermfg=43 ctermbg=' a:statusLineColor 'guifg=#00d7af guibg=' . a:gui_statusLineColor
+    execute 'highlight VertSplit term=bold cterm=bold gui=bold ctermfg=43 ctermbg=' a:statusLineColor 'guifg=#00d7af guibg=' . a:gui_statusLineColor
     "Nonselected tabs
-    exe 'hi TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
+    execute 'highlight TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
     "Empty space on tab bar
-    exe 'hi TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
+    execute 'highlight TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
     "Selected tab
-    exe 'hi TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
+    execute 'highlight TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
     "Folds colorscheme
-    hi Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
+    highlight Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
     "Spell-check highlights
-    hi SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
-    hi SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
-    hi SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
-    hi SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
+    highlight SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
+    highlight SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
+    highlight SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
+    highlight SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Current line highlighting
-    hi CursorLineNr cterm=bold gui=bold ctermbg=238 guibg=#444444 ctermfg=43 guifg=#00d7af
-    hi CursorLine cterm=NONE gui=NONE 
+    highlight CursorLineNr cterm=bold gui=bold ctermbg=238 guibg=#444444 ctermfg=43 guifg=#00d7af
+    highlight CursorLine cterm=NONE gui=NONE 
     "PLUGINS
     "indentLine plugin
-    exe 'let g:indentLine_color_term = ' . a:statusLineColor
+    execute 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 
 function ReverseColors()
@@ -503,7 +511,7 @@ function MyTabLine()
                             " Use a variable to keep track of whether a new name
                             " was added
                             let newBufNameAdded = 1 
-                            if bufname(b) =~ "NERD" || bufname(b) =~ "Gundo"
+                            if bufname(b) =~# "NERD" || bufname(b) =~# "Gundo"
                                 let newBufNameAdded = 0
                             else
                                 let n .= pathshorten(bufname(b))
