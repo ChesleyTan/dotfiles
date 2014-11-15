@@ -1,6 +1,10 @@
 import XMonad
+import XMonad.Actions.GridSelect
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
+import XMonad.Hooks.Minimize
+import XMonad.Layout.Minimize
+import XMonad.Layout.Maximize
 import XMonad.Layout.Spacing
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
@@ -127,6 +131,16 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Run xmessage with a summary of the default keybindings (useful for beginners)
     , ((modm .|. shiftMask, xK_slash ), spawn ("echo \"" ++ help ++ "\" | xmessage -file -"))
+
+    -- Run GridSelect module
+    , ((modm, xK_g), goToSelected defaultGSConfig)
+
+    -- Minimize keybindings
+    , ((modm,               xK_m     ), withFocused minimizeWindow)
+    , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
+    
+    -- Maximize keybindings
+    , ((modm, xK_z), withFocused (sendMessage . maximizeRestore))
     ]
     ++
 
@@ -187,12 +201,12 @@ baseLayout = Tall nmaster delta ratio where
      delta   = 1/100
 
 -- default tiling algorithm partitions the screen into two panes
-tallLayout   = named "tall"   (spacing 3 (baseLayout))
-wideLayout   = named "wide"   (spacing 3 (Mirror baseLayout))
-fullLayout   = named "full"   (noBorders Full)
-gridLayout   = named "grid"   (spacing 2 (Grid))
-mosaicLayout = named "mosaic" (spacing 2 (MosaicAlt M.empty))
-twoPaneLayout= named "two pane" (TwoPane (3/100) (1/2))
+tallLayout       = named "tall"       (maximize (minimize (spacing 3 (baseLayout))))
+wideLayout       = named "wide"       (maximize (minimize (spacing 3 (Mirror baseLayout))))
+fullLayout       = named "full"       (maximize (minimize (noBorders Full)))
+gridLayout       = named "grid"       (maximize (minimize (spacing 2 (Grid))))
+mosaicLayout     = named "mosaic"     (maximize (minimize (spacing 2 (MosaicAlt M.empty))))
+twoPaneLayout    = named "two pane"   (maximize (minimize (TwoPane (3/100) (1/2))))
 
 myLayout = mosaicLayout ||| gridLayout ||| fullLayout ||| tallLayout ||| wideLayout ||| twoPaneLayout
 
@@ -230,7 +244,7 @@ myManageHook = composeAll
 -- return (All True) if the default handler is to be run afterwards. To
 -- combine event hooks use mappend or mconcat from Data.Monoid.
 --
-myEventHook = mempty
+myEventHook = minimizeEventHook
 
 ------------------------------------------------------------------------
 -- Status bars and logging
