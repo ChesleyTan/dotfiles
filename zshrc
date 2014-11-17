@@ -114,7 +114,7 @@ function batteryInfo() {
         if [ "$batTime" == "" ]; then
             batTime="Full"
         fi
-        echo "$(tput bold)$(tput setaf 166)$perc ($batTime)> $(tput sgr0)"
+        echo "$(tput bold)$(tput setaf 166)$perc% ($batTime)> $(tput sgr0)"
     fi
 }
 function CatchExitCode() {
