@@ -53,6 +53,6 @@
 [submodule "vim/bundle/vim-colors-solarized"]
 	path = vim/bundle/vim-colors-solarized
 	url = git://github.com/altercation/vim-colors-solarized.git
-[submodule "vim/colors/flattr.vim"]
-	path = vim/colors/flattr
-	url = https://github.com/farseer90718/flattr.vim
+[submodule "vim/colors/FlatColor"]
+	path = vim/colors/FlatColor
+	url = https://github.com/MaxSt/FlatColor

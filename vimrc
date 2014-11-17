@@ -249,12 +249,16 @@ function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
 endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
-function! Flattr()
-    colorscheme flattr
-    highlight Normal ctermbg=NONE guibg=NONE
+function! FlatColor()
+    colorscheme flatcolor
     call ToggleStatuslineColor()
+    " No harsh white cursorlines
+    hi CursorLine ctermbg=235 guibg=#262626 
+    " No underlines in NERDTree
+    hi Title cterm=NONE
+    hi Visual ctermbg=237 guibg=#3a3a3a
 endfunction
-command Flattr call Flattr()
+command FlatColor call FlatColor()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
@@ -320,7 +324,7 @@ command LAG call LAG()
 " Functions for generating statusline {{{
 function GitBranch()
     let output=system("git branch | grep '*' | grep -o '\\([A-Za-z0-9]\\+\\s\\?\\)\\+'")
-    if output=="" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
+    if output=="" || output=~"fatal" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
         return ""
     else
         return "[Git][" . output[0 : strlen(output)-2] . " " " Strip newline ^@
@@ -329,7 +333,7 @@ endfunction
 function GitStatus()
     let output=system('git status')
     let retStr=""
-    if output=="" 
+    if output=="" || output=~"fatal"
         return ""
     endif
     if output=~"Changes to be committed"
@@ -351,7 +355,7 @@ function GitRemote(branch) " Note: this function takes a while to execute
         let remotename=remotes[0] " Get name of first remote
     endif
     let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
-    if output=="" " Checkpoint for error
+    if output=="" || output=~"fatal" " Checkpoint for error
         return ""
     elseif output =~ "local out of date"
         return "(!)Local repo out of date: Use git pull"
@@ -606,7 +610,7 @@ endfunction
 if has("gui_running")
     call Molokai()
 else
-    call Molokai() | call ToggleTransparentTerminalBackground()
+    call FlatColor()
 endif
 " }}}
 " Add the virtualenv's site-packages to vim path
