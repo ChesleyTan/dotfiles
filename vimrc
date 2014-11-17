@@ -254,8 +254,8 @@ function! FlatColor()
     call ToggleStatuslineColor()
     " No harsh white cursorlines
     hi CursorLine ctermbg=235 guibg=#262626 
-    " No underlines in NERDTree
-    hi Title cterm=NONE
+    " No underlines in NERDTree, red Titles
+    hi Title cterm=NONE gui=bold ctermfg=166 guifg=#ef5939
     hi Visual ctermbg=237 guibg=#3a3a3a
 endfunction
 command FlatColor call FlatColor()
