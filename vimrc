@@ -257,6 +257,8 @@ function! FlatColor()
     " No underlines in NERDTree, red Titles
     hi Title cterm=NONE gui=bold ctermfg=166 guifg=#ef5939
     hi Visual ctermbg=237 guibg=#3a3a3a
+    hi Search ctermbg=37 guibg=#1ABC9C
+    hi IncSearch ctermbg=37 guibg=#1ABC9C
 endfunction
 command FlatColor call FlatColor()
 " Store default bg color
@@ -390,7 +392,7 @@ if winwidth(0) > 100
 endif
 set statusline+=%=      "left/right separator
 "set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
-set statusline+=%5*%{SyntasticStatuslineFlag()}%*\
+set statusline+=%5*%{SyntasticStatuslineFlag()}%*
 set statusline+=%3*%{pathshorten(expand('%:p'))}%*%4*\|%*  "file path with truncated names
 set statusline+=C:%2c\      "cursor column, reserve 2 spaces
 set statusline+=R:%3l/%3L   "cursor line/total lines, reserve 3 spaces for each
@@ -407,8 +409,8 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     execute 'highlight User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor
     "Darker Blue
     execute 'highlight User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor
-    "Off-White
-    execute 'highlight User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
+    "Emerald Green
+    execute 'highlight User4 ctermfg=41 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#2ECC71 guibg=' . a:gui_statusLineColor
     "Red
     execute 'highlight User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
     "Green
