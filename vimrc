@@ -57,7 +57,7 @@ set winaltkeys=no "Disable use of alt key to access menu
 set sessionoptions-=options    " Do not save global and local values
 set sessionoptions-=folds      " Do not save folds
 
-" Autocommands 
+" Autocommands
 augroup defaults
     " Clear augroup
     autocmd!
@@ -188,19 +188,19 @@ function! PluginConfig()
     endif
 endfunction
 let g:current_mode="default"
-function! WordProcessorMode() 
+function! WordProcessorMode()
     if g:current_mode ==# "default"
         let g:current_mode="wpm"
         " Break line before one-letter words when possible
         setlocal textwidth=80
-        setlocal formatoptions=t1 
-        setlocal noexpandtab 
-        setlocal spell spelllang=en_us 
+        setlocal formatoptions=t1
+        setlocal noexpandtab
+        setlocal spell spelllang=en_us
         setlocal spellcapcheck=""
         " Add dictionary to contextual completion
         setlocal dictionary=/usr/share/dict/words
         setlocal complete+=k
-        setlocal wrap 
+        setlocal wrap
         setlocal linebreak
     else
         let g:current_mode="default"
@@ -209,7 +209,7 @@ function! WordProcessorMode()
         setlocal nospell
         setlocal complete-=k
     endif
-endfunction 
+endfunction
 command WPM call WordProcessorMode()
 function! s:DiffWithSaved()
   let filetype=&ft
@@ -231,7 +231,7 @@ endfunction
 command Molokai call Molokai()
 function! Default()
     colorscheme default
-    "Visual mode selection color 
+    "Visual mode selection color
     highlight Visual ctermbg=241 guibg=#626262
     highlight CursorLine ctermbg=236 guibg=#303030
     call ToggleStatuslineColor()
@@ -253,7 +253,7 @@ function! FlatColor()
     colorscheme flatcolor
     call ToggleStatuslineColor()
     " No harsh white cursorlines
-    hi CursorLine ctermbg=235 guibg=#262626 
+    hi CursorLine ctermbg=235 guibg=#262626
     " No underlines in NERDTree, red Titles
     hi Title cterm=NONE gui=bold ctermfg=166 guifg=#ef5939
     hi Visual ctermbg=237 guibg=#3a3a3a
@@ -318,6 +318,10 @@ function! LAG()
     endif
 endfunction
 command LAG call LAG()
+function! RemoveWhitespace()
+    % !sed 's/[ \t]*$//'
+endfunction
+command RemoveWhitespace call RemoveWhitespace()
 
 " }}}
 " Statusline {{{
@@ -386,23 +390,23 @@ if winwidth(0) > 100
 endif
 set statusline+=%=      "left/right separator
 "set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
-set statusline+=%5*%{SyntasticStatuslineFlag()}%*\ 
+set statusline+=%5*%{SyntasticStatuslineFlag()}%*\
 set statusline+=%3*%{pathshorten(expand('%:p'))}%*%4*\|%*  "file path with truncated names
 set statusline+=C:%2c\      "cursor column, reserve 2 spaces
 set statusline+=R:%3l/%3L   "cursor line/total lines, reserve 3 spaces for each
 set statusline+=%4*\|%*%3p   "percent through file, reserve 3 spaces
-set statusline+=%% " Add percent symbol 
+set statusline+=%% " Add percent symbol
 " }}}
-" Statusline color changing function {{{ 
+" Statusline color changing function {{{
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :highlight does not accept variables as arguments
 function RefreshColors(statusLineColor, gui_statusLineColor)
     "Orange
     execute 'highlight User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
     "Sky Blue
-    execute 'highlight User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor 
+    execute 'highlight User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor
     "Darker Blue
-    execute 'highlight User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor 
+    execute 'highlight User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor
     "Off-White
     execute 'highlight User4 ctermfg=255 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#eeeeee guibg=' . a:gui_statusLineColor
     "Red
@@ -418,11 +422,11 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     "Vertical split divider
     execute 'highlight VertSplit term=bold cterm=bold gui=bold ctermfg=43 ctermbg=' a:statusLineColor 'guifg=#00d7af guibg=' . a:gui_statusLineColor
     "Nonselected tabs
-    execute 'highlight TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor 
+    execute 'highlight TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor
     "Empty space on tab bar
     execute 'highlight TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
     "Selected tab
-    execute 'highlight TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor 
+    execute 'highlight TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor
     "Folds colorscheme
     highlight Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
     "Spell-check highlights
@@ -432,7 +436,7 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     highlight SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Current line highlighting
     highlight CursorLineNr cterm=bold gui=bold ctermbg=238 guibg=#444444 ctermfg=43 guifg=#00d7af
-    highlight CursorLine cterm=NONE gui=NONE 
+    highlight CursorLine cterm=NONE gui=NONE
     "PLUGINS
     "indentLine plugin
     execute 'let g:indentLine_color_term = ' . a:statusLineColor
@@ -449,7 +453,7 @@ endfunction
 " }}}
 " }}}
 " {{{ Constants
-let g:defaultStatuslineColor_cterm = 235 
+let g:defaultStatuslineColor_cterm = 235
 let g:defaultStatuslineColor_gui = '#262626'
 let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#073642'
@@ -514,7 +518,7 @@ function MyTabLine()
                             " Do not show NERDTree or Gundo in the bufferlist
                             " Use a variable to keep track of whether a new name
                             " was added
-                            let newBufNameAdded = 1 
+                            let newBufNameAdded = 1
                             if bufname(b) =~# "NERD" || bufname(b) =~# "Gundo"
                                 let newBufNameAdded = 0
                             else
