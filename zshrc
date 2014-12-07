@@ -268,13 +268,13 @@ if [[ -e $HOME/.zsh_aliases ]]; then
     . $HOME/.zsh_aliases
 fi
 # }}}
-# Local aliases {{{
-# import aliases from bash
-if [[ -e $HOME/.local_bash_aliases ]]; then
-    . $HOME/.local_bash_aliases
+# Local aliases and rc {{{
+# import bash-specific
+if [[ -e $HOME/.local_bashrc ]]; then
+    . $HOME/.local_bashrc
 fi
-# import zsh-specific aliases
-if [[ -e $HOME/.local_zsh_aliases ]]; then
-    . $HOME/.local_zsh_aliases
+# import zsh-specific
+if [[ -e $HOME/.local_zshrc ]]; then
+    . $HOME/.local_zshrc
 fi
 # }}}
