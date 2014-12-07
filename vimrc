@@ -35,7 +35,7 @@ filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
 
 " Autocompletion settings
-set completeopt=longest,menuone
+set completeopt=menuone,preview
 
 " Backup settings
 set backup " Back up previous versions of files

@@ -165,7 +165,7 @@ function User() {
         fi
         echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
         if [[ $showHostname == true ]]; then
-            echo -n "$(tput bold)$(tput setaf 8)@$(hostname)$(tput sgr0)"
+            echo -n "$(tput bold)$(tput setaf 24)@$(hostname)$(tput sgr0)"
         fi
         echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
     fi
@@ -259,8 +259,6 @@ alias la='ls -A'
 alias lh='ls -ahl'
 alias l='ls -CF'
 alias rm='rm -I'
-# }}}
-# Local aliases {{{
 # import aliases from bash
 if [[ -e $HOME/.bash_aliases ]]; then
     . $HOME/.bash_aliases
@@ -268,5 +266,15 @@ fi
 # import zsh-specific aliases
 if [[ -e $HOME/.zsh_aliases ]]; then
     . $HOME/.zsh_aliases
+fi
+# }}}
+# Local aliases {{{
+# import aliases from bash
+if [[ -e $HOME/.local_bash_aliases ]]; then
+    . $HOME/.local_bash_aliases
+fi
+# import zsh-specific aliases
+if [[ -e $HOME/.local_zsh_aliases ]]; then
+    . $HOME/.local_zsh_aliases
 fi
 # }}}
