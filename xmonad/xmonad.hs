@@ -1,5 +1,6 @@
 import XMonad
 import XMonad.Actions.GridSelect
+import XMonad.Actions.UpdatePointer
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.Minimize
@@ -252,7 +253,8 @@ myEventHook = minimizeEventHook
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 --
-myLogHook = return ()
+-- Move pointer to center of newly focused window
+myLogHook = updatePointer (Relative 0.5 0.5)
 
 ------------------------------------------------------------------------
 -- Startup hook
