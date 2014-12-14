@@ -6,15 +6,22 @@
 )
 
 ;; check if gui running
-(if window-system
+;; (if window-system
     ;; if gui running, load solarized theme
-    (load-theme 'solarized-dark t)
+    ;; (load-theme 'solarized-dark t)
     ;; if not gui running, load monokai theme
-    (load-theme 'monokai t))
+    ;; (load-theme 'monokai t))
 
-;; load evil package
+(load-theme 'monokai t)
+
+;; load evil
 (require 'evil)
 (evil-mode 1)
 
-;; general configuration
-(linum-mode) ;; show line numbers
+;; show line numbers
+(require 'linum)
+(global-linum-mode 1)
+(setq linum-format "%4d\u2502")
+
+;; enable Flycheck
+(add-hook 'after-init-hook #'global-flycheck-mode)
