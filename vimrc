@@ -103,6 +103,9 @@ nnoremap <C-Up> <C-u>
 nnoremap <C-Down> <C-d>
 nnoremap <C-k> <C-u>
 nnoremap <C-j> <C-d>
+vnoremap <C-k> <C-u>
+vnoremap <C-j> <C-d>
+
 " Allow window commands in insert mode (currently overridden by omnicomplete binding)
 " imap <C-w> <C-o><C-w>
 " Easy split navigation using alt key
