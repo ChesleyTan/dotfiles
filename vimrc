@@ -37,6 +37,10 @@ filetype plugin on " Enable filetype-specific plugins
 " Autocompletion settings
 set completeopt=menuone,preview
 
+" Command line completion settings
+set wildmode=longest,list,full
+set wildmenu
+
 " Backup settings
 set backup " Back up previous versions of files
 set backupdir=$HOME/.vim/backup// " Store backups in a central directory
