@@ -17,6 +17,8 @@
 ;; load evil
 (require 'evil)
 (evil-mode 1)
+;; load evil-tabs
+(global-evil-tabs-mode t)
 
 ;; show line numbers
 (require 'linum)
