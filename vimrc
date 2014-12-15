@@ -490,9 +490,12 @@ let g:gundo_width = 30
 let g:gundo_preview_height = 20
 let g:gundo_right = 1
 let g:gundo_preview_bottom = 1
+command DiffTree GundoToggle
 let g:notes_directories = ['~/Dropbox/Shared Notes']
 let g:EclimCompletionMethod = 'omnifunc'
-command DiffTree GundoToggle
+let g:calendar_google_calendar = 0
+let g:calendar_google_task = 0
+
 " }}}
 " tabline from StackOverflow {{{
 set tabline+=%!MyTabLine()

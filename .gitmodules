@@ -56,3 +56,6 @@
 [submodule "vim/colors/FlatColor"]
 	path = vim/colors/FlatColor
 	url = https://github.com/MaxSt/FlatColor
+[submodule "vim/bundle/calendar.vim"]
+	path = vim/bundle/calendar.vim
+	url = https://github.com/itchyny/calendar.vim
