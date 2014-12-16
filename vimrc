@@ -495,6 +495,7 @@ let g:notes_directories = ['~/Dropbox/Shared Notes']
 let g:EclimCompletionMethod = 'omnifunc'
 let g:calendar_google_calendar = 0
 let g:calendar_google_task = 0
+let g:calendar_cache_directory = expand('~/Dropbox/Shared Notes/calendar.vim')
 
 " }}}
 " tabline from StackOverflow {{{
