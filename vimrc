@@ -86,8 +86,8 @@ map Q <Nop>
 " Use jj to exit insert mode, rather than <Esc>
 inoremap jj <Esc>
 " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
-inoremap <C-j> <Up>
-inoremap <C-k> <Down>
+inoremap <C-k> <Up>
+inoremap <C-j> <Down>
 inoremap <C-h> <Left>
 inoremap <C-l> <Right>
 " Smart indent when entering insert mode
@@ -257,7 +257,7 @@ function! ToggleStatuslineColor()
 endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
 function! FlatColor()
-    colorscheme flatcolor
+    colorscheme flatcolor-transparent
     call ToggleStatuslineColor()
     " No harsh white cursorlines
     hi CursorLine ctermbg=235 guibg=#262626
@@ -266,6 +266,7 @@ function! FlatColor()
     hi Visual ctermbg=237 guibg=#3a3a3a
     hi Search ctermbg=37 guibg=#1ABC9C
     hi IncSearch ctermbg=37 guibg=#1ABC9C
+    hi NonText ctermbg=NONE
 endfunction
 command FlatColor call FlatColor()
 " Store default bg color
@@ -410,6 +411,10 @@ set statusline+=%% " Add percent symbol
 " Note that these highlight themes have to formed with concatenation and then
 " be evaluated with :execute because :highlight does not accept variables as arguments
 function RefreshColors(statusLineColor, gui_statusLineColor)
+    let l:isEnteringInsertMode = 0
+    if a:statusLineColor == g:insertModeStatuslineColor_cterm
+        let l:isEnteringInsertMode = 1
+    endif
     "Orange
     execute 'highlight User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
     "Sky Blue
@@ -435,7 +440,11 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     "Empty space on tab bar
     execute 'highlight TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
     "Selected tab
-    execute 'highlight TabLineSel ctermfg=45 ctermbg=' . a:statusLineColor
+    if l:isEnteringInsertMode == 1
+        execute 'highlight TabLineSel term=NONE cterm=NONE ctermfg=45 ctermbg=' . a:statusLineColor
+    else
+        execute 'highlight TabLineSel term=NONE cterm=NONE ctermfg=255 ctermbg=23'
+    endif
     "Folds colorscheme
     highlight Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
     "Spell-check highlights
@@ -444,7 +453,11 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     highlight SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
     highlight SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Current line highlighting
-    highlight CursorLineNr cterm=bold gui=bold ctermbg=238 guibg=#444444 ctermfg=43 guifg=#00d7af
+    if l:isEnteringInsertMode == 1
+        highlight CursorLineNr cterm=bold gui=bold ctermbg=23 guibg=#005f5f ctermfg=45 guifg=#00d7ff
+    else
+        highlight CursorLineNr cterm=bold gui=bold ctermbg=23 guibg=#005f5f ctermfg=255 guifg=#ffffff
+    endif
     highlight CursorLine cterm=NONE gui=NONE
     "PLUGINS
     "indentLine plugin
@@ -642,3 +655,5 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 
+" TODO
+" Add gui versions of cterm colors
