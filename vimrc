@@ -334,6 +334,53 @@ endfunction
 command RemoveWhitespace call RemoveWhitespace()
 
 " }}}
+" Custom colorscheme {{{
+" Note that these highlight commands have to be formed with concatenation and then
+" be evaluated with :execute because :highlight does not accept variables as arguments
+function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, guisp, font)
+    execute 'highlight clear ' . a:group
+    let cmd = 'highlight '
+    let cmd .= a:group
+    if !empty(a:term)
+        let cmd .= ' term=' . a:term
+    endif
+    if !empty(a:cterm)
+        let cmd .= ' cterm=' . a:cterm
+    endif
+    if !empty(a:ctermfg)
+        let cmd .= ' ctermfg=' . a:ctermfg
+    endif
+    if !empty(a:ctermbg)
+        let cmd .= ' ctermbg='. a:ctermbg
+    endif
+    if !empty(a:gui)
+        let cmd .= ' gui=' . a:gui
+    endif
+    if !empty(a:guifg)
+        let cmd .= ' guifg=' . a:guifg
+    endif
+    if !empty(a:guibg)
+        let cmd .= ' guibg='. a:guibg
+    endif
+    if !empty(a:guisp)
+        let cmd .= ' guisp=' . a:guisp
+    endif
+    if !empty(a:font)
+        let cmd .= ' font=' . a:font
+    endif
+    execute cmd
+endfunction
+function s:ColorschemeInit()
+    "Folds colorscheme
+    call s:Highlight('Folded', '', '', '39', '235', '', '#00afff', '#262626', '', '')
+    "Spell-check highlights
+    call s:Highlight('SpellBad', '', 'underline,bold', '160', '', 'undercurl', '', '', '#D70000', '')
+    call s:Highlight('SpellCap', '', 'underline,bold', '214', '', 'undercurl', '', '', '#FFAF00', '')
+    call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#5FFFFF', '')
+    call s:Highlight('SpellRare', '', 'underline,bold', '195', '', 'undercurl', '', '', '#DFFFFF', '')
+endfunction
+
+" }}}
 " Statusline {{{
 " Functions for generating statusline {{{
 function GitBranch()
@@ -384,82 +431,67 @@ endfunction
 call RefreshGitInfo()
 " }}}
 " Custom statusline {{{
-set statusline=%t      "tail of the filename
+set statusline=%t       "tail of the filename
 set statusline+=%y      "filetype
 if winwidth(0) > 85
     set statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  "file encoding
-    set statusline+=%{&ff}] "file format
+    set statusline+=%{&ff}]                           "file format
 endif
-set statusline+=%1*%r%*      "read only flag
-set statusline+=%2*%m\%*       "modified flag
-set statusline+=%h      "help file flag
-set statusline+=\ B:%n "Buffer number
+set statusline+=%#Orange_202#%r%##      "read only flag
+set statusline+=%#Blue_51#%m\%##        "modified flag
+set statusline+=%h                      "help file flag
+set statusline+=\ B:%n                  "buffer number
 if winwidth(0) > 100
-    set statusline+=\ %6*%{gitBranch}%* "Git branch
-    set statusline+=%6*%{gitStatus}%* "Git status
+    set statusline+=\ %#Green_34#%{gitBranch}%## "Git branch
+    set statusline+=%#Green_34#%{gitStatus}%##   "Git status
 endif
-set statusline+=%=      "left/right separator
-"set statusline+=%3*%F%*\ %4*\|%*\   "file path with full names
-set statusline+=%5*%{SyntasticStatuslineFlag()}%*
-set statusline+=%3*%{pathshorten(expand('%:p'))}%*%4*\|%*  "file path with truncated names
-set statusline+=C:%2c\      "cursor column, reserve 2 spaces
-set statusline+=R:%3l/%3L   "cursor line/total lines, reserve 3 spaces for each
-set statusline+=%4*\|%*%3p   "percent through file, reserve 3 spaces
-set statusline+=%% " Add percent symbol
+set statusline+=%=                                        "left/right separator
+set statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## "Syntastic plugin flag
+"set statusline+=%3*%F%*\ %4*\|%*\                        "file path with full names
+set statusline+=%#Blue_39#%{pathshorten(expand('%:p'))}%##%#Green_41#\|%##  "file path with truncated names
+set statusline+=C:%2c\                  "cursor column, reserve 2 spaces
+set statusline+=R:%3l/%3L               "cursor line/total lines, reserve 3 spaces for each
+set statusline+=%#Green_41#\|%##%3p     "percent through file, reserve 3 spaces
+set statusline+=%%                      "percent symbol
 " }}}
 " Statusline color changing function {{{
-" Note that these highlight themes have to formed with concatenation and then
-" be evaluated with :execute because :highlight does not accept variables as arguments
 function RefreshColors(statusLineColor, gui_statusLineColor)
     let l:isEnteringInsertMode = 0
     if a:statusLineColor == g:insertModeStatuslineColor_cterm
         let l:isEnteringInsertMode = 1
     endif
-    "Orange
-    execute 'highlight User1 ctermfg=202 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff5f00 guibg=' . a:gui_statusLineColor
-    "Sky Blue
-    execute 'highlight User2 ctermfg=51 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00ffff guibg=' . a:gui_statusLineColor
-    "Darker Blue
-    execute 'highlight User3 ctermfg=39 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00afff guibg=' . a:gui_statusLineColor
-    "Emerald Green
-    execute 'highlight User4 ctermfg=41 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#2ECC71 guibg=' . a:gui_statusLineColor
-    "Red
-    execute 'highlight User5 ctermfg=196 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#ff0000 guibg=' . a:gui_statusLineColor
-    "Green
-    execute 'highlight User6 ctermfg=34 ctermbg=' . a:statusLineColor 'cterm=bold term=bold gui=bold guifg=#00af00 guibg=' . a:gui_statusLineColor
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:gui_statusLineColor, '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:gui_statusLineColor, '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:gui_statusLineColor, '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:gui_statusLineColor, '', '')
+    call s:Highlight('Red_196', 'bold', 'bold', '196', a:statusLineColor, 'bold', '#FF0000', a:gui_statusLineColor, '', '')
+    call s:Highlight('Green_34', 'bold', 'bold', '34', a:statusLineColor, 'bold', '#00AF00', a:gui_statusLineColor, '', '')
     "Status line of current window
-    execute 'highlight StatusLine term=bold cterm=bold gui=bold ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
+    call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:gui_statusLineColor, '', '')
     "Status line color for noncurrent window
-    execute 'highlight StatusLineNC term=bold cterm=bold gui=bold ctermfg=255 ctermbg=' . a:statusLineColor 'guifg=#eeeeee guibg=' . a:gui_statusLineColor
+    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#FFFFFF', a:gui_statusLineColor, '', '')
     "Line numbers
-    execute 'highlight LineNr ctermfg=118 ctermbg=' . a:statusLineColor 'guifg=#87ff00 guibg=' . a:gui_statusLineColor
+    call s:Highlight('LineNr', '', '', '118', a:statusLineColor, '', '#87FF00', a:gui_statusLineColor, '', '')
     "Vertical split divider
-    execute 'highlight VertSplit term=bold cterm=bold gui=bold ctermfg=43 ctermbg=' a:statusLineColor 'guifg=#00d7af guibg=' . a:gui_statusLineColor
+    call s:Highlight('VertSplit', 'bold', 'bold', '43', a:statusLineColor, 'bold', '#00D7AF', a:gui_statusLineColor, '', '')
     "Nonselected tabs
-    execute 'highlight TabLine ctermfg=118 cterm=none ctermbg=' . a:statusLineColor
+    call s:Highlight('TabLine', '', '', '118', a:statusLineColor, '', '#87FF00', a:gui_statusLineColor, '', '')
     "Empty space on tab bar
-    execute 'highlight TabLineFill term=bold cterm=bold gui=bold ctermbg=' . a:statusLineColor
+    call s:Highlight('TabLineFill', '', '', '', a:statusLineColor, '', '', a:gui_statusLineColor, '', '')
     "Selected tab
     if l:isEnteringInsertMode == 1
-        execute 'highlight TabLineSel term=NONE cterm=NONE ctermfg=45 ctermbg=' . a:statusLineColor
+        call s:Highlight('TabLineSel', '', '', '45', a:statusLineColor, '', '#00D7FF', a:gui_statusLineColor, '', '')
     else
-        execute 'highlight TabLineSel term=NONE cterm=NONE ctermfg=255 ctermbg=23'
+        call s:Highlight('TabLineSel', '', '', '255', '23', '', '#FFFFFF', '#005F5F', '', '')
     endif
-    "Folds colorscheme
-    highlight Folded ctermfg=39 ctermbg=235 guifg=#00afff guibg=#262626
-    "Spell-check highlights
-    highlight SpellBad    ctermbg=NONE ctermfg=160 cterm=underline,bold guisp=#FF0000 gui=undercurl
-    highlight SpellCap    ctermbg=NONE ctermfg=214 cterm=underline,bold guisp=#7070F0 gui=undercurl
-    highlight SpellLocal  ctermbg=NONE ctermfg=51 cterm=underline,bold guisp=#70F0F0 gui=undercurl
-    highlight SpellRare   ctermbg=NONE ctermfg=195 cterm=underline,bold guisp=#FFFFFF gui=undercurl
     "Current line highlighting
     if l:isEnteringInsertMode == 1
-        highlight CursorLineNr cterm=bold gui=bold ctermbg=23 guibg=#005f5f ctermfg=45 guifg=#00d7ff
+        call s:Highlight('CursorLineNr', 'bold', 'bold', '45', '23', 'bold', '#00D7FF', '#005F5F', '', '')
     else
-        highlight CursorLineNr cterm=bold gui=bold ctermbg=23 guibg=#005f5f ctermfg=255 guifg=#ffffff
+        call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#FFFFFF', '#005F5F', '', '')
     endif
-    highlight CursorLine cterm=NONE gui=NONE
-    "PLUGINS
+
+    "PLUGINS HIGHLIGHTING
     "indentLine plugin
     execute 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
@@ -514,83 +546,84 @@ let g:calendar_cache_directory = expand('~/Dropbox/Shared Notes/calendar.vim')
 " tabline from StackOverflow {{{
 set tabline+=%!MyTabLine()
 function MyTabLine()
-        let s = '' " complete tabline goes here
-        " loop through each tab page
-        for t in range(tabpagenr('$'))
-                " set highlight
-                if t + 1 == tabpagenr()
-                        let s .= '%#TabLineSel#'
-                else
-                        let s .= '%#TabLine#'
-                endif
-                " set the tab page number (for mouse clicks)
-                let s .= '%' . (t + 1) . 'T'
-                let s .= ' '
-                " set page number string
-                let s .= t + 1 . ' '
-                " get buffer names and statuses
-                let n = ''      "temp string for buffer names while we loop and check buftype
-                let m = 0       " &modified counter
-                let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
-                " loop through each buffer in a tab
-                for b in tabpagebuflist(t + 1)
-                        " buffer types: quickfix gets a [Q], help gets [H]{base fname}
-                        " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
-                        if getbufvar( b, "&buftype" ) == 'help'
-                                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
-                        elseif getbufvar( b, "&buftype" ) == 'quickfix'
-                                let n .= '[Q]'
-                        else
-                            " Do not show NERDTree or Gundo in the bufferlist
-                            " Use a variable to keep track of whether a new name
-                            " was added
-                            let newBufNameAdded = 1
-                            if bufname(b) =~# "NERD" || bufname(b) =~# "Gundo"
-                                let newBufNameAdded = 0
-                            else
-                                let n .= pathshorten(bufname(b))
-                            endif
-                        endif
-                        " check and ++ tab's &modified count
-                        if getbufvar( b, "&modified" )
-                                let m += 1
-                        endif
-                        " no final ' ' added...formatting looks better done later
-                        if bc > 1 && newBufNameAdded == 1
-                            let n .= ' '
-                        endif
-                        let bc -= 1
-                endfor
-                " add modified label [n+] where n pages in tab are modified
-                if m > 0
-                        let s .= '[' . m . '+]'
-                endif
-                " select the highlighting for the buffer names
-                " my default highlighting only underlines the active tab
-                " buffer names.
-                if t + 1 == tabpagenr()
-                        let s .= '%#TabLineSel#'
-                else
-                        let s .= '%#TabLine#'
-                endif
-                " add buffer names
-                if n == ''
-                        let s.= '[New]'
-                else
-                        let s .= n
-                endif
-                " switch to no underlining and add final space to buffer list
-                let s .= ' '
-                " Remove excess whitespace
-                let s = DeflateWhitespace(s)
-        endfor
-        " after the last tab fill with TabLineFill and reset tab page nr
-        let s .= '%#TabLineFill#%T'
-        " right-align the label to close the current tab page
-        if tabpagenr('$') > 1
-                let s .= '%=%#TabLineFill#%5*%999XClose%*'
+    let s = '' " complete tabline goes here
+    " loop through each tab page
+    for t in range(tabpagenr('$'))
+        " set highlight
+        if t + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
         endif
-        return s
+        " set the tab page number (for mouse clicks)
+        let s .= '%' . (t + 1) . 'T'
+        let s .= ' '
+        " set page number string
+        let s .= t + 1 . ' '
+        " get buffer names and statuses
+        let n = ''      "temp string for buffer names while we loop and check buftype
+        let m = 0       " &modified counter
+        let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
+        " loop through each buffer in a tab
+        for b in tabpagebuflist(t + 1)
+            " buffer types: quickfix gets a [Q], help gets [H]{base fname}
+            " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
+            if getbufvar( b, "&buftype" ) == 'help'
+                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
+            elseif getbufvar( b, "&buftype" ) == 'quickfix'
+                let n .= '[Q]'
+            else
+                " Do not show NERDTree or Gundo in the bufferlist
+                " Use a variable to keep track of whether a new name
+                " was added
+                let newBufNameAdded = 1
+                if bufname(b) =~# "NERD" || bufname(b) =~# "Gundo"
+                    let newBufNameAdded = 0
+                else
+                    let n .= pathshorten(bufname(b))
+                endif
+            endif
+            " check and ++ tab's &modified count
+            if getbufvar( b, "&modified" )
+                let m += 1
+            endif
+            " no final ' ' added...formatting looks better done later
+            if bc > 1 && newBufNameAdded == 1
+                let n .= ' '
+            endif
+            let bc -= 1
+        endfor
+        " add modified label [n+] where n pages in tab are modified
+        if m > 0
+            let s .= '[' . m . '+]'
+        endif
+        " select the highlighting for the buffer names
+        " my default highlighting only underlines the active tab
+        " buffer names.
+        if t + 1 == tabpagenr()
+            let s .= '%#TabLineSel#'
+        else
+            let s .= '%#TabLine#'
+        endif
+        " add buffer names
+        if n == ''
+            let s.= '[New]'
+        else
+            let s .= n
+        endif
+        " switch to no underlining and add final space to buffer list
+        let s .= ' '
+        " Remove excess whitespace
+        let s = DeflateWhitespace(s)
+    endfor
+    " after the last tab fill with TabLineFill and reset tab page nr
+    let s .= '%#TabLineFill#%T'
+    " right-align the label to close the current tab page
+    if tabpagenr('$') > 1
+        " Add close button
+        let s .= '%=%#TabLineFill#%999X%#Red_196#Close%##'
+    endif
+    return s
 endfunction
 " }}}
 " TMUX support {{{
@@ -638,10 +671,11 @@ endfunction
 " }}}
 " Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
-    call Molokai()
+    call FlatColor()
 else
     call FlatColor()
 endif
+call s:ColorschemeInit()
 " }}}
 " Add the virtualenv's site-packages to vim path
 py << EOF
@@ -655,5 +689,3 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-" TODO
-" Add gui versions of cterm colors
