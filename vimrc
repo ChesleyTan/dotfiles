@@ -30,6 +30,7 @@ set foldnestmax=2 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set cursorline " Highlight current line
 set lazyredraw " Conservative redrawing
+set backspace=indent,eol,start " Allow full functionality of backspace
 syntax on " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
@@ -85,6 +86,8 @@ cmap Q! q!
 map Q <Nop>
 " Use jj to exit insert mode, rather than <Esc>
 inoremap jj <Esc>
+" Map ; to : in normal mode
+nnoremap ; :
 " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
@@ -585,6 +588,7 @@ let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
 let g:indentLine_char = '┆'
 command Tree NERDTreeTabsToggle
+nnoremap <Leader>t :Tree<CR>
 let g:SuperTabDefaultCompletionType = 'context'
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
@@ -691,37 +695,6 @@ function MyTabLine()
     endif
     return s
 endfunction
-" }}}
-" TMUX support {{{
-" Allow vim to recognize key sequences in screen terminal
-if &term =~ '^screen' && exists('$TMUX')
-    set mouse+=a
-    " tmux knows the extended mouse mode
-    set ttymouse=xterm2
-    " tmux will send xterm-style keys when xterm-keys is on
-    execute "set <xUp>=\e[1;*A"
-    execute "set <xDown>=\e[1;*B"
-    execute "set <xRight>=\e[1;*C"
-    execute "set <xLeft>=\e[1;*D"
-    execute "set <xHome>=\e[1;*H"
-    execute "set <xEnd>=\e[1;*F"
-    execute "set <Insert>=\e[2;*~"
-    execute "set <Delete>=\e[3;*~"
-    execute "set <PageUp>=\e[5;*~"
-    execute "set <PageDown>=\e[6;*~"
-    execute "set <xF1>=\e[1;*P"
-    execute "set <xF2>=\e[1;*Q"
-    execute "set <xF3>=\e[1;*R"
-    execute "set <xF4>=\e[1;*S"
-    execute "set <F5>=\e[15;*~"
-    execute "set <F6>=\e[17;*~"
-    execute "set <F7>=\e[18;*~"
-    execute "set <F8>=\e[19;*~"
-    execute "set <F9>=\e[20;*~"
-    execute "set <F10>=\e[21;*~"
-    execute "set <F11>=\e[23;*~"
-    execute "set <F12>=\e[24;*~"
-endif
 " }}}
 " Filetype-specific settings/abbreviations {{{
 autocmd filetype java call s:FileType_Java()
