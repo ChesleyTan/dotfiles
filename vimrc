@@ -236,14 +236,6 @@ function! Molokai()
     call ToggleStatuslineColor()
 endfunction
 command Molokai call Molokai()
-function! Default()
-    colorscheme default
-    "Visual mode selection color
-    highlight Visual ctermbg=241 guibg=#626262
-    highlight CursorLine ctermbg=236 guibg=#303030
-    call ToggleStatuslineColor()
-endfunction
-command Default call Default()
 function! Solarized()
     syntax enable
     set background=dark
@@ -256,19 +248,13 @@ function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
 endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
-function! FlatColor()
-    colorscheme flatcolor-transparent
-    call ToggleStatuslineColor()
-    " No harsh white cursorlines
-    hi CursorLine ctermbg=235 guibg=#262626
-    " No underlines in NERDTree, red Titles
-    hi Title cterm=NONE gui=bold ctermfg=166 guifg=#ef5939
-    hi Visual ctermbg=237 guibg=#3a3a3a
-    hi Search ctermbg=37 guibg=#1ABC9C
-    hi IncSearch ctermbg=37 guibg=#1ABC9C
-    hi NonText ctermbg=NONE
+function! Custom()
+    if has("gui_running")
+        colorscheme default "Workaround: theme won't apply in gvim if a colorscheme is not specified
+    endif
+    call ColorschemeInit()
 endfunction
-command FlatColor call FlatColor()
+command Custom call Custom()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
@@ -368,16 +354,96 @@ function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, gu
     if !empty(a:font)
         let cmd .= ' font=' . a:font
     endif
-    execute cmd
+    silent execute cmd
 endfunction
-function s:ColorschemeInit()
-    "Folds colorscheme
+function ColorschemeInit()
+    " Colors inspired by flatcolor colorscheme created by Max St
+    call s:Highlight('Normal', '', '', '15', '234', '', '#ECF0F1', '#1C1C1C', '', '')
+    call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
+    call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
+    call s:Highlight('Operator', '', '', '197', '', '', '#FF0033', '', '', '')
+    call s:Highlight('Label', '', '', '197', '', '', '#FF0033', '', '', '')
+    call s:Highlight('Repeat', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
+    call s:Highlight('Type', '', '', '196', '', '', '#FF0000', '', '', '')
+    call s:Highlight('StorageClass', '', '', '197', '', '', '#FF0033', '', '', '')
+    call s:Highlight('Structure', '', '', '197', '', '', '#FF0033', '', '', '')
+    call s:Highlight('TypeDef', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
+    call s:Highlight('Exception', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
+    call s:Highlight('Include', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
+    call s:Highlight('PreProc', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Macro', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Define', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Delimiter', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Ignore', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('PreCondit', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
+    call s:Highlight('Debug', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
+    call s:Highlight('Function', '', '', '202', '', '', '#FF5F00', '', '', '')
+    call s:Highlight('Identifier', '', '', '202', '', '', '#FF5F00', '', '', '')
+    call s:Highlight('Comment', '', '', '41', '', '', '#2ECC71', '', '', '')
+    call s:Highlight('CommentEmail', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
+    call s:Highlight('CommentUrl', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
+    call s:Highlight('SpecialComment', 'bold', 'bold', '41', '', 'bold', '#2ECC71', '', '', '')
+    call s:Highlight('Todo', 'bold', 'bold', '41', '', 'bold', '#2ECC71', '', '', '')
+    call s:Highlight('String', '', '', '220', '', '', '#FFD700', '', '', '')
+    call s:Highlight('SpecialKey', 'bold', 'bold', '236', '', 'bold', '#303030', '', '', '')
+    call s:Highlight('Special', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('SpecialChar', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Boolean', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Character', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Number', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Constant', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Float', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('MatchParen', 'bold', 'bold', '202', '0', 'bold', '#FF5F00', '#000000', '', '')
+    call s:Highlight('NonText', '', '', '', '', '', '', '', '', '')
+    call s:Highlight('Cursor', '', '', '235', '15', '', '#262626', '#FFFFFF', '', '')
+    call s:Highlight('vCursor', '', '', '235', '15', '', '#262626', '#FFFFFF', '', '')
+    call s:Highlight('iCursor', '', '', '235', '15', '', '#262626', '#FFFFFF', '', '')
+    call s:Highlight('CursorColumn', '', '', '', '235', '', '', '#262626', '', '')
+    call s:Highlight('CursorLine', '', '', '', '235', '', '', '#262626', '', '')
+    call s:Highlight('SignColumn', '', '', '', '235', '', '', '#262626', '', '')
+    call s:Highlight('ColorColumn', '', '', '', '235', '', '', '#262626', '', '')
+    call s:Highlight('Error', 'bold', 'bold', '196', '', 'bold', '#FF0000', '', '', '')
+    call s:Highlight('ErrorMsg', 'bold', 'bold', '196', '', 'bold', '#FF0000', '', '', '')
+    call s:Highlight('WarningMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
+    call s:Highlight('Title', 'bold', 'bold', '166', '', 'bold', '#EF5939', '', '', '')
+    call s:Highlight('Tag', 'bold', 'bold', '', '', 'bold', '', '', '', '')
+    call s:Highlight('Visual', '', '', '', '237', '', '', '#3A3A3A', '', '')
+    call s:Highlight('VisualNOS', '', '', '', '237', '', '', '#3A3A3A', '', '')
+    call s:Highlight('Search', '', '', '255', '37', '', '#EEEEEE', '#1ABC9C', '', '')
+    call s:Highlight('IncSearch', '', '', '255', '37', '', '#EEEEEE', '#1ABC9C', '', '')
+    call s:Highlight('StatusLine', 'bold', 'bold', '118', '235', 'bold', '#87FF00', '#262626', '', '')
+    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', '235', 'bold', '#EEEEEE', '#262626', '', '')
+    call s:Highlight('LineNr', '', '', '118', '235', '', '#87FF00', '#262626', '', '')
+    call s:Highlight('VertSplit', 'bold', 'bold', '43', '235', 'bold', '#00D7AF', '#262626', '', '')
+    call s:Highlight('TabLine', '', '', '118', '235', '', '#87FF00', '#262626', '', '')
+    call s:Highlight('TabLineFill', '', '', '', '235', '', '', '#262626', '', '')
+    call s:Highlight('TabLineSel', '', '', '255', '23', '', '#EEEEEE', '#005F5F', '', '')
+    call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
+    call s:Highlight('FoldColumn', '', '', '39', '235', '', '#00afff', '#262626', '', '')
     call s:Highlight('Folded', '', '', '39', '235', '', '#00afff', '#262626', '', '')
-    "Spell-check highlights
     call s:Highlight('SpellBad', '', 'underline,bold', '160', '', 'undercurl', '', '', '#D70000', '')
     call s:Highlight('SpellCap', '', 'underline,bold', '214', '', 'undercurl', '', '', '#FFAF00', '')
     call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#5FFFFF', '')
     call s:Highlight('SpellRare', '', 'underline,bold', '195', '', 'undercurl', '', '', '#DFFFFF', '')
+    call s:Highlight('Conceal', '', '', '41', '', '', '#2ECC71', '', '', '')
+    call s:Highlight('ModeMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
+    call s:Highlight('Pmenu', '', '', '41', '', '', '#2ECC71', '', '', '')
+    call s:Highlight('PmenuSel', 'bold', 'bold', '202', '0', 'bold', '#FF5F00', '#000000', '', '')
+    call s:Highlight('DiffDelete', '', '', '255', '196', '', '#EEEEEE', '#FF0000', '', '')
+    call s:Highlight('DiffText', '', '', '240', '', '', '#545454', '', '', '')
+    call s:Highlight('DiffChange', '', '', '236', '', '', '#343434', '', '', '')
+    call s:Highlight('DiffAdd', '', '', '22', '', '', '#004225', '', '', '')
+    call s:Highlight('Underlined', 'underline', 'underline', '', '', 'underline', '', '', '', '')
+    call s:Highlight('Directory', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Question', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('MoreMsg', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('WildMenu', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', '235', 'bold', '#FF5F00', '#262626', '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', '235', 'bold', '#00FFFF', '#262626', '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', '235', 'bold', '#00AFFF', '#262626', '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', '235', 'bold', '#2ECC71', '#262626', '', '')
+    call s:Highlight('Red_196', 'bold', 'bold', '196', '235', 'bold', '#FF0000', '#262626', '', '')
+    call s:Highlight('Green_34', 'bold', 'bold', '34', '235', 'bold', '#00AF00', '#262626', '', '')
 endfunction
 
 " }}}
@@ -385,7 +451,7 @@ endfunction
 " Functions for generating statusline {{{
 function GitBranch()
     let output=system("git branch | grep '*' | grep -o '\\([A-Za-z0-9]\\+\\s\\?\\)\\+'")
-    if output=="" || output=~"fatal" " git branch returns NOTHING i.e '' if not in a git repo, not an error message as expected...
+    if output=="" || output=~?"fatal"
         return ""
     else
         return "[Git][" . output[0 : strlen(output)-2] . " " " Strip newline ^@
@@ -394,15 +460,15 @@ endfunction
 function GitStatus()
     let output=system('git status')
     let retStr=""
-    if output=="" || output=~"fatal"
+    if output=="" || output=~?"fatal"
         return ""
     endif
-    if output=~"Changes to be committed"
+    if output=~?"Changes to be committed"
         let retStr.="\u2718"
     else
         let retStr.="\u2714"
     endif
-    if output=~"modified"
+    if output=~?"modified"
         let retStr.=" \u0394"
     endif
     let retStr.="]"
@@ -416,17 +482,17 @@ function GitRemote(branch) " Note: this function takes a while to execute
         let remotename=remotes[0] " Get name of first remote
     endif
     let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
-    if output=="" || output=~"fatal" " Checkpoint for error
+    if output=="" || output=~?"fatal" " Checkpoint for error
         return ""
-    elseif output =~ "local out of date"
-        return "(!)Local repo out of date: Use git pull"
+    elseif output =~? "local out of date"
+        return " (!)Local repo out of date: Use git pull"
     else
         return ""
     endif
 endfunction
 function! RefreshGitInfo()
     let g:gitBranch=GitBranch()
-    let g:gitStatus=GitStatus() . " " . GitRemote(g:gitBranch)
+    let g:gitStatus=GitStatus() . GitRemote(g:gitBranch)
 endfunction
 call RefreshGitInfo()
 " }}}
@@ -469,7 +535,7 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     "Status line of current window
     call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:gui_statusLineColor, '', '')
     "Status line color for noncurrent window
-    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#FFFFFF', a:gui_statusLineColor, '', '')
+    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#EEEEEE', a:gui_statusLineColor, '', '')
     "Line numbers
     call s:Highlight('LineNr', '', '', '118', a:statusLineColor, '', '#87FF00', a:gui_statusLineColor, '', '')
     "Vertical split divider
@@ -482,13 +548,13 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     if l:isEnteringInsertMode == 1
         call s:Highlight('TabLineSel', '', '', '45', a:statusLineColor, '', '#00D7FF', a:gui_statusLineColor, '', '')
     else
-        call s:Highlight('TabLineSel', '', '', '255', '23', '', '#FFFFFF', '#005F5F', '', '')
+        call s:Highlight('TabLineSel', '', '', '255', '23', '', '#EEEEEE', '#005F5F', '', '')
     endif
     "Current line highlighting
     if l:isEnteringInsertMode == 1
         call s:Highlight('CursorLineNr', 'bold', 'bold', '45', '23', 'bold', '#00D7FF', '#005F5F', '', '')
     else
-        call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#FFFFFF', '#005F5F', '', '')
+        call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
     endif
 
     "PLUGINS HIGHLIGHTING
@@ -671,11 +737,10 @@ endfunction
 " }}}
 " Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
-    call FlatColor()
+    call Custom()
 else
-    call FlatColor()
+    call Custom()
 endif
-call s:ColorschemeInit()
 " }}}
 " Add the virtualenv's site-packages to vim path
 py << EOF
@@ -689,3 +754,5 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 
+"TODO default colorscheme for < 256 colors
+"TODO async git remote
