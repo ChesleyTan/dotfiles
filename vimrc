@@ -34,6 +34,7 @@ set backspace=indent,eol,start " Allow full functionality of backspace
 syntax on " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
+colorscheme default " Set default colors
 
 " Autocompletion settings
 set completeopt=menuone,preview
@@ -252,9 +253,6 @@ function! ToggleStatuslineColor()
 endfunction
 command ToggleStatuslineColor call ToggleStatuslineColor()
 function! Custom()
-    if has("gui_running")
-        colorscheme default "Workaround: theme won't apply in gvim if a colorscheme is not specified
-    endif
     call ColorschemeInit()
 endfunction
 command Custom call Custom()
@@ -577,9 +575,9 @@ endfunction
 " }}}
 " {{{ Constants
 let g:defaultStatuslineColor_cterm = 235
-let g:defaultStatuslineColor_gui = '#262626'
+let g:defaultStatuslineColor_gui = '#073642'
 let g:insertModeStatuslineColor_cterm = 23
-let g:insertModeStatuslineColor_gui = '#073642'
+let g:insertModeStatuslineColor_gui = '#173762'
 " }}}
 " Plugins configuration/constants {{{
 call pathogen#infect()
