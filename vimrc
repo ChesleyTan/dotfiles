@@ -738,6 +738,8 @@ endfunction
 " Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
     call Custom()
+elseif empty($DISPLAY) "If running in a tty, use solarized theme for better colors
+    call Solarized()
 else
     call Custom()
 endif
@@ -754,5 +756,4 @@ if 'VIRTUAL_ENV' in os.environ:
     execfile(activate_this, dict(__file__=activate_this))
 EOF
 
-"TODO default colorscheme for < 256 colors
 "TODO async git remote
