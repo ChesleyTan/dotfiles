@@ -588,6 +588,8 @@ let g:indentLine_char = '┆'
 command Tree NERDTreeTabsToggle
 nnoremap <Leader>t :Tree<CR>
 let g:SuperTabDefaultCompletionType = 'context'
+nnoremap <Leader>c :SyntasticCheck<CR>
+let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
 let g:nerdtree_tabs_open_on_gui_startup = 1
