@@ -172,8 +172,6 @@ nnoremap <Tab> ==
 vnoremap <Tab> =
 " Easy delete to black hole register
 nnoremap D "_dd
-" Quick change syntax highlighting color for dark background
-nnoremap <S-i> :call ReverseColors()<CR>
 " Quick toggle terminal background transparency
 nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
 " Quick toggle fold method
