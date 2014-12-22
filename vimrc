@@ -97,7 +97,8 @@ inoremap <C-l> <Right>
 " Smart indent when entering insert mode
 nnoremap <expr> i SmartInsertModeEnter()
 " Easy buffer switching
-:command B call feedkeys("\<F5>") "Use the <F5> mapping
+" Use the <F5> mapping
+nnoremap <Leader>b :call feedkeys("\<F5>")<CR>
 nmap <F5> :buffers<CR>:buffer<Space>
 nnoremap t :tabnew
 "This unsets the "last search pattern" register by hitting return
