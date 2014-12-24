@@ -305,11 +305,13 @@ function! SmartInsertModeEnter()
     endif
 endfunction
 function! LAG()
-    set cursorline! " Toggle cursorline
-    set number! " Toggle line numbers
-    if &laststatus == 2
+    if &cursorline == 1
+        set nocursorline " Disable cursorline
+        set nonumber     " Disable line numbers
         set laststatus=0 " Disable statusline
     else
+        set cursorline   " Enable cursorline
+        set number       " Enable line numbers
         set laststatus=2 " Enable statusline
     endif
 endfunction
