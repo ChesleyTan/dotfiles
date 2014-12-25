@@ -28,6 +28,9 @@ import qualified Data.Map        as M
 -- certain contrib modules.
 myTerminal = "terminology"
 
+-- Choose whether to use dzen or xmobar as the XMonad bar
+usingBar = "dzen"
+
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
 myFocusFollowsMouse = True
@@ -260,29 +263,6 @@ myEventHook = minimizeEventHook
 -- Perform an arbitrary action on each internal state change or X event.
 -- See the 'XMonad.Hooks.DynamicLog' extension for examples.
 
--- Custom PP, configure it as you like. It determines what is being written to the bar.
-
-myLogHook h = dynamicLogWithPP $ defaultPP {
-    ppCurrent = dzenColor "#429942" "#191919" . wrap "[" "]",
-    ppHidden  = dzenColor "#555555" "#191919",
-    ppUrgent  = dzenColor "#FF0000" "#191919",
-    ppSep     = " ",
-    ppLayout  = dzenColor "Orange" "#191919",
-    ppTitle   = dzenColor "#87FF00" "#191919" . dzenEscape . shorten 150,
-    ppOutput  = hPutStrLn h
-}
-
--- Version using xmobar as the xmonad bar
---myLogHook h = dynamicLogWithPP $ defaultPP {
---    ppCurrent = xmobarColor "#429942" "#191919" . wrap "[" "]",
---    ppHidden = xmobarColor "#555555" "#191919",
---    ppUrgent = xmobarColor "#FF0000" "#191919",
---    ppLayout = xmobarColor "Orange" "#191919",
---    ppTitle = xmobarColor "#87FF00" "#191919" . shorten 150,
---    ppSep = " ",
---    ppOutput = hPutStrLn h
---}
-
 ------------------------------------------------------------------------
 -- Startup hook
 
@@ -297,14 +277,35 @@ myStartupHook = setWMName "LG3D"
 -- MAIN
 
 -- Choose the command to launch the xmonad bar
---myXmobarBar = "xmobar ~/.xmobarrc_top"
+myXmobarBar = "xmobar ~/.xmobarrc_top"
 myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#191919' -fn 'Source Code Pro-10:Bold'"
 mySysTray = "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x191919 --height 18 --widthtype request &"
 
 main = do
-    --xmonadBar <- spawnPipe myXmobarBar
-    xmonadBar <- spawnPipe myDzenBar
+    xmonadBar <- if usingBar == "dzen"
+                    then spawnPipe myDzenBar
+                    else spawnPipe myXmobarBar
     spawn mySysTray
+
+    let myLogHook h = if usingBar == "dzen"
+                        then dynamicLogWithPP $ defaultPP {
+                                ppCurrent = dzenColor "#429942" "#191919" . wrap "[" "]",
+                                ppHidden  = dzenColor "#555555" "#191919",
+                                ppUrgent  = dzenColor "#FF0000" "#191919",
+                                ppSep     = " ",
+                                ppLayout  = dzenColor "Orange" "#191919",
+                                ppTitle   = dzenColor "#87FF00" "#191919" . dzenEscape . shorten 150,
+                                ppOutput  = hPutStrLn h
+                            }
+                        else dynamicLogWithPP $ defaultPP {
+                                ppCurrent = xmobarColor "#429942" "#191919" . wrap "[" "]",
+                                ppHidden = xmobarColor "#555555" "#191919",
+                                ppUrgent = xmobarColor "#FF0000" "#191919",
+                                ppLayout = xmobarColor "Orange" "#191919",
+                                ppTitle = xmobarColor "#87FF00" "#191919" . shorten 150,
+                                ppSep = " ",
+                                ppOutput = hPutStrLn h
+                            }
     xmonad $ defaultConfig {
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
