@@ -1,6 +1,8 @@
 import XMonad
+import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.UpdatePointer
+import XMonad.Actions.NoBorders
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.Minimize
@@ -139,6 +141,19 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Screenshot keybinding
     , ((0, xK_Print), spawn "scrot -e 'mv $f ~/Pictures/$f'")
+
+    -- Cycle workspaces (XMonad.Actions.CycleWS)
+    , ((modm,               xK_Right),  nextWS)
+    , ((modm,               xK_Left),    prevWS)
+    , ((modm .|. shiftMask, xK_Right),  shiftToNext)
+    , ((modm .|. shiftMask, xK_Left),    shiftToPrev)
+    , ((modm,               xK_Down), nextScreen)
+    , ((modm,               xK_Up),  prevScreen)
+    , ((modm .|. shiftMask, xK_Down), shiftNextScreen)
+    , ((modm .|. shiftMask, xK_Up),  shiftPrevScreen)
+
+    -- Toggle borders (XMonad.Actions.NoBorders)
+    , ((modm .|. shiftMask, xK_b), withFocused toggleBorder)
     ]
     ++
 
@@ -195,7 +210,7 @@ baseLayout = Tall nmaster delta ratio where
 
 -- default tiling algorithm partitions the screen into two panes
 tallLayout       = named "tall"     (maximize (minimize (spacing 3 (avoidStruts (baseLayout)))))
-wideLayout       = named "wide"     (maximize (minimize (spacing 3 (Mirror (avoidStruts (baseLayout))))))
+wideLayout       = named "wide"     (maximize (minimize (spacing 3 (avoidStruts (Mirror (baseLayout))))))
 fullLayout       = named "full"     (maximize (minimize (noBorders (avoidStruts (Full)))))
 gridLayout       = named "grid"     (maximize (minimize (spacing 2 (avoidStruts (Grid)))))
 mosaicLayout     = named "mosaic"   (maximize (minimize (spacing 2 (avoidStruts (MosaicAlt M.empty)))))
