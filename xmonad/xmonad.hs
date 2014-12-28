@@ -279,7 +279,7 @@ myStartupHook = setWMName "LG3D"
 -- Choose the command to launch the xmonad bar
 myXmobarBar = "xmobar ~/.xmobarrc_top"
 myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#191919' -fn 'Source Code Pro-10:Bold'"
-mySysTray = "trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x191919 --height 18 --widthtype request &"
+mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x191919 --height 18 --widthtype request &"
 
 main = do
     xmonadBar <- if usingBar == "dzen"
