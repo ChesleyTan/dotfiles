@@ -583,11 +583,11 @@ let g:insertModeStatuslineColor_gui = '#173762'
 " Plugins configuration/constants {{{
 " NeoBundle Scripts {{{
 if has('vim_starting')
-  set runtimepath+=/home/chesley/.vim/bundle/neobundle.vim/
+  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
 
 " Required:
-call neobundle#begin(expand('/home/chesley/.vim/bundle'))
+call neobundle#begin(expand('$HOME/.vim/bundle'))
 
 " Required:
 " Let NeoBundle manage NeoBundle
