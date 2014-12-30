@@ -581,6 +581,9 @@ let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
 " }}}
 " Plugins configuration/constants {{{
+" Add locally installed bundles to runtimepath
+set runtimepath+=$HOME/.vim/bundle/conque
+set runtimepath+=$HOME/.vim/bundle/javacomplete
 " NeoBundle Scripts {{{
 if has('vim_starting')
   set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
