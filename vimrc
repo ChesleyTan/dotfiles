@@ -581,7 +581,48 @@ let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
 " }}}
 " Plugins configuration/constants {{{
-call pathogen#infect()
+" NeoBundle Scripts {{{
+if has('vim_starting')
+  set runtimepath+=/home/chesley/.vim/bundle/neobundle.vim/
+endif
+
+" Required:
+call neobundle#begin(expand('/home/chesley/.vim/bundle'))
+
+" Required:
+" Let NeoBundle manage NeoBundle
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+" Add or remove your Bundles here:
+NeoBundle 'ervandew/supertab'
+NeoBundle 'Yggdroot/indentLine'
+NeoBundle 'xolox/vim-easytags'
+NeoBundle 'xolox/vim-misc'
+NeoBundle 'xolox/vim-notes'
+NeoBundle 'itchyny/calendar.vim'
+NeoBundle 'terryma/vim-multiple-cursors'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'scrooloose/syntastic'
+NeoBundle 'scrooloose/nerdtree'
+NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'davidhalter/jedi-vim'
+NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'sjl/gundo.vim.git'
+NeoBundle 'gorodinskiy/vim-coloresque'
+NeoBundle 'tomasr/molokai'
+NeoBundle 'altercation/vim-colors-solarized.git'
+
+" You can specify revision/branch/tag.
+" NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+" Required:
+call neobundle#end()
+
+" If there are uninstalled bundles found on startup,
+" this will conveniently prompt you to install them.
+NeoBundleCheck
+" }}}
 let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
 let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
