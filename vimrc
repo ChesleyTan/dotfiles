@@ -653,6 +653,7 @@ let g:gundo_right = 1
 let g:gundo_preview_bottom = 1
 command DiffTree GundoToggle
 let g:notes_directories = ['~/Dropbox/Shared Notes']
+nnoremap <Leader>n :Note 
 let g:EclimCompletionMethod = 'omnifunc'
 let g:calendar_google_calendar = 0
 let g:calendar_google_task = 0
