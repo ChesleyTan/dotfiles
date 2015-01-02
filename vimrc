@@ -597,6 +597,7 @@ call neobundle#begin(expand('$HOME/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
+NeoBundle 'ChesleyTan/wordCount.vim'
 NeoBundle 'ervandew/supertab'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'xolox/vim-easytags'
