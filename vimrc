@@ -25,6 +25,7 @@ set mouse=a " Allow using mouse to change cursor position
 set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
 set textwidth=80 " Maximum width in characters
+set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
 set foldmethod=marker " Use vim markers for folding
 set foldnestmax=2 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
