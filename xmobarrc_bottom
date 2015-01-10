@@ -1,6 +1,6 @@
 Config { font = "xft:Source Code Pro:size=8:antialias=true",
     position = BottomSize C 100 0,
-    bgColor = "#191919",
+    bgColor = "#111111",
     fgColor = "#F1C40F",
     lowerOnStart = True,
     commands = [
@@ -17,7 +17,7 @@ Config { font = "xft:Source Code Pro:size=8:antialias=true",
     ],
          sepChar = "%",
          alignSep = "}{",
-         template = "%batteryNotification%<fc=#3498DB>[</fc>%cpu% %memory%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%sensortemp%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>}{<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%disku%<fc=#3498DB>]</fc> <fc=#3498DB><<</fc> <fc=#1ABC9C>%date%</fc>"
+         template = " %batteryNotification%<fc=#3498DB>[</fc>%cpu% %memory%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%sensortemp%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>}{<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%disku%<fc=#3498DB>]</fc> <fc=#3498DB><<</fc> <fc=#1ABC9C>%date%</fc> "
 }
 
 -- For weather, add %KLGA% to template
