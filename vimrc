@@ -190,8 +190,10 @@ function! PluginConfig()
     endif
     if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
         echom "Enabling javacomplete for java files because eclimd is not started"
-        autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-        autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+        augroup javacomplete
+            autocmd Filetype java setlocal omnifunc=javacomplete#Complete
+            autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
+        augroup END
         if &filetype ==? 'java'
             setlocal omnifunc=javacomplete#Complete
             setlocal completefunc=javacomplete#CompleteParamsInfo
@@ -225,11 +227,11 @@ function! WordProcessorMode()
 endfunction
 command WPM call WordProcessorMode()
 function! s:DiffWithSaved()
-  let filetype=&ft
-  diffthis
-  vnew | r # | normal! 1Gdd
-  diffthis
-  execute "setlocal bt=nofile bh=wipe nobl noswf ro ft=" . filetype
+    let filetype=&filetype
+    diffthis
+    vnew | r # | normal! 1Gdd
+    diffthis
+    execute "setlocal buftype=nofile bufhidden=wipe nobuflisted noswapfile readonly filetype=" . filetype
 endfunction
 command! DiffSaved call s:DiffWithSaved()
 " Close the diff and return to last modified buffer
@@ -273,10 +275,18 @@ function! ToggleTransparentTerminalBackground()
     endif
 endfunction
 function! ToggleFoldMethod()
-    if &foldmethod ==? "marker"
+    if &foldmethod ==? "manual"
+        setlocal foldmethod=indent
+    elseif &foldmethod ==? "indent"
+        setlocal foldmethod=expr
+    elseif &foldmethod ==? "expr"
+        setlocal foldmethod=marker
+    elseif &foldmethod ==? "marker"
         setlocal foldmethod=syntax
     elseif &foldmethod ==? "syntax"
-        setlocal foldmethod=marker
+        setlocal foldmethod=diff
+    elseif &foldmethod ==? "diff"
+        setlocal foldmethod=manual
     endif
     echo "Fold method set to: " . &foldmethod
 endfunction
@@ -600,7 +610,7 @@ set runtimepath+=$HOME/.vim/bundle/conque
 set runtimepath+=$HOME/.vim/bundle/javacomplete
 " NeoBundle Scripts {{{
 if has('vim_starting')
-  set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
+    set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
 
 " Required:
