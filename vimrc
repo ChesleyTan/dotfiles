@@ -32,7 +32,7 @@ set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set cursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
-syntax on " Enable syntax highlighting
+syntax enable " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
 colorscheme default " Set default colors
@@ -178,6 +178,8 @@ nnoremap D "_dd
 nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
 " Quick toggle fold method
 nnoremap <S-f> :call ToggleFoldMethod()<CR>
+" Quick toggle syntax highlighting
+nnoremap <Leader>s :call SyntaxToggle()<CR>
 " }}}
 " Custom functions {{{
 
@@ -241,7 +243,6 @@ function! Molokai()
 endfunction
 command Molokai call Molokai()
 function! Solarized()
-    syntax enable
     set background=dark
     colorscheme solarized
     highlight Folded term=NONE cterm=NONE gui=NONE
@@ -321,6 +322,17 @@ function! RemoveWhitespace()
     % !sed 's/[ \t]*$//'
 endfunction
 command RemoveWhitespace call RemoveWhitespace()
+function! SyntaxToggle()
+    if exists('g:syntax_on')
+        syntax off
+        echo "Syntax: Disabled"
+    else
+        syntax enable
+        echo "Syntax: Enabled"
+        call ColorschemeInit()
+    endif
+endfunction
+command SyntaxToggle call SyntaxToggle()
 
 " }}}
 " Custom colorscheme {{{
@@ -361,6 +373,7 @@ function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, gu
 endfunction
 function ColorschemeInit()
     " Colors inspired by flatcolor colorscheme created by Max St
+    syntax enable
     call s:Highlight('Normal', '', '', '15', '234', '', '#ECF0F1', '#1C1C1C', '', '')
     call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
     call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
@@ -611,12 +624,16 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'Lokaltog/vim-easymotion'
-NeoBundle 'davidhalter/jedi-vim'
+NeoBundleLazy 'davidhalter/jedi-vim'
 NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
+
+augroup neoBundleLazySource
+    autocmd FileType python NeoBundleSource jedi-vim
+augroup END
 
 " You can specify revision/branch/tag.
 " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
