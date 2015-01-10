@@ -102,7 +102,7 @@ nnoremap <expr> i SmartInsertModeEnter()
 nnoremap <Leader>b :call feedkeys("\<F5>")<CR>
 nmap <F5> :buffers<CR>:buffer<Space>
 nnoremap t :tabnew
-"This unsets the "last search pattern" register by hitting return
+" Clear hlsearch using Return/Enter
 nnoremap <CR> :noh<CR><CR>
 " Allow saving when forgetting to start vim with sudo
 cmap w!! w !sudo tee > /dev/null %
@@ -320,11 +320,11 @@ function! LAG()
     if &cursorline == 1
         set nocursorline " Disable cursorline
         set nonumber     " Disable line numbers
-        set laststatus=0 " Disable statusline
+        "set laststatus=0 " Disable statusline
     else
         set cursorline   " Enable cursorline
         set number       " Enable line numbers
-        set laststatus=2 " Enable statusline
+        "set laststatus=2 " Enable statusline
     endif
 endfunction
 command LAG call LAG()
