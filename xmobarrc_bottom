@@ -1,4 +1,4 @@
-Config { font = "xft:Source Code Pro:size=8:antialias=true",
+Config { font = "xft:Source Code Pro Bold:size=8:antialias=true",
     position = BottomSize C 100 0,
     bgColor = "#111111",
     fgColor = "#F1C40F",
@@ -6,12 +6,13 @@ Config { font = "xft:Source Code Pro:size=8:antialias=true",
     commands = [
         Run Weather "KLGA" ["-t","Weather: <tempF>°F rh <rh>%","-L","40","-H","80","--normal","#48D700","--high","#E74C4C","--low","lightblue"] 36000,
         Run Cpu ["-t", "<fc=#555555>C:</fc><total><fc=#555555>%</fc>", "-L","10","-H","50","--low", "#2ECC71", "--normal","#E67E22","--high","#E74C4C"] 20,
-        Run Memory ["-t","<fc=#555555>M:</fc><usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "--low", "#2ECC71 ", "--high", "#E74C4C", "--normal", "#E67E22"] 50,
+        Run Memory ["-t","<fc=#555555>M:</fc><usedratio><fc=#555555>%</fc>", "-L", "25", "-H", "60", "--low", "#2ECC71", "--high", "#E74C4C", "--normal", "#E67E22"] 50,
         Run Battery ["-t", "<left><fc=#555555>%</fc><fc=#555555>(</fc><timeleft><fc=#555555>)</fc>", "-L", "10", "-H", "60", "--low", "#E74C4C", "--high", "#2ECC71", "--normal", "#E67E22"] 100,
+
         Run Date "%a %b %_d %r" "date" 10,
         Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensortemp" 30,
         Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300,
-        Run DiskU [("/", "<fc=#2ECC71>/:</fc><usedp><fc=#555555>%</fc>"), ("/home", "<fc=#2ECC71>/home:</fc><usedp><fc=#555555>%</fc>")] ["-L", "20", "-H", "80", "-l", "#48D700", "-n", "#E67E22", "-h", "#E74C4C"] 6000,
+        Run DiskU [("/", "<fc=#2ECC71>/:</fc><usedp><fc=#555555>%</fc>"), ("/home", "<fc=#2ECC71>/home:</fc><usedp><fc=#555555>%</fc>")] ["-L", "20", "-H", "80", "--low", "#48D700", "--normal", "#E67E22", "--high", "#E74C4C"] 6000,
         Run DynNetwork ["-t", "<fc=#555555>N:▲</fc><tx>K <fc=#555555>▼</fc><rx>K"] 50,
         Run DiskIO [("sda", "<fc=#555555>D:▲</fc><read> <fc=#555555>▼</fc><write>")] [] 50
     ],
