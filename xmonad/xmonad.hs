@@ -70,7 +70,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run -nb '#191919' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
+    , ((modm,               xK_p     ), spawn "dmenu_run -nb '#111111' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
 
     -- launch gmrun
     , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
@@ -278,8 +278,8 @@ myStartupHook = setWMName "LG3D"
 
 -- Choose the command to launch the xmonad bar
 myXmobarBar = "xmobar ~/.xmobarrc_top"
-myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#191919' -fn 'Source Code Pro-10:Bold'"
-mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x191919 --height 18 --widthtype request &"
+myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#111111' -fn 'Source Code Pro-10:Bold'"
+mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x111111 --height 18 --widthtype request &"
 
 main = do
     xmonadBar <- if usingBar == "dzen"
@@ -289,20 +289,20 @@ main = do
 
     let myLogHook h = if usingBar == "dzen"
                         then dynamicLogWithPP $ defaultPP {
-                                ppCurrent = dzenColor "#429942" "#191919" . wrap "[" "]",
-                                ppHidden  = dzenColor "#555555" "#191919",
-                                ppUrgent  = dzenColor "#FF0000" "#191919",
+                                ppCurrent = dzenColor "#2ECC71" "#111111" . wrap "[" "]",
+                                ppHidden  = dzenColor "#555555" "#111111",
+                                ppUrgent  = dzenColor "#FF0000" "#111111",
+                                ppLayout  = dzenColor "#E67E22" "#111111",
+                                ppTitle   = dzenColor "#87FF00" "#111111" . dzenEscape . shorten 150,
                                 ppSep     = " ",
-                                ppLayout  = dzenColor "Orange" "#191919",
-                                ppTitle   = dzenColor "#87FF00" "#191919" . dzenEscape . shorten 150,
                                 ppOutput  = hPutStrLn h
                             }
                         else dynamicLogWithPP $ defaultPP {
-                                ppCurrent = xmobarColor "#429942" "#191919" . wrap "[" "]",
-                                ppHidden = xmobarColor "#555555" "#191919",
-                                ppUrgent = xmobarColor "#FF0000" "#191919",
-                                ppLayout = xmobarColor "Orange" "#191919",
-                                ppTitle = xmobarColor "#87FF00" "#191919" . shorten 150,
+                                ppCurrent = xmobarColor "#2ECC71" "#111111" . wrap "[" "]",
+                                ppHidden = xmobarColor "#555555" "#111111",
+                                ppUrgent = xmobarColor "#FF0000" "#111111",
+                                ppLayout = xmobarColor "#E67E22" "#111111",
+                                ppTitle = xmobarColor "#87FF00" "#111111" . shorten 150,
                                 ppSep = " ",
                                 ppOutput = hPutStrLn h
                             }

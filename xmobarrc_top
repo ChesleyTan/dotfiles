@@ -1,7 +1,7 @@
-Config { font = "xft:Liberation Mono:size=10:antialias=true",
+Config { font = "xft:Source Code Pro Bold:size=10:antialias=true",
     position = TopSize C 100 16,
-    bgColor = "#191919",
-    fgColor = "#cccccc",
+    bgColor = "#111111",
+    fgColor = "#E0E0E0",
     lowerOnStart = True,
     commands = [ 
         Run StdinReader
@@ -10,3 +10,5 @@ Config { font = "xft:Liberation Mono:size=10:antialias=true",
          alignSep = "}{",
          template = "%StdinReader%"
 }
+
+-- vim: ft=haskell tw=0
