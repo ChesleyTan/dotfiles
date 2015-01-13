@@ -383,7 +383,6 @@ function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, gu
 endfunction
 function ColorschemeInit()
     " Colors inspired by flatcolor colorscheme created by Max St
-    syntax enable
     call s:Highlight('Normal', '', '', '15', '234', '', '#ECF0F1', '#1C1C1C', '', '')
     call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
     call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
@@ -650,6 +649,9 @@ augroup END
 
 " Required:
 call neobundle#end()
+
+" Required (Re-enable because neobundle disables this):
+filetype plugin indent on
 
 " If there are uninstalled bundles found on startup,
 " this will conveniently prompt you to install them.
