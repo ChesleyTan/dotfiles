@@ -1,4 +1,4 @@
-Config { font = "xft:Source Code Pro Bold:size=8:antialias=true",
+Config { font = "xft:Source Code Pro:semibold:size=8:antialias=true",
     position = BottomSize C 100 0,
     bgColor = "#111111",
     fgColor = "#F1C40F",
@@ -16,9 +16,9 @@ Config { font = "xft:Source Code Pro Bold:size=8:antialias=true",
         Run DynNetwork ["-t", "<fc=#555555>N:▲</fc><tx>K <fc=#555555>▼</fc><rx>K"] 50,
         Run DiskIO [("sda", "<fc=#555555>D:▲</fc><read> <fc=#555555>▼</fc><write>")] [] 50
     ],
-         sepChar = "%",
-         alignSep = "}{",
-         template = " %batteryNotification%<fc=#3498DB>[</fc>%cpu% %memory%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%sensortemp%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>}{<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%disku%<fc=#3498DB>]</fc> <fc=#3498DB><<</fc> <fc=#1ABC9C>%date%</fc> "
+        sepChar = "%",
+        alignSep = "}{",
+        template = " %batteryNotification%<fc=#3498DB>[</fc>%cpu% %memory%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%sensortemp%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>}{<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc><fc=#3498DB>[</fc>%disku%<fc=#3498DB>]</fc> <fc=#3498DB><<</fc> <fc=#1ABC9C>%date%</fc> "
 }
 
 -- For weather, add %KLGA% to template
