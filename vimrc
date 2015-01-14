@@ -29,7 +29,7 @@ set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
 set foldmethod=marker " Use vim markers for folding
 set foldnestmax=2 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
-set cursorline " Highlight current line
+set nocursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
 syntax enable " Enable syntax highlighting
@@ -38,7 +38,7 @@ filetype plugin on " Enable filetype-specific plugins
 colorscheme default " Set default colors
 
 " Autocompletion settings
-set completeopt=menuone,preview
+set completeopt=longest,menuone,preview
 
 " Command line completion settings
 set wildmode=longest,list,full
@@ -634,7 +634,8 @@ NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundleLazy 'davidhalter/jedi-vim'
-NeoBundle 'Valloric/YouCompleteMe'
+"NeoBundle 'Valloric/YouCompleteMe'
+NeoBundle 'Shougo/neocomplete.vim'
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
@@ -665,7 +666,8 @@ command Tree NERDTreeTabsToggle
 nnoremap <Leader>t :Tree<CR>
 let g:SuperTabDefaultCompletionType = 'context'
 nnoremap <Leader>c :SyntasticCheck<CR>
-let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
+"let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
+let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
 let g:nerdtree_tabs_open_on_gui_startup = 1
