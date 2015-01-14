@@ -668,6 +668,18 @@ let g:SuperTabDefaultCompletionType = 'context'
 nnoremap <Leader>c :SyntasticCheck<CR>
 "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
 let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
+let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
+let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
+inoremap <expr><C-g> neocomplete#undo_completion()
+inoremap <expr><C-l> neocomplete#complete_common_string()
+" <CR>: close popup and save indent.
+inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+function! s:my_cr_function()
+    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+endfunction
+" <C-h>, <BS>: close popup and delete backword char.
+inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
 let g:nerdtree_tabs_open_on_gui_startup = 1
