@@ -90,6 +90,8 @@ map Q <Nop>
 inoremap jj <Esc>
 " Map ; to : in normal mode
 nnoremap ; :
+" Map : to ; in normal mode
+nnoremap : ;
 " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
@@ -98,9 +100,7 @@ inoremap <C-l> <Right>
 " Smart indent when entering insert mode
 nnoremap <expr> i SmartInsertModeEnter()
 " Easy buffer switching
-" Use the <F5> mapping
-nnoremap <Leader>b :call feedkeys("\<F5>")<CR>
-nmap <F5> :buffers<CR>:buffer<Space>
+nnoremap <Leader>b :buffers<CR>:buffer<Space>
 nnoremap t :tabnew
 " Clear hlsearch using Return/Enter
 nnoremap <CR> :noh<CR><CR>
@@ -177,7 +177,7 @@ nnoremap D "_dd
 " Quick toggle terminal background transparency
 nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
 " Quick toggle fold method
-nnoremap <S-f> :call ToggleFoldMethod()<CR>
+nnoremap <Leader>f :call ToggleFoldMethod()<CR>
 " Quick toggle syntax highlighting
 nnoremap <Leader>s :call SyntaxToggle()<CR>
 " }}}
