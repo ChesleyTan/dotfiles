@@ -191,13 +191,10 @@ function! PluginConfig()
     if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
         echom "Enabling javacomplete for java files because eclimd is not started"
         augroup javacomplete
+            autocmd Filetype java setlocal runtimepath+=$HOME/.vim/bundle/javacomplete
             autocmd Filetype java setlocal omnifunc=javacomplete#Complete
             autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
         augroup END
-        if &filetype ==? 'java'
-            setlocal omnifunc=javacomplete#Complete
-            setlocal completefunc=javacomplete#CompleteParamsInfo
-        endif
     else
         echom "Eclim enabled"
     endif
@@ -606,7 +603,6 @@ let g:insertModeStatuslineColor_gui = '#173762'
 " Plugins configuration/constants {{{
 " Add locally installed bundles to runtimepath
 set runtimepath+=$HOME/.vim/bundle/conque
-set runtimepath+=$HOME/.vim/bundle/javacomplete
 " NeoBundle Scripts {{{
 if has('vim_starting')
     set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
@@ -793,15 +789,20 @@ function MyTabLine()
 endfunction
 " }}}
 " Filetype-specific settings/abbreviations {{{
-autocmd filetype java call s:FileType_Java()
+augroup ft_java
+    autocmd Filetype java call s:FileType_Java()
+augroup END
 function s:FileType_Java()
-    iabbrev psvm public static void main(String[] args)
-    iabbrev sysout System.out.println("");<esc>2hi
-    iabbrev syserr System.err.println("");<esc>2hi
+    " Use Ctrl-] to expand abbreviation
+    inoreabbrev psvm public static void main(String[] args) {}<esc>i<CR><esc>ko
+    inoreabbrev sysout System.out.println("");<esc>2hi
+    inoreabbrev syserr System.err.println("");<esc>2hi
 endfunction
-autocmd filetype c call s:FileType_C()
+augroup ft_c
+    autocmd Filetype c call s:FileType_C()
+augroup END
 function s:FileType_C()
-    iabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
+    inoreabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
 " }}}
 " Pre-start function calls (non-autocommand) {{{
