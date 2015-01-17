@@ -70,6 +70,10 @@ augroup defaults
     autocmd!
     " Execute runtime configurations for plugins
     autocmd VimEnter * call PluginConfig()
+    " Regenerate statusline to truncate intelligently
+    autocmd VimResized * call SetStatusline()
+    autocmd WinEnter * call SetStatusline()
+    " Refresh git information when file is changed
     autocmd BufWritePost * call RefreshGitInfo()
     " Change statusline color when entering insert mode
     autocmd InsertEnter * call RefreshColors(g:insertModeStatuslineColor_cterm, g:insertModeStatuslineColor_gui)
@@ -140,8 +144,8 @@ nnoremap _ <C-w>s
 nnoremap __ <C-w>n
 nnoremap - <C-w>-
 nnoremap + <C-w>+
-nnoremap > <C-w>>
-nnoremap < <C-w><
+nnoremap > <C-w>>:call SetStatusline()<CR>
+nnoremap < <C-w><:call SetStatusline()<CR>
 " Mappings to move window splits
 nnoremap <Space><Left> <C-w>H
 nnoremap <Space><Right> <C-w>L
@@ -521,28 +525,42 @@ endfunction
 call RefreshGitInfo()
 " }}}
 " Custom statusline {{{
-set statusline=%t       "tail of the filename
-set statusline+=%y      "filetype
-if winwidth(0) > 85
-    set statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  "file encoding
-    set statusline+=%{&ff}]                           "file format
-endif
-set statusline+=%#Orange_202#%r%##      "read only flag
-set statusline+=%#Blue_51#%m\%##        "modified flag
-set statusline+=%h                      "help file flag
-set statusline+=\ B:%n                  "buffer number
-if winwidth(0) > 100
-    set statusline+=\ %#Green_34#%{gitBranch}%## "Git branch
-    set statusline+=%#Green_34#%{gitStatus}%##   "Git status
-endif
-set statusline+=%=                                        "left/right separator
-set statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## "Syntastic plugin flag
-"set statusline+=%3*%F%*\ %4*\|%*\                        "file path with full names
-set statusline+=%#Blue_39#%{pathshorten(expand('%:p'))}%##%#Green_41#\|%##  "file path with truncated names
-set statusline+=C:%2c\                  "cursor column, reserve 2 spaces
-set statusline+=R:%3l/%3L               "cursor line/total lines, reserve 3 spaces for each
-set statusline+=%#Green_41#\|%##%3p     "percent through file, reserve 3 spaces
-set statusline+=%%                      "percent symbol
+function SetStatusline()
+    let bufName = bufname('%')
+    " Do not modify the statusline for NERDTree or Gundo
+    if bufName =~# "NERD" || bufName =~# "Gundo"
+        return
+    endif
+    let winWidth = winwidth(0)
+    setlocal statusline=""
+    if winWidth > 50
+        setlocal statusline+=%t " Tail of the filename
+    endif
+    if winWidth > 40
+        setlocal statusline+=%y " Filetype
+    endif
+    if winWidth > 80
+        setlocal statusline+=[%{strlen(&fenc)?&fenc:'none'}\|  " File encoding
+        setlocal statusline+=%{&ff}]                           " File format
+    endif
+    setlocal statusline+=%#Orange_202#%r%##      " Read only flag
+    setlocal statusline+=%#Blue_51#%m\%##        " Modified flag
+    setlocal statusline+=%h                      " Help file flag
+    setlocal statusline+=\ B:%n                  " Buffer number
+    if winWidth > 100
+        setlocal statusline+=\ %#Green_34#%{gitBranch}%## " Git branch
+        setlocal statusline+=%#Green_34#%{gitStatus}%##   " Git status
+    endif
+    setlocal statusline+=%=                                        " Left/right separator
+    setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
+    "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
+    setlocal statusline+=%#Blue_39#%{pathshorten(expand('%:p'))}%##%#Green_41#\|%##  " File path with truncated names
+    setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
+    setlocal statusline+=R:%3l/%3L               " Cursor line/total lines, reserve 3 spaces for each
+    setlocal statusline+=%#Green_41#\|%##%3p     " Percent through file, reserve 3 spaces
+    setlocal statusline+=%%                      " Percent symbol
+endfunction
+call SetStatusline()
 " }}}
 " Statusline color changing function {{{
 function RefreshColors(statusLineColor, gui_statusLineColor)
