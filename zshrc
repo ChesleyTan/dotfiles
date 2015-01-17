@@ -42,7 +42,7 @@ zstyle ':completion::complete:*' use-cache 1
 # use case-insensitive auto-completing
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 # graphical auto-complete menu
-zstyle ':completion:*' menu select 
+zstyle ':completion:*' menu select
 
 # use automatic path prediction
 # $predict-on to turn on and $predict-off to turn off
@@ -54,7 +54,7 @@ autoload -U compinit && compinit
 source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Color support {{{
-# Force color in terminal 
+# Force color in terminal
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
 elif [ "$TERM" == "screen" ]; then
@@ -94,9 +94,9 @@ function GitUpToDate() {
     fi
     echo -ne "\n"
 }
-function SensorTemp() { 
+function SensorTemp() {
 # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
-# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
+# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output
     if [ $showSysInfo == true ]; then
         echo "$(tput bold)$(tput setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(tput sgr0)"
     fi
@@ -142,7 +142,7 @@ function Pwd() {
         echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s|/(.)[^/]*|/\1|g" # (.) holds the first letter and \1 recalls it
     else
         echo -n "$PWD" | sed -r "s|$HOME|~|g"
-    fi    
+    fi
     echo "$(tput sgr0)"
 }
 function DateTime() {
@@ -212,7 +212,7 @@ function back() {
 }
 function clearapachelog(){
     if [ "$(id -u)" != "0" ]; then
-        echo "This script must be run as root" 
+        echo "This script must be run as root"
     else
         echo "" > /var/log/apache2/error.log
     fi

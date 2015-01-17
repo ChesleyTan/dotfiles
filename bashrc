@@ -27,11 +27,11 @@ shopt -s checkwinsize
 export EDITOR=vim
 
 # Color support {{{
-# Force color in terminal 
+# Force color in terminal
 if [ -n "$DISPLAY" -a "$TERM" == "xterm" ]; then
     export TERM=xterm-256color
 elif [ "$TERM" == "screen" ]; then
-	export TERM=screen-256color
+    export TERM=screen-256color
 fi
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -50,10 +50,10 @@ export LS_COLORS
 # Custom Bash Prompt {{{
 
 function GitBranch() {
-	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+    # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
         echo " $(tput bold)$(tput setaf 34)($(git branch | grep '*' | grep -o '\([A-Za-z0-9]\+\s\?\)\+') $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes
-	fi
+    fi
 }
 function GitUpToDate() {
     status=$(git status)
@@ -67,20 +67,20 @@ function GitUpToDate() {
     fi
     echo -ne "\n"
 }
-function SensorTemp() { 
-	# Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
-	# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output 
-	if [ $showSysInfo == true ]; then
+function SensorTemp() {
+    # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+    # Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output
+    if [ $showSysInfo == true ]; then
         echo "$(tput bold)$(tput setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(tput sgr0)"
     fi
 }
 function ramUsage() {
-	if [[ $showSysInfo == true ]]; then
+    if [[ $showSysInfo == true ]]; then
         echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB | $(tput sgr0)"
     fi
 }
 function batteryInfo() {
-	if [[ $showSysInfo == true ]]; then
+    if [[ $showSysInfo == true ]]; then
         data=$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
         perc=$(echo $data | grep -Eo "[0-9]*%")
         batTime=$(echo $data | grep -Eo "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
@@ -115,7 +115,7 @@ function Pwd() {
         echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s|/(.)[^/]*|/\1|g" # (.) holds the first letter and \1 recalls it
     else
         echo -n "$PWD" | sed -r "s|$HOME|~|g"
-    fi    
+    fi
     echo "$(tput sgr0)"
 }
 function DateTime() {
@@ -158,9 +158,9 @@ prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(
 PS1=$prompt1
 
 #if [ "$TERM" == "linux" ]; then
-#	export PS1=$prompt1
+#   export PS1=$prompt1
 #else
-#	export PS1=$prompt2
+#   export PS1=$prompt2
 #fi
 
 # Configuration options
@@ -188,46 +188,46 @@ function back() {
     eval cd $(echo $OLDPWD | sed -r 's/[ ]+/\\ /g')
 }
 function clearapachelog(){
-	if [ "$(id -u)" != "0" ]; then
-   		echo "This script must be run as root" 
-	else
-		echo "" > /var/log/apache2/error.log
-	fi
+    if [ "$(id -u)" != "0" ]; then
+        echo "This script must be run as root"
+    else
+        echo "" > /var/log/apache2/error.log
+    fi
 }
 function removeClassFiles(){
-	if [ $# == 0 ]; then
-		echo "No arguments given. Aborted."
-	elif [ $# != 1 ]; then
-		echo "Too many arguments."
-	else
-		files=$(find $1 | grep '.class')
-		if [[ $files == "" ]]; then
-			echo "No files to remove"
-			return
-		fi
-		echo "Files to be removed:"
-		echo "$files"
-		echo "Are you sure want to delete these files? [y/n]"
-		read ans
-		if [ $ans == "y" ]; then
-			rm -v $files
-			echo "Files removed."
-		else
-			echo "Removal aborted."
-		fi
-	fi
+    if [ $# == 0 ]; then
+        echo "No arguments given. Aborted."
+    elif [ $# != 1 ]; then
+        echo "Too many arguments."
+    else
+        files=$(find $1 | grep '.class')
+        if [[ $files == "" ]]; then
+            echo "No files to remove"
+            return
+        fi
+        echo "Files to be removed:"
+        echo "$files"
+        echo "Are you sure want to delete these files? [y/n]"
+        read ans
+        if [ $ans == "y" ]; then
+            rm -v $files
+            echo "Files removed."
+        else
+            echo "Removal aborted."
+        fi
+    fi
 }
 function reminder(){
-	PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
-	for word in "$@"
-	do
-		PS1="$PS1$word "
-	done
-	PS1="${PS1:0:$[${#PS1}-1]})\[$(tput sgr0)\] " # Remove trailing space, reset font color, add close parentheses
-	echo "Reminder set: $@"
+    PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
+    for word in "$@"
+    do
+        PS1="$PS1$word "
+    done
+    PS1="${PS1:0:$[${#PS1}-1]})\[$(tput sgr0)\] " # Remove trailing space, reset font color, add close parentheses
+    echo "Reminder set: $@"
 }
 function sourcebash(){
-	source ~/.bashrc
+    source ~/.bashrc
 }
 # }}}
 # Global aliases {{{
