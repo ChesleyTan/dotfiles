@@ -203,10 +203,12 @@ function! PluginConfig()
         echom "Eclim enabled"
     endif
 endfunction
-let g:current_mode="default"
 function! WordProcessorMode()
-    if g:current_mode ==# "default"
-        let g:current_mode="wpm"
+    if !exists('b:current_mode')
+        let b:current_mode="default"
+    endif
+    if b:current_mode ==# "default"
+        let b:current_mode="wpm"
         " Break line before one-letter words when possible
         setlocal textwidth=80
         setlocal formatoptions=t1
@@ -219,7 +221,7 @@ function! WordProcessorMode()
         setlocal wrap
         setlocal linebreak
     else
-        let g:current_mode="default"
+        let b:current_mode="default"
         setlocal formatoptions=tcq
         setlocal expandtab
         setlocal nospell
