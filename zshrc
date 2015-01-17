@@ -270,11 +270,11 @@ fi
 # }}}
 # Local aliases and rc {{{
 # import bash-specific
-if [[ -e $HOME/.local_bashrc ]]; then
-    . $HOME/.local_bashrc
+if [[ -e $HOME/.bashrc_local ]]; then
+    . $HOME/.bashrc_local
 fi
 # import zsh-specific
-if [[ -e $HOME/.local_zshrc ]]; then
-    . $HOME/.local_zshrc
+if [[ -e $HOME/.zshrc_local ]]; then
+    . $HOME/.zshrc_local
 fi
 # }}}

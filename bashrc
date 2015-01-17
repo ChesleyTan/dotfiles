@@ -242,8 +242,8 @@ if [ -f ~/.bash_aliases ]; then
 fi
 # }}}
 # Local aliases and rc {{{
-if [ -f ~/.local_bashrc ]; then
-    . ~/.local_bashrc
+if [ -f ~/.bashrc_local ]; then
+    . ~/.bashrc_local
 fi
 # }}}
 # Bash completion {{{
