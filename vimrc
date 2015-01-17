@@ -27,7 +27,7 @@ set t_Co=256 " Enable 256 colors
 set textwidth=80 " Maximum width in characters
 set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
 set foldmethod=marker " Use vim markers for folding
-set foldnestmax=2 " Maximum nested folds
+set foldnestmax=4 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set nocursorline " Highlight current line
 set lazyredraw " Conservative redrawing
@@ -708,84 +708,82 @@ let g:calendar_cache_directory = expand('~/Dropbox/Shared Notes/calendar.vim')
 " tabline from StackOverflow {{{
 set tabline+=%!MyTabLine()
 function MyTabLine()
-    let s = '' " complete tabline goes here
-    " loop through each tab page
-    for t in range(tabpagenr('$'))
-        " set highlight
-        if t + 1 == tabpagenr()
-            let s .= '%#TabLineSel#'
+    let tabline = ''
+    " Iterate through each tab page
+    for tabIndex in range(tabpagenr('$'))
+        " Set highlight for tab
+        if tabIndex + 1 == tabpagenr()
+            let tabline .= '%#TabLineSel#'
         else
-            let s .= '%#TabLine#'
+            let tabline .= '%#TabLine#'
         endif
-        " set the tab page number (for mouse clicks)
-        let s .= '%' . (t + 1) . 'T'
-        let s .= ' '
-        " set page number string
-        let s .= t + 1 . ' '
-        " get buffer names and statuses
-        let n = ''      "temp string for buffer names while we loop and check buftype
-        let m = 0       " &modified counter
-        let bc = len(tabpagebuflist(t + 1))     "counter to avoid last ' '
-        " loop through each buffer in a tab
-        for b in tabpagebuflist(t + 1)
+        " Set the tab page number (for mouse clicks)
+        let tabline .= '%' . (tabIndex + 1) . 'T'
+        let tabline .= ' '
+        " Set page number string
+        let tabline .= tabIndex + 1 . ' '
+        " Get buffer names and statuses
+        let tmp = '' " Temp string for buffer names while we loop and check buftype
+        let numModified = 0 " &modified counter
+        let bufsRemaining = len(tabpagebuflist(tabIndex + 1)) " Counter to avoid last ' '
+        " Iterate through each buffer in the tab
+        for bufIndex in tabpagebuflist(tabIndex + 1)
+            " Use a variable to keep track of whether a new name was added
+            let newBufNameAdded = 1
             " buffer types: quickfix gets a [Q], help gets [H]{base fname}
             " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
-            if getbufvar( b, "&buftype" ) == 'help'
-                let n .= '[H]' . fnamemodify( bufname(b), ':t:s/.txt$//' )
-            elseif getbufvar( b, "&buftype" ) == 'quickfix'
-                let n .= '[Q]'
+            if getbufvar( bufIndex, "&buftype" ) == 'help'
+                let tmp .= '[H]' . fnamemodify( bufname(bufIndex), ':t:s/.txt$//' )
+            elseif getbufvar( bufIndex, "&buftype" ) == 'quickfix'
+                let tmp .= '[Q]'
             else
                 " Do not show NERDTree or Gundo in the bufferlist
-                " Use a variable to keep track of whether a new name
-                " was added
-                let newBufNameAdded = 1
-                if bufname(b) =~# "NERD" || bufname(b) =~# "Gundo"
+                if bufname(bufIndex) =~# "NERD" || bufname(bufIndex) =~# "Gundo"
                     let newBufNameAdded = 0
                 else
-                    let n .= pathshorten(bufname(b))
+                    let tmp .= pathshorten(bufname(bufIndex))
                 endif
             endif
-            " check and ++ tab's &modified count
-            if getbufvar( b, "&modified" )
-                let m += 1
+            " Check and increment tab's &modified count
+            if getbufvar( bufIndex, "&modified" )
+                let numModified += 1
             endif
-            " no final ' ' added...formatting looks better done later
-            if bc > 1 && newBufNameAdded == 1
-                let n .= ' '
+            " Add trailing ' ' if necessary
+            if bufsRemaining > 1 && newBufNameAdded == 1
+                let tmp .= ' '
             endif
-            let bc -= 1
+            let bufsRemaining -= 1
         endfor
-        " add modified label [n+] where n pages in tab are modified
-        if m > 0
-            let s .= '[' . m . '+]'
+        " Add modified label [n+] where n pages in tab are modified
+        if numModified > 0
+            let tabline .= '[' . numModified . '+]'
         endif
-        " select the highlighting for the buffer names
-        " my default highlighting only underlines the active tab
-        " buffer names.
-        if t + 1 == tabpagenr()
-            let s .= '%#TabLineSel#'
+        " Select the highlighting for the buffer names
+        if tabIndex + 1 == tabpagenr()
+            let tabline .= '%#TabLineSel#'
         else
-            let s .= '%#TabLine#'
+            let tabline .= '%#TabLine#'
         endif
-        " add buffer names
-        if n == ''
-            let s.= '[New]'
+        " Add buffer names
+        if tmp == ''
+            let tabline .= '[New]'
         else
-            let s .= n
+            let tabline .= tmp
         endif
-        " switch to no underlining and add final space to buffer list
-        let s .= ' '
-        " Remove excess whitespace
-        let s = DeflateWhitespace(s)
+        " Add trailing ' ' for tab
+        let tabline .= ' '
     endfor
-    " after the last tab fill with TabLineFill and reset tab page nr
-    let s .= '%#TabLineFill#%T'
-    " right-align the label to close the current tab page
+    " Remove excess whitespace
+    let tabline = DeflateWhitespace(tabline)
+    " After the last tab fill with TabLineFill, and reset tab page number to
+    " support mouse clicks
+    let tabline .= '%#TabLineFill#%T'
+    " Add close button
     if tabpagenr('$') > 1
-        " Add close button
-        let s .= '%=%#TabLineFill#%999X%#Red_196#Close%##'
+        " Right-align the label to close the current tab page
+        let tabline .= '%=%#TabLineFill#%999X%#Red_196#Close%##'
     endif
-    return s
+    return tabline
 endfunction
 " }}}
 " Filetype-specific settings/abbreviations {{{
