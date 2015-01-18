@@ -725,6 +725,12 @@ let g:EclimCompletionMethod = 'omnifunc'
 let g:calendar_google_calendar = 0
 let g:calendar_google_task = 0
 let g:calendar_cache_directory = expand('~/Dropbox/Shared Notes/calendar.vim')
+let g:jedi#popup_on_dot = 0
+let g:jedi#popup_select_first = 0
+let g:jedi#goto_assignments_command = "<Leader>G"
+let g:jedi#goto_definitions_command = "<Leader>D"
+let g:jedi#usages_command = "<Leader>N"
+let g:jedi#rename_command = "<Leader>R"
 
 " }}}
 " tabline from StackOverflow {{{
