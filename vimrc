@@ -158,11 +158,10 @@ nnoremap <Space>j <C-w>J
 " Easy system clipboard copy/paste
 vnoremap <C-c> "+y
 vnoremap <C-x> "+x
-inoremap <C-S-v> <Esc>"+pi
+inoremap <C-S-v> <C-o>"+p
 iunmap <C-V>
-" Autocompletion bindings
-inoremap <C-O> <C-X><C-O>
-inoremap <C-U> <C-X><C-U>
+" Delete to first character on line
+inoremap <C-u> <C-o>d^
 " Mapping for autoformat
 nnoremap <C-f> gq
 nnoremap <C-S-f> mkggVGgq'k
