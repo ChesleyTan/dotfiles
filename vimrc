@@ -654,6 +654,8 @@ NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundleLazy 'davidhalter/jedi-vim'
 "NeoBundle 'Valloric/YouCompleteMe'
 NeoBundle 'Shougo/neocomplete.vim'
+NeoBundle 'SirVer/ultisnips'
+NeoBundle 'honza/vim-snippets'
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
@@ -731,6 +733,10 @@ let g:jedi#goto_assignments_command = "<Leader>G"
 let g:jedi#goto_definitions_command = "<Leader>D"
 let g:jedi#usages_command = "<Leader>N"
 let g:jedi#rename_command = "<Leader>R"
+let g:UltiSnipsExpandTrigger = "<Tab>"
+let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+let g:UltiSnipsEditSplit = "vertical"
 
 " }}}
 " tabline from StackOverflow {{{
