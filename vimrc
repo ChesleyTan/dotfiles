@@ -658,9 +658,12 @@ NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'Lokaltog/vim-easymotion'
 NeoBundleLazy 'davidhalter/jedi-vim'
 "NeoBundle 'Valloric/YouCompleteMe'
-NeoBundle 'Shougo/neocomplete.vim'
+if has('lua')
+    NeoBundle 'Shougo/neocomplete.vim'
+endif
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
+NeoBundle 'benekestah/neomake'
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
@@ -693,22 +696,24 @@ let g:SuperTabDefaultCompletionType = 'context'
 nnoremap <Leader>c :SyntasticCheck<CR>
 "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
 " NeoComplete Settings {{{
-let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
-let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
-let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
-let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
-inoremap <expr><C-g> neocomplete#undo_completion()
-inoremap <expr><C-l> neocomplete#complete_common_string()
-" <CR>: close popup and save indent.
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-    return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-endfunction
-" <C-h>, <BS>: close popup and delete backword char.
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Quick leader toggle for autocompletion
-nnoremap <Leader>d :NeoCompleteToggle<CR>
+if has('lua')
+    let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
+    let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
+    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
+    let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
+    inoremap <expr><C-g> neocomplete#undo_completion()
+    inoremap <expr><C-l> neocomplete#complete_common_string()
+    " <CR>: close popup and save indent.
+    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    function! s:my_cr_function()
+        return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    endfunction
+    " <C-h>, <BS>: close popup and delete backword char.
+    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    " Quick leader toggle for autocompletion
+    nnoremap <Leader>d :NeoCompleteToggle<CR>
+endif
 " }}}
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
@@ -743,6 +748,7 @@ let g:UltiSnipsListSnippets = "<Leader><Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsEditSplit = "vertical"
+nnoremap <Leader>m :Neomake
 
 " }}}
 " tabline from StackOverflow {{{
