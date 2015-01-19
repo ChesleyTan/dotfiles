@@ -663,7 +663,9 @@ if has('lua')
 endif
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
-NeoBundle 'benekestah/neomake'
+if has('nvim')
+    NeoBundle 'benekestah/neomake'
+endif
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
@@ -748,7 +750,9 @@ let g:UltiSnipsListSnippets = "<Leader><Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsEditSplit = "vertical"
-nnoremap <Leader>m :Neomake
+if has('nvim')
+    nnoremap <Leader>m :Neomake
+endif
 
 " }}}
 " tabline from StackOverflow {{{
