@@ -199,6 +199,11 @@ function! PluginConfig()
             autocmd Filetype java setlocal omnifunc=javacomplete#Complete
             autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
         augroup END
+        if &filetype ==? 'java'
+            setlocal runtimepath+=$HOME/.vim/bundle/javacomplete
+            setlocal omnifunc=javacomplete#Complete
+            setlocal completefunc=javacomplete#CompleteParamsInfo
+        endif
     else
         echom "Eclim enabled"
     endif
