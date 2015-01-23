@@ -73,6 +73,7 @@ augroup defaults
     " Regenerate statusline to truncate intelligently
     autocmd VimResized * call SetStatusline()
     autocmd WinEnter * call SetStatusline()
+    autocmd BufEnter * call SetStatusline()
     " Refresh git information when file is changed
     autocmd BufWritePost * call RefreshGitInfo()
     " Change statusline color when entering insert mode
@@ -96,6 +97,8 @@ inoremap jj <Esc>
 nnoremap ; :
 " Map : to ; in normal mode
 nnoremap : ;
+" Use <Leader>k to insert digraph
+inoremap <Leader>k <C-k>
 " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
 inoremap <C-k> <Up>
 inoremap <C-j> <Down>
