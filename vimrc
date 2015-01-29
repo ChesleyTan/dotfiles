@@ -53,6 +53,17 @@ if !isdirectory($HOME . '/.vim/backup/')
     call mkdir($HOME . '/.vim/backup/')
 endif
 
+" Persistent undo settings
+set undofile " Save undo history
+set undodir=$HOME/.vim/backup/undo// " Store undo history in a central directory
+set undodir+=. " Alternatively, store undo history in the same directory as the file
+set undolevels=1000 " Save a maximum of 1000 undos
+set undoreload=10000 " Save undo history when reloading a file
+" Create undo history directory if it does not exist
+if !isdirectory($HOME . '/.vim/backup/undo')
+    call mkdir($HOME . '/.vim/backup/undo')
+endif
+
 " GUI settings
 set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
