@@ -498,7 +498,7 @@ endfunction
 " Statusline {{{
 " Functions for generating statusline {{{
 function GitBranch()
-    let output=system("git branch | grep '*' | grep -o '\\([A-Za-z0-9]\\+\\s\\?\\)\\+'")
+    let output=system("git branch | grep '*' | grep -o '[^* ]*'")
     if output=="" || output=~?"fatal"
         return ""
     else
