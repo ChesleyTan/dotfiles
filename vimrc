@@ -68,7 +68,7 @@ endif
 set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
 set guioptions-=T "Remove toolbar
-set guifont=Monaco\ 10 "Set gui font
+set guifont=Source\ Code\ Pro\ 13 "Set gui font
 set winaltkeys=no "Disable use of alt key to access menu
 
 " Session settings
@@ -486,12 +486,13 @@ function ColorschemeInit()
     call s:Highlight('Question', '', '', '37', '', '', '#1ABC9C', '', '', '')
     call s:Highlight('MoreMsg', '', '', '37', '', '', '#1ABC9C', '', '', '')
     call s:Highlight('WildMenu', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
-    call s:Highlight('Orange_202', 'bold', 'bold', '202', '235', 'bold', '#FF5F00', '#262626', '', '')
-    call s:Highlight('Blue_51', 'bold', 'bold', '51', '235', 'bold', '#00FFFF', '#262626', '', '')
-    call s:Highlight('Blue_39', 'bold', 'bold', '39', '235', 'bold', '#00AFFF', '#262626', '', '')
-    call s:Highlight('Green_41', 'bold', 'bold', '41', '235', 'bold', '#2ECC71', '#262626', '', '')
     call s:Highlight('Red_196', 'bold', 'bold', '196', '235', 'bold', '#FF0000', '#262626', '', '')
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', '235', 'bold', '#FF5F00', '#262626', '', '')
     call s:Highlight('Green_34', 'bold', 'bold', '34', '235', 'bold', '#00AF00', '#262626', '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', '235', 'bold', '#2ECC71', '#262626', '', '')
+    call s:Highlight('Blue_37', 'bold', 'bold', '37', '235', 'bold', '#1ABC9C', '#262626', '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', '235', 'bold', '#00AFFF', '#262626', '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', '235', 'bold', '#00FFFF', '#262626', '', '')
 endfunction
 
 " }}}
@@ -566,7 +567,8 @@ function SetStatusline()
     setlocal statusline+=%#Orange_202#%r%##      " Read only flag
     setlocal statusline+=%#Blue_51#%m\%##        " Modified flag
     setlocal statusline+=%h                      " Help file flag
-    setlocal statusline+=\ B:%n                  " Buffer number
+    setlocal statusline+=\ %#Blue_37#B:%n/%{bufnr('$')}%##                  " Buffer number
+    setlocal statusline+=\ %#Blue_37#T:%{tabpagenr()}/%{tabpagenr('$')}%##  " Tab number
     if winWidth > 100
         setlocal statusline+=\ %#Green_34#%{gitBranch}%## " Git branch
         setlocal statusline+=%#Green_34#%{gitStatus}%##   " Git status
@@ -574,7 +576,7 @@ function SetStatusline()
     setlocal statusline+=%=                                        " Left/right separator
     setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
     "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
-    setlocal statusline+=%#Blue_39#%{pathshorten(expand('%:p'))}%##%#Green_41#\|%##  " File path with truncated names
+    setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~'))}%##%#Green_41#\|%##  " File path with truncated names
     setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
     setlocal statusline+=R:%3l/%3L               " Cursor line/total lines, reserve 3 spaces for each
     setlocal statusline+=%#Green_41#\|%##%3p     " Percent through file, reserve 3 spaces
@@ -588,12 +590,13 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     if a:statusLineColor == g:insertModeStatuslineColor_cterm
         let l:isEnteringInsertMode = 1
     endif
-    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:gui_statusLineColor, '', '')
-    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:gui_statusLineColor, '', '')
-    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:gui_statusLineColor, '', '')
-    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:gui_statusLineColor, '', '')
     call s:Highlight('Red_196', 'bold', 'bold', '196', a:statusLineColor, 'bold', '#FF0000', a:gui_statusLineColor, '', '')
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:gui_statusLineColor, '', '')
     call s:Highlight('Green_34', 'bold', 'bold', '34', a:statusLineColor, 'bold', '#00AF00', a:gui_statusLineColor, '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:gui_statusLineColor, '', '')
+    call s:Highlight('Blue_37', 'bold', 'bold', '37', a:statusLineColor, 'bold', '#1ABC9C', a:gui_statusLineColor, '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:gui_statusLineColor, '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:gui_statusLineColor, '', '')
     "Status line of current window
     call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:gui_statusLineColor, '', '')
     "Status line color for noncurrent window
@@ -768,47 +771,65 @@ if has('nvim')
 endif
 
 " }}}
-" tabline from StackOverflow {{{
+" tabline from StackOverflow (with modifications) {{{
 set tabline+=%!MyTabLine()
 function MyTabLine()
     let tabline = ''
     " Iterate through each tab page
-    for tabIndex in range(tabpagenr('$'))
+    let numTabs = tabpagenr('$')
+    let currentTab = tabpagenr()
+    let winWidth = 0
+    for winNr in range(winnr('$'))
+        let w = winwidth(winNr + 1)
+        if w > winWidth
+            let winWidth = w
+        endif
+    endfor
+    let maxTabsDisplayed = winWidth / 20
+    let LRPadding = maxTabsDisplayed / 2
+    let evenOddOffset = (maxTabsDisplayed % 2 == 0) ? 0 : 1
+    for tabIndex in range(numTabs)
+        let tabIndex += 1
+        let upperBound = (currentTab < LRPadding) ? LRPadding + (LRPadding - currentTab) : LRPadding
+        let upperBound += evenOddOffset
+        if numTabs > maxTabsDisplayed && tabIndex < currentTab - LRPadding + 1 || tabIndex > currentTab + upperBound
+            continue
+        endif
         " Set highlight for tab
-        if tabIndex + 1 == tabpagenr()
+        if tabIndex == currentTab
             let tabline .= '%#TabLineSel#'
         else
             let tabline .= '%#TabLine#'
         endif
         " Set the tab page number (for mouse clicks)
-        let tabline .= '%' . (tabIndex + 1) . 'T'
+        let tabline .= '%' . (tabIndex) . 'T'
         let tabline .= ' '
         " Set page number string
-        let tabline .= tabIndex + 1 . ' '
+        let tabline .= tabIndex . ' '
         " Get buffer names and statuses
         let tmp = '' " Temp string for buffer names while we loop and check buftype
         let numModified = 0 " &modified counter
-        let bufsRemaining = len(tabpagebuflist(tabIndex + 1)) " Counter to avoid last ' '
+        let bufsRemaining = len(tabpagebuflist(tabIndex)) " Counter to avoid last ' '
         " Iterate through each buffer in the tab
-        for bufIndex in tabpagebuflist(tabIndex + 1)
+        for bufIndex in tabpagebuflist(tabIndex)
+            let currentBufName = bufname(bufIndex)
             " Use a variable to keep track of whether a new name was added
             let newBufNameAdded = 1
-            " buffer types: quickfix gets a [Q], help gets [H]{base fname}
-            " others get 1dir/2dir/3dir/fname shortened to 1/2/3/fname
-            if getbufvar( bufIndex, "&buftype" ) == 'help'
-                let tmp .= '[H]' . fnamemodify( bufname(bufIndex), ':t:s/.txt$//' )
-            elseif getbufvar( bufIndex, "&buftype" ) == 'quickfix'
+            " Special buffer types: [Q] for quickfix, [H]{base fname} for help
+            if getbufvar(bufIndex, "&buftype") == 'help'
+                let tmp .= '[H]' . fnamemodify(currentBufName, ':t:s/.txt$//')
+            elseif getbufvar(bufIndex, "&buftype") == 'quickfix'
                 let tmp .= '[Q]'
             else
                 " Do not show NERDTree or Gundo in the bufferlist
-                if bufname(bufIndex) =~# "NERD" || bufname(bufIndex) =~# "Gundo"
+                if currentBufName =~# "NERD" || currentBufName =~# "Gundo"
                     let newBufNameAdded = 0
                 else
-                    let tmp .= pathshorten(bufname(bufIndex))
+                    let tmp .= pathshorten(fnamemodify(currentBufName, ':~:.'))
                 endif
             endif
             " Check and increment tab's &modified count
-            if getbufvar( bufIndex, "&modified" )
+            if getbufvar(bufIndex, "&modified")
                 let numModified += 1
             endif
             " Add trailing ' ' if necessary
@@ -822,7 +843,7 @@ function MyTabLine()
             let tabline .= '[' . numModified . '+]'
         endif
         " Select the highlighting for the buffer names
-        if tabIndex + 1 == tabpagenr()
+        if tabIndex == currentTab
             let tabline .= '%#TabLineSel#'
         else
             let tabline .= '%#TabLine#'
@@ -842,7 +863,7 @@ function MyTabLine()
     " support mouse clicks
     let tabline .= '%#TabLineFill#%T'
     " Add close button
-    if tabpagenr('$') > 1
+    if numTabs > 1
         " Right-align the label to close the current tab page
         let tabline .= '%=%#TabLineFill#%999X%#Red_196#Close%##'
     endif
@@ -886,5 +907,3 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
-
-"TODO async git remote
