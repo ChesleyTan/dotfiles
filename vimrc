@@ -791,7 +791,16 @@ function MyTabLine()
         let tabIndex += 1
         let upperBound = (currentTab < LRPadding) ? LRPadding + (LRPadding - currentTab) : LRPadding
         let upperBound += evenOddOffset
-        if numTabs > maxTabsDisplayed && tabIndex < currentTab - LRPadding + 1 || tabIndex > currentTab + upperBound
+        if numTabs > maxTabsDisplayed && maxTabsDisplayed > 1
+            " Lower (left) bound for tab listing
+            if tabIndex < currentTab - LRPadding + 1
+                continue
+            " Upper (right) bound for tab listing
+            elseif tabIndex > currentTab + upperBound
+                continue
+            endif
+        " If maxTabsDisplayed is 0, then only show the current tab
+        elseif maxTabsDisplayed <= 1 && tabIndex != currentTab
             continue
         endif
         " Set highlight for tab
