@@ -29,7 +29,7 @@ import qualified Data.Map        as M
 myTerminal = "terminology"
 
 -- Choose whether to use dzen or xmobar as the XMonad bar
-usingBar = "dzen"
+usingBar = "xmobar"
 
 -- Whether focus follows the mouse pointer.
 myFocusFollowsMouse :: Bool
@@ -279,7 +279,7 @@ myStartupHook = setWMName "LG3D"
 -- Choose the command to launch the xmonad bar
 myXmobarBar = "xmobar ~/.xmobarrc_top"
 myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#111111' -fn 'Source Code Pro-10:Bold'"
-mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 0 --tint 0x111111 --height 18 --widthtype request &"
+mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 110 --tint 0x111111 --height 18 --widthtype request &"
 
 main = do
     xmonadBar <- if usingBar == "dzen"
@@ -290,7 +290,7 @@ main = do
     let myLogHook h = if usingBar == "dzen"
                         then dynamicLogWithPP $ defaultPP {
                                 ppCurrent = dzenColor "#2ECC71" "#111111" . wrap "[" "]",
-                                ppHidden  = dzenColor "#555555" "#111111",
+                                ppHidden  = dzenColor "#666666" "#111111",
                                 ppUrgent  = dzenColor "#FF0000" "#111111",
                                 ppLayout  = dzenColor "#E67E22" "#111111",
                                 ppTitle   = dzenColor "#87FF00" "#111111" . dzenEscape . shorten 150,
@@ -299,7 +299,7 @@ main = do
                             }
                         else dynamicLogWithPP $ defaultPP {
                                 ppCurrent = xmobarColor "#2ECC71" "#111111" . wrap "[" "]",
-                                ppHidden = xmobarColor "#555555" "#111111",
+                                ppHidden = xmobarColor "#666666" "#111111",
                                 ppUrgent = xmobarColor "#FF0000" "#111111",
                                 ppLayout = xmobarColor "#E67E22" "#111111",
                                 ppTitle = xmobarColor "#87FF00" "#111111" . shorten 150,

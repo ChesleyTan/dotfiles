@@ -1,7 +1,8 @@
-Config { font = "xft:Source Code Pro Bold:size=10:antialias=true",
+Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true",
     position = TopSize C 100 16,
     bgColor = "#111111",
     fgColor = "#E0E0E0",
+    alpha = 150,
     lowerOnStart = True,
     commands = [ 
         Run StdinReader
