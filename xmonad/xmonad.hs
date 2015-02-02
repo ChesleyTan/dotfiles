@@ -69,11 +69,11 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- launch a terminal
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
-    -- launch dmenu
-    , ((modm,               xK_p     ), spawn "dmenu_run -nb '#111111' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
+    -- launch gnome-do
+    , ((modm,               xK_p     ), spawn "gnome-do")
 
-    -- launch gmrun
-    , ((modm .|. shiftMask, xK_p     ), spawn "gmrun")
+    -- launch dmenu
+    , ((modm .|. shiftMask, xK_p     ), spawn "dmenu_run -nb '#111111' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
 
     -- close focused window
     , ((modm .|. shiftMask, xK_c     ), kill)
@@ -238,10 +238,11 @@ myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLay
 -- 'className' and 'resource' are used below.
 
 myManageHook = composeAll [
-    className =? "MPlayer"        --> doFloat,
-    className =? "Gimp"           --> doFloat,
-    resource  =? "desktop_window" --> doIgnore,
-    resource  =? "kdesktop"       --> doIgnore,
+    className =? "MPlayer"          --> doFloat,
+    className =? "Gimp"             --> doFloat,
+    resource  =? "desktop_window"   --> doIgnore,
+    resource  =? "kdesktop"         --> doIgnore,
+    className =? "Do"               --> doIgnore,
   --className =? "Google-chrome-stable" --> doShift "2:web",
   --className =? "Google-chrome" --> doShift "2:web",
     className =? "libreoffice-writer" --> doShift "3:office"
