@@ -349,7 +349,7 @@ function! LAG()
 endfunction
 command LAG call LAG()
 function! RemoveWhitespace()
-    % !sed 's/[ \t]*$//'
+    % !sed 's/[ \t]\+$//'
 endfunction
 command RemoveWhitespace call RemoveWhitespace()
 function! SyntaxToggle()
