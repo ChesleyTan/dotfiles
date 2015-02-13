@@ -96,106 +96,106 @@ set list
 execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
 " Custom mappings {{{
-:command Q q
-:command W w
-cmap Q! q!
-" Prevent Ex Mode
-map Q <Nop>
-" Use jj to exit insert mode, rather than <Esc>
-inoremap jj <Esc>
-" Map ; to : in normal mode
-nnoremap ; :
-" Map : to ; in normal mode
-nnoremap : ;
-" Use <Leader>k to insert digraph
-inoremap <Leader>k <C-k>
-" Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
-inoremap <C-k> <Up>
-inoremap <C-j> <Down>
-inoremap <C-h> <Left>
-inoremap <C-l> <Right>
-" Smart indent when entering insert mode
-nnoremap <expr> i SmartInsertModeEnter()
-" Easy buffer switching
-nnoremap <Leader>b :buffers<CR>:buffer<Space>
-nnoremap t :tabnew
-" Clear hlsearch using Return/Enter
-nnoremap <CR> :noh<CR><CR>
-" Allow saving when forgetting to start vim with sudo
-cmap w!! w !sudo tee > /dev/null %
-" Easy toggle for paste
-nnoremap <C-p> :set paste!<CR>:echo "Paste mode: " . &paste<CR>
-" Easy page up/down
-nnoremap <C-Up> <C-u>
-nnoremap <C-Down> <C-d>
-nnoremap <C-k> <C-u>
-nnoremap <C-j> <C-d>
-vnoremap <C-k> <C-u>
-vnoremap <C-j> <C-d>
+function s:SetMappings()
+    :command Q q
+    :command W w
+    cmap Q! q!
+    " Prevent Ex Mode
+    map Q <Nop>
+    " Use jj to exit insert mode, rather than <Esc>
+    inoremap jj <Esc>
+    " Map ; to : in normal mode
+    nnoremap ; :
+    " Map : to ; in normal mode
+    nnoremap : ;
+    " Use <Leader>k to insert digraph
+    inoremap <Leader>k <C-k>
+    " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
+    inoremap <C-k> <Up>
+    inoremap <C-j> <Down>
+    inoremap <C-h> <Left>
+    inoremap <C-l> <Right>
+    " Smart indent when entering insert mode
+    nnoremap <expr> i SmartInsertModeEnter()
+    " Easy buffer switching
+    nnoremap <Leader>b :buffers<CR>:buffer<Space>
+    nnoremap t :tabnew
+    " Clear hlsearch using Return/Enter
+    nnoremap <CR> :noh<CR><CR>
+    " Allow saving when forgetting to start vim with sudo
+    cmap w!! w !sudo tee > /dev/null %
+    " Easy toggle for paste
+    nnoremap <C-p> :set paste!<CR>:echo "Paste mode: " . &paste<CR>
+    " Easy page up/down
+    nnoremap <C-Up> <C-u>
+    nnoremap <C-Down> <C-d>
+    nnoremap <C-k> <C-u>
+    nnoremap <C-j> <C-d>
+    vnoremap <C-k> <C-u>
+    vnoremap <C-j> <C-d>
 
-" Allow window commands in insert mode (currently overridden by omnicomplete binding)
-" imap <C-w> <C-o><C-w>
-" Easy split navigation using alt key
-nnoremap <A-Up> <C-w><Up>
-nnoremap <A-Down> <C-w><Down>
-nnoremap <A-Left> <C-w><Left>
-nnoremap <A-Right> <C-w><Right>
-nnoremap <A-k> <C-w><Up>
-nnoremap <A-j> <C-w><Down>
-nnoremap <A-h> <C-w><Left>
-nnoremap <A-l> <C-w><Right>
-" Mapping alt+(hjkl) doesn't work in terminal, so we use escape codes instead
-nnoremap k <C-w><Up>
-nnoremap j <C-w><Down>
-nnoremap h <C-w><Left>
-nnoremap l <C-w><Right>
-" Note: <bar> denotes |
-" Shortcuts for window commands
-nnoremap <bar> <C-w>v
-nnoremap <bar><bar> :vnew<CR><C-w>L
-nnoremap _ <C-w>s
-nnoremap __ <C-w>n
-nnoremap - <C-w>-
-nnoremap + <C-w>+
-nnoremap > <C-w>>:call SetStatusline()<CR>
-nnoremap < <C-w><:call SetStatusline()<CR>
-" Mappings to move window splits
-nnoremap <Space><Left> <C-w>H
-nnoremap <Space><Right> <C-w>L
-nnoremap <Space><Up> <C-w>K
-nnoremap <Space><Down> <C-w>J
-nnoremap <Space>h <C-w>H
-nnoremap <Space>l <C-w>L
-nnoremap <Space>k <C-w>K
-nnoremap <Space>j <C-w>J
-" Easy system clipboard copy/paste
-vnoremap <C-c> "+y
-vnoremap <C-x> "+x
-inoremap <C-S-v> <C-o>"+p
-iunmap <C-V>
-" Delete to first character on line
-inoremap <C-u> <C-o>d^
-" Mapping for autoformat
-nnoremap <C-f> gq
-nnoremap <C-S-f> mkggVGgq'k
-" Spell ignore commands
-command SpellIgnoreOnce normal zG
-command SpellIgnore normal zg
-" Navigation mappings
-" Jump to beginning of tag
-nnoremap {{ vat<Esc>'<
-" Jump to end of tag
-nnoremap }} vat<Esc>'>
-nnoremap <Tab> ==
-vnoremap <Tab> =
-" Easy delete to black hole register
-nnoremap D "_dd
-" Quick toggle terminal background transparency
-nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
-" Quick toggle fold method
-nnoremap <Leader>f :call ToggleFoldMethod()<CR>
-" Quick toggle syntax highlighting
-nnoremap <Leader>s :call SyntaxToggle()<CR>
+    " Allow window commands in insert mode (currently overridden by omnicomplete binding)
+    " imap <C-w> <C-o><C-w>
+    " Easy split navigation using alt key
+    nnoremap <A-Up> <C-w><Up>
+    nnoremap <A-Down> <C-w><Down>
+    nnoremap <A-Left> <C-w><Left>
+    nnoremap <A-Right> <C-w><Right>
+    nnoremap <A-k> <C-w><Up>
+    nnoremap <A-j> <C-w><Down>
+    nnoremap <A-h> <C-w><Left>
+    nnoremap <A-l> <C-w><Right>
+    " Mapping alt+(hjkl) doesn't work in terminal, so we use escape codes instead
+    nnoremap k <C-w><Up>
+    nnoremap j <C-w><Down>
+    nnoremap h <C-w><Left>
+    nnoremap l <C-w><Right>
+    " Note: <bar> denotes |
+    " Shortcuts for window commands
+    nnoremap <bar> <C-w>v
+    nnoremap <bar><bar> :vnew<CR><C-w>L
+    nnoremap _ <C-w>s
+    nnoremap __ <C-w>n
+    nnoremap - <C-w>-
+    nnoremap + <C-w>+
+    nnoremap > <C-w>>:call SetStatusline()<CR>
+    nnoremap < <C-w><:call SetStatusline()<CR>
+    " Mappings to move window splits
+    nnoremap <Space><Left> <C-w>H
+    nnoremap <Space><Right> <C-w>L
+    nnoremap <Space><Up> <C-w>K
+    nnoremap <Space><Down> <C-w>J
+    nnoremap <Space>h <C-w>H
+    nnoremap <Space>l <C-w>L
+    nnoremap <Space>k <C-w>K
+    nnoremap <Space>j <C-w>J
+    " Easy system clipboard copy/paste
+    vnoremap <C-c> "+y
+    vnoremap <C-x> "+x
+    inoremap <C-p> <C-o>"+p
+    " Delete to first character on line
+    inoremap <C-u> <C-o>d^
+    " Mapping for autoformat
+    nnoremap <C-f> mkggVGgq'k
+    " Spell ignore commands
+    command SpellIgnoreOnce normal zG
+    command SpellIgnore normal zg
+    " Navigation mappings
+    " Jump to beginning of tag
+    nnoremap {{ vat<Esc>'<
+    " Jump to end of tag
+    nnoremap }} vat<Esc>'>
+    nnoremap <Tab> ==
+    vnoremap <Tab> =
+    " Easy delete to black hole register
+    nnoremap D "_dd
+    " Quick toggle terminal background transparency
+    nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
+    " Quick toggle fold method
+    nnoremap <Leader>f :call ToggleFoldMethod()<CR>
+    " Quick toggle syntax highlighting
+    nnoremap <Leader>s :call SyntaxToggle()<CR>
+endfunction
 " }}}
 " Custom functions {{{
 
@@ -903,6 +903,7 @@ elseif empty($DISPLAY) "If running in a tty, use solarized theme for better colo
 else
     call Custom()
 endif
+call s:SetMappings()
 " }}}
 " Add the virtualenv's site-packages to vim path
 py << EOF
