@@ -63,6 +63,9 @@ if !isdirectory($HOME . '/.vim/backup/undo')
     call mkdir($HOME . '/.vim/backup/undo')
 endif
 
+" Spell settings
+set spellfile=$HOME/Dropbox/vim/spell/en.utf-8.add
+
 " GUI settings
 set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
@@ -178,8 +181,14 @@ function s:SetMappings()
     " Mapping for autoformat
     nnoremap <C-f> mkggVGgq'k
     " Spell ignore commands
-    command SpellIgnoreOnce normal zG
     command SpellIgnore normal zg
+    command SpellIgnoreRemove normal zug
+    command SpellIgnoreOnce normal zG
+    command SpellIgnoreOnceRemove normal zuG
+    command SpellWrong normal zw
+    command SpellWrongRemove normal zuw
+    command SpellWrongOnce normal zW
+    command SpellWrongOnceRemove normal zuW
     " Navigation mappings
     " Jump to beginning of tag
     nnoremap {{ vat<Esc>'<
@@ -636,7 +645,7 @@ function ReverseColors()
 endfunction
 " }}}
 " }}}
-" {{{ Constants
+" Constants {{{
 let g:defaultStatuslineColor_cterm = 235
 let g:defaultStatuslineColor_gui = '#073642'
 let g:insertModeStatuslineColor_cterm = 23
@@ -753,7 +762,7 @@ nnoremap <Leader>n :Note
 let g:EclimCompletionMethod = 'omnifunc'
 let g:calendar_google_calendar = 0
 let g:calendar_google_task = 0
-let g:calendar_cache_directory = expand('~/Dropbox/calendar.vim')
+let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
 let g:jedi#popup_on_dot = 0
 let g:jedi#popup_select_first = 0
 let g:jedi#goto_assignments_command = "<Leader>G"
