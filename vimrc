@@ -372,6 +372,9 @@ function! SyntaxToggle()
     endif
 endfunction
 command SyntaxToggle call SyntaxToggle()
+function! CustomNotesFoldText()
+    return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart - 1) . ')'
+endfunction
 
 " }}}
 " Custom colorscheme {{{
@@ -903,6 +906,9 @@ augroup END
 function s:FileType_C()
     inoreabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
+augroup ft_notes
+    autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
+augroup END
 " }}}
 " Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
