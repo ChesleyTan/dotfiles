@@ -373,7 +373,7 @@ function! SyntaxToggle()
 endfunction
 command SyntaxToggle call SyntaxToggle()
 function! CustomNotesFoldText()
-    return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart - 1) . ')'
+    return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
 
 " }}}
@@ -761,6 +761,7 @@ let g:gundo_right = 1
 let g:gundo_preview_bottom = 1
 command DiffTree GundoToggle
 let g:notes_directories = ['~/Dropbox/Shared Notes']
+let g:notes_word_boundaries = 1
 nnoremap <Leader>n :Note 
 let g:EclimCompletionMethod = 'omnifunc'
 let g:calendar_google_calendar = 0
