@@ -70,6 +70,7 @@ set spellfile=$HOME/Dropbox/vim/spell/en.utf-8.add
 set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
 set guioptions-=T "Remove toolbar
+set guioptions-=e "Remove GUI-style tabline
 set guifont=Source\ Code\ Pro\ 13 "Set gui font
 set winaltkeys=no "Disable use of alt key to access menu
 
