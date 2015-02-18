@@ -52,7 +52,7 @@ export LS_COLORS
 function GitBranch() {
     # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
-        echo " $(tput bold)$(tput setaf 34)($(git branch | grep '*' | grep -o '[^* ]*') $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes
+        echo " $(tput bold)$(tput setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate))$(tput sgr0)" # Extracts current git branch using grep and regexes
     fi
 }
 function GitUpToDate() {
