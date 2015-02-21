@@ -358,10 +358,14 @@ function! LAG()
     endif
 endfunction
 command LAG call LAG()
-function! RemoveWhitespace()
-    % !sed 's/[ \t]\+$//'
+function! ShowWhitespace()
+    /\s\+$
 endfunction
-command RemoveWhitespace call RemoveWhitespace()
+command ShowWhitespace call ShowWhitespace()
+function! RemoveWhitespace() range
+    execute "silent!" . a:firstline . ',' . a:lastline . "s/\\s\\+$"
+endfunction
+command -range=% RemoveWhitespace <line1>,<line2>call RemoveWhitespace()
 function! SyntaxToggle()
     if exists('g:syntax_on')
         syntax off
