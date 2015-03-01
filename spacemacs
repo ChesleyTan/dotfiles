@@ -103,6 +103,7 @@
 (defun dotspacemacs/init ()
   "User initialization for Spacemacs. This function is called at the very
  startup."
+  (global-linum-mode 1)
   )
 
 (defun dotspacemacs/config ()
