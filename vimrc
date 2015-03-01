@@ -699,6 +699,7 @@ if has('nvim')
     NeoBundle 'benekestah/neomake'
 endif
 NeoBundle 'sjl/gundo.vim.git'
+NeoBundle 'luochen1990/rainbow'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
@@ -783,6 +784,7 @@ let g:UltiSnipsListSnippets = "<Leader><Tab>"
 let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsEditSplit = "vertical"
+let g:rainbow_active = 0
 if has('nvim')
     nnoremap <Leader>m :Neomake
 endif
