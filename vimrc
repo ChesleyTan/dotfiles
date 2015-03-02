@@ -377,6 +377,10 @@ function! SyntaxToggle()
     endif
 endfunction
 command SyntaxToggle call SyntaxToggle()
+function! OpenInExternalProgram()
+    call system('xdg-open ' . expand('%') . ' &')
+endfunction
+command OpenInExternalProgram call OpenInExternalProgram()
 function! CustomNotesFoldText()
     return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
