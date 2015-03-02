@@ -5,7 +5,7 @@ fuzzy_edges 0
 geometry 1x1-0+0
 grow_gravity E
 icon_gravity W
-icon_size 20
+icon_size 18
 log_level err
 max_geometry 0x0
 no_shrink false
@@ -14,7 +14,7 @@ scrollbars none
 skip_taskbar true
 sticky true
 tint_color "#111111"
-tint_level 120
+tint_level 150
 transparent true
 vertical false
 window_layer normal

@@ -219,6 +219,8 @@ function s:SetMappings()
     nnoremap <Leader>ts :call SyntaxToggle()<CR>
     " Quick toggle line numbers
     nnoremap <Leader>tn :set number!<CR>
+    " Quick toggle for color column at 80 characters
+    nnoremap <Leader>t8 :call ColorColumnToggle()<CR>
 endfunction
 " }}}
 " Custom functions {{{
@@ -391,6 +393,14 @@ function! SyntaxToggle()
     endif
 endfunction
 command SyntaxToggle call SyntaxToggle()
+function! ColorColumnToggle()
+    if &colorcolumn != 80
+        set colorcolumn=80
+    else
+        set colorcolumn=""
+    endif
+endfunction
+command ColorColumnToggle call ColorColumnToggle()
 function! OpenInExternalProgram()
     call system('xdg-open ' . expand('%') . ' &')
 endfunction
