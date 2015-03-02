@@ -129,7 +129,7 @@ function s:SetMappings()
     " Allow saving when forgetting to start vim with sudo
     cmap w!! w !sudo tee > /dev/null %
     " Easy toggle for paste
-    nnoremap <C-p> :set paste!<CR>:echo "Paste mode: " . &paste<CR>
+    nnoremap <Leader>tp :set paste!<CR>:echo "Paste mode: " . &paste<CR>
     " Easy page up/down
     nnoremap <C-Up> <C-u>
     nnoremap <C-Down> <C-d>
@@ -212,11 +212,13 @@ function s:SetMappings()
     " Easy delete to black hole register
     nnoremap D "_dd
     " Quick toggle terminal background transparency
-    nnoremap <S-t> :call ToggleTransparentTerminalBackground()<CR>
+    nnoremap <Leader>tt :call ToggleTransparentTerminalBackground()<CR>
     " Quick toggle fold method
-    nnoremap <Leader>f :call ToggleFoldMethod()<CR>
+    nnoremap <Leader>tf :call ToggleFoldMethod()<CR>
     " Quick toggle syntax highlighting
-    nnoremap <Leader>s :call SyntaxToggle()<CR>
+    nnoremap <Leader>ts :call SyntaxToggle()<CR>
+    " Quick toggle line numbers
+    nnoremap <Leader>tn :set number!<CR>
 endfunction
 " }}}
 " Custom functions {{{
@@ -698,7 +700,6 @@ NeoBundle 'xolox/vim-easytags'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-notes'
 NeoBundle 'itchyny/calendar.vim'
-NeoBundle 'terryma/vim-multiple-cursors'
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdtree'
@@ -763,7 +764,7 @@ if has('lua')
     inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
     inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
     " Quick leader toggle for autocompletion
-    nnoremap <Leader>d :NeoCompleteToggle<CR>
+    nnoremap <Leader>ta :NeoCompleteToggle<CR>
 endif
 " }}}
 " Disable easytag's warning about vim's updatetime being too low
