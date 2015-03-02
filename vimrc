@@ -197,6 +197,18 @@ function s:SetMappings()
     nnoremap }} vat<Esc>'>
     nnoremap <Tab> ==
     vnoremap <Tab> =
+    " Search forwards for selected text
+    vnoremap <silent> * :<C-u>
+    \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+    \gvy/<C-r><C-r>=substitute(
+    \escape(@", '/\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+    \gV:call setreg('"', old_reg, old_regtype)<CR>
+    " Search backwards for selected text
+    vnoremap <silent> # :<C-u>
+    \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
+    \gvy?<C-r><C-r>=substitute(
+    \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
+    \gV:call setreg('"', old_reg, old_regtype)<CR>
     " Easy delete to black hole register
     nnoremap D "_dd
     " Quick toggle terminal background transparency
