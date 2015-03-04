@@ -763,6 +763,8 @@ if has('lua')
     let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
     let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
     let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
+    let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
+    let g:neocomplete#cursor_hold_i_time = 500 " Time to delay generation of autocompletions
     inoremap <expr><C-g> neocomplete#undo_completion()
     inoremap <expr><C-l> neocomplete#complete_common_string()
     " <CR>: close popup and save indent.
