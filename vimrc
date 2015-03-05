@@ -715,6 +715,7 @@ NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
 NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundle 'Shougo/unite.vim'
 NeoBundleLazy 'davidhalter/jedi-vim'
 "NeoBundle 'Valloric/YouCompleteMe'
 if has('lua')
@@ -814,6 +815,8 @@ let g:UltiSnipsJumpForwardTrigger = "<Tab>"
 let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
 let g:UltiSnipsEditSplit = "vertical"
 let g:rainbow_active = 0
+nnoremap <Leader>u :Unite file buffer<CR>
+nnoremap <Leader>uo :Unite output:
 if has('nvim')
     nnoremap <Leader>m :Neomake
 endif
