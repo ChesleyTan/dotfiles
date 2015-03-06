@@ -731,6 +731,7 @@ NeoBundle 'luochen1990/rainbow'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
+NeoBundle 'chrisbra/unicode.vim'
 
 augroup neoBundleLazySource
     autocmd FileType python NeoBundleSource jedi-vim
