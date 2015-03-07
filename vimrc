@@ -724,7 +724,7 @@ endif
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 if has('nvim')
-    NeoBundle 'benekestah/neomake'
+    NeoBundle 'benekastah/neomake'
 endif
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'luochen1990/rainbow'
