@@ -20,7 +20,8 @@ set shiftwidth=4 " Tab size for automatic indentation
 set shiftround " When using shift identation, round to multiple of shift width
 set laststatus=2 " Always show statusline on last window
 set pastetoggle=<F3> " Toggle paste mode
-set mouse=a " Allow using mouse to change cursor position
+set mouse=nvc " Allow using mouse to change cursor position in normal, visual,
+              " and command line modes
 set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
 set textwidth=80 " Maximum width in characters
