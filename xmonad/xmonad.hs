@@ -162,6 +162,9 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Rename workspaces
     , ((modm, xK_r), renameWorkspace defaultXPConfig)
+
+    -- Lock screen
+    , ((modm .|. shiftMask, xK_l), spawn "dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock")
     ]
 
     ++
@@ -243,15 +246,15 @@ myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLay
 -- 'className' and 'resource' are used below.
 
 myManageHook = composeAll [
-    className =? "MPlayer"            --> doFloat,
-    className =? "Gimp"               --> doFloat,
-    resource  =? "desktop_window"     --> doIgnore,
-    resource  =? "kdesktop"           --> doIgnore,
-    className =? "Do"                 --> doIgnore,
-  --className =? "Google-chrome-stable" --> doShift "2:web",
-  --className =? "Google-chrome" --> doShift "2:web",
-    className =? "libreoffice-writer" --> doShift "3:office"
-    className =? "zeal"               --> doShift "4:doc"
+      className =? "MPlayer"            --> doFloat
+    , className =? "Gimp"               --> doFloat
+    , resource  =? "desktop_window"     --> doIgnore
+    , resource  =? "kdesktop"           --> doIgnore
+    , className =? "Do"                 --> doIgnore
+  --, className =? "Google-chrome-stable" --> doShift "2:web"
+  --, className =? "Google-chrome" --> doShift "2:web"
+    , className =? "libreoffice-writer" --> doShift "3:office"
+    , className =? "zeal"               --> doShift "4:doc"
     ]
 
 ------------------------------------------------------------------------
