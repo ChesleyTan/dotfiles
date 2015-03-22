@@ -3,6 +3,7 @@ import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
 import XMonad.Actions.UpdatePointer
 import XMonad.Actions.NoBorders
+import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.SetWMName
 import XMonad.Hooks.Minimize
@@ -16,6 +17,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.MosaicAlt
 import XMonad.Layout.Grid
 import XMonad.Layout.TwoPane
+import XMonad.Prompt
 import XMonad.Util.Run
 import Data.Monoid
 import System.Exit
@@ -70,52 +72,52 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     [ ((modm .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
 
     -- launch gnome-do
-    , ((modm,               xK_p     ), spawn "gnome-do")
+    , ((modm,               xK_p), spawn "gnome-do")
 
     -- launch dmenu
-    , ((modm .|. shiftMask, xK_p     ), spawn "dmenu_run -nb '#111111' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
+    , ((modm .|. shiftMask, xK_p), spawn "dmenu_run -nb '#111111' -nf '#2ECC71' -sb '#005F5F' -sf '#EEEEEE' -i -l 10")
 
     -- close focused window
-    , ((modm .|. shiftMask, xK_c     ), kill)
+    , ((modm .|. shiftMask, xK_c), kill)
 
      -- Rotate through the available layout algorithms
-    , ((modm,               xK_space ), sendMessage NextLayout)
+    , ((modm,               xK_space), sendMessage NextLayout)
 
     --  Reset the layouts on the current workspace to default
-    , ((modm .|. shiftMask, xK_space ), setLayout $ XMonad.layoutHook conf)
+    , ((modm .|. shiftMask, xK_space), setLayout $ XMonad.layoutHook conf)
 
     -- Resize viewed windows to the correct size
-    , ((modm,               xK_n     ), refresh)
+    , ((modm,               xK_n), refresh)
 
     -- Move focus to the next window
-    , ((modm,               xK_Tab   ), windows W.focusDown)
+    , ((modm,               xK_Tab), windows W.focusDown)
 
     -- Move focus to the next window
-    , ((modm,               xK_j     ), windows W.focusDown)
+    , ((modm,               xK_j), windows W.focusDown)
 
     -- Move focus to the previous window
-    , ((modm,               xK_k     ), windows W.focusUp  )
+    , ((modm,               xK_k), windows W.focusUp  )
 
     -- Move focus to the master window
-    , ((modm,               xK_m     ), windows W.focusMaster  )
+    , ((modm,               xK_m), windows W.focusMaster  )
 
     -- Swap the focused window and the master window
     , ((modm,               xK_Return), windows W.swapMaster)
 
     -- Swap the focused window with the next window
-    , ((modm .|. shiftMask, xK_j     ), windows W.swapDown  )
+    , ((modm .|. shiftMask, xK_j), windows W.swapDown  )
 
     -- Swap the focused window with the previous window
-    , ((modm .|. shiftMask, xK_k     ), windows W.swapUp    )
+    , ((modm .|. shiftMask, xK_k), windows W.swapUp    )
 
     -- Shrink the master area
-    , ((modm,               xK_h     ), sendMessage Shrink)
+    , ((modm,               xK_h), sendMessage Shrink)
 
     -- Expand the master area
-    , ((modm,               xK_l     ), sendMessage Expand)
+    , ((modm,               xK_l), sendMessage Expand)
 
     -- Push window back into tiling
-    , ((modm,               xK_t     ), withFocused $ windows . W.sink)
+    , ((modm,               xK_t), withFocused $ windows . W.sink)
 
     -- Increment the number of windows in the master area
     -- Deincrement the number of windows in the master area
@@ -124,20 +126,20 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     -- Toggle the status bar gap
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
-    , ((modm              , xK_b     ), sendMessage ToggleStruts)
+    , ((modm              , xK_b), sendMessage ToggleStruts)
 
     -- Quit xmonad
-    , ((modm .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modm .|. shiftMask, xK_q), io (exitWith ExitSuccess))
 
     -- Restart xmonad
-    , ((modm              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modm              , xK_q), spawn "xmonad --recompile; xmonad --restart")
 
     -- Run GridSelect module
     , ((modm, xK_g), goToSelected defaultGSConfig)
 
     -- Minimize keybindings
-    , ((modm,               xK_m     ), withFocused minimizeWindow)
-    , ((modm .|. shiftMask, xK_m     ), sendMessage RestoreNextMinimizedWin)
+    , ((modm,               xK_m), withFocused minimizeWindow)
+    , ((modm .|. shiftMask, xK_m), sendMessage RestoreNextMinimizedWin)
     
     -- Maximize keybindings
     , ((modm, xK_z), withFocused (sendMessage . maximizeRestore))
@@ -157,22 +159,25 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Toggle borders (XMonad.Actions.NoBorders)
     , ((modm .|. shiftMask, xK_b), withFocused toggleBorder)
-    ]
-    ++
 
+    -- Rename workspaces
+    , ((modm, xK_r), renameWorkspace defaultXPConfig)
+    ]
+
+    ++
     -- mod-[1..9], Switch to workspace N
     -- mod-shift-[1..9], Move client to workspace N
     [((m .|. modm, k), windows $ f i)
         | (i, k) <- zip (XMonad.workspaces conf) [xK_1 .. xK_9]
         , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
-    ++
 
+    {-- Disabled --}
+    -- ++
     -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
     -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-    [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
-        | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-        , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-
+    -- [((m .|. modm, key), screenWorkspace sc >>= flip whenJust (windows . f))
+    --     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+    --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
 ------------------------------------------------------------------------
 -- Mouse bindings: default actions bound to mouse events
@@ -292,25 +297,27 @@ main = do
                     else spawnPipe myXmobarBar
     spawn mySysTray
 
-    let myLogHook h = if usingBar == "dzen"
-                        then dynamicLogWithPP $ defaultPP {
-                                ppCurrent = dzenColor "#2ECC71" "#111111" . wrap "[" "]",
-                                ppHidden  = dzenColor "#666666" "#111111",
-                                ppUrgent  = dzenColor "#FF0000" "#111111",
-                                ppLayout  = dzenColor "#E67E22" "#111111",
-                                ppTitle   = dzenColor "#87FF00" "#111111" . dzenEscape . shorten 150,
-                                ppSep     = " ",
-                                ppOutput  = hPutStrLn h
-                            }
-                        else dynamicLogWithPP $ defaultPP {
-                                ppCurrent = xmobarColor "#2ECC71" "#111111" . wrap "[" "]",
-                                ppHidden = xmobarColor "#666666" "#111111",
-                                ppUrgent = xmobarColor "#FF0000" "#111111",
-                                ppLayout = xmobarColor "#E67E22" "#111111",
-                                ppTitle = xmobarColor "#87FF00" "#111111" . shorten 150,
-                                ppSep = " ",
-                                ppOutput = hPutStrLn h
-                            }
+    let myLogPP = if usingBar == "dzen"
+                        then defaultPP {
+                            ppCurrent = dzenColor "#2ECC71" "#111111" . wrap "[" "]",
+                            ppHidden  = dzenColor "#666666" "#111111",
+                            ppUrgent  = dzenColor "#FF0000" "#111111",
+                            ppLayout  = dzenColor "#E67E22" "#111111",
+                            ppTitle   = dzenColor "#87FF00" "#111111" . dzenEscape . shorten 150,
+                            ppSep     = " ",
+                            ppOutput  = hPutStrLn xmonadBar
+                        }
+                        else defaultPP {
+                            ppCurrent = xmobarColor "#2ECC71" "#111111" . wrap "[" "]",
+                            ppHidden = xmobarColor "#666666" "#111111",
+                            ppUrgent = xmobarColor "#FF0000" "#111111",
+                            ppLayout = xmobarColor "#E67E22" "#111111",
+                            ppTitle = xmobarColor "#87FF00" "#111111" . shorten 150,
+                            ppSep = " ",
+                            ppOutput = hPutStrLn xmonadBar
+                        }
+
+    let myLogHook = dynamicLogWithPP =<< workspaceNamesPP myLogPP
     xmonad $ defaultConfig {
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
@@ -335,7 +342,7 @@ main = do
 
         -- Add transparency to inactive windows (fadeInactiveLogHook)
         -- Move pointer to center of newly focused window (updatePointer)
-        logHook            = myLogHook xmonadBar >> fadeInactiveLogHook 0.9 >> updatePointer (Relative 0.5 0.5),
+        logHook            = myLogHook >> fadeInactiveLogHook 0.9 >> updatePointer (Relative 0.5 0.5),
         startupHook        = myStartupHook
     }
 
