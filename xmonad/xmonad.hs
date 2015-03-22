@@ -58,7 +58,7 @@ myModMask = mod4Mask
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
-myWorkspaces = ["1:main","2:web","3:office","4","5","6","7","8","9"]
+myWorkspaces = ["1:main","2:web","3:office","4:doc","5","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor = "#353535"
@@ -243,14 +243,15 @@ myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLay
 -- 'className' and 'resource' are used below.
 
 myManageHook = composeAll [
-    className =? "MPlayer"          --> doFloat,
-    className =? "Gimp"             --> doFloat,
-    resource  =? "desktop_window"   --> doIgnore,
-    resource  =? "kdesktop"         --> doIgnore,
-    className =? "Do"               --> doIgnore,
+    className =? "MPlayer"            --> doFloat,
+    className =? "Gimp"               --> doFloat,
+    resource  =? "desktop_window"     --> doIgnore,
+    resource  =? "kdesktop"           --> doIgnore,
+    className =? "Do"                 --> doIgnore,
   --className =? "Google-chrome-stable" --> doShift "2:web",
   --className =? "Google-chrome" --> doShift "2:web",
     className =? "libreoffice-writer" --> doShift "3:office"
+    className =? "zeal"               --> doShift "4:doc"
     ]
 
 ------------------------------------------------------------------------
