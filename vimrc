@@ -420,7 +420,7 @@ function! GetVisualSelection()
         let @v = v_save
     endtry
 endfunction
-" Source: http://stackoverflow.com/a/26140622
+" Adapted from: http://stackoverflow.com/a/26140622
 function! CenterSelection()
     let v = GetVisualSelection()
     " \zs and \ze to start and end match respectively
@@ -429,9 +429,14 @@ function! CenterSelection()
     let rregex = '\s*$'
     let whitespace = matchstr(v, lregex)
     let whitespace .= matchstr(v, rregex)
+    " Replace tabs with 4 spaces
+    let whitespace = substitute(whitespace, '\t', '    ', '')
     let length = len(whitespace)
+    " Split whitespace evenly between the beginning and end of line
     let v = substitute(v, lregex, whitespace[length/2:], '')
     let v = substitute(v, rregex, whitespace[:length/2-1], '')
+    " Remove redundant newline
+    let v = substitute(v, '\n', '', '')
     " Save virtualedit setting
     let ve_save = &virtualedit
     " Save old v register contents
@@ -441,7 +446,14 @@ function! CenterSelection()
     " Set contents of v register to centered text
     call setreg('v', v, visualmode())
     " Replace the selected text with the centered version
-    normal! gvx"vP
+    if line('.') == line('$') " Special case when cursor is on the last line
+        " When the cursor on the last line, the cursor moves up one line after
+        " the current line is deleted, so we paste after the current line
+        normal! gvx"vp
+    else
+        " Otherwise, we paste before the current line
+        normal! gvx"vP
+    endif
     " Restore old v register contents
     let @v = v_save
     " Restore virtualedit setting
@@ -449,6 +461,7 @@ function! CenterSelection()
 endfunction
 command OpenInExternalProgram call OpenInExternalProgram()
 function! CustomNotesFoldText()
+    " Show number of lines in fold
     return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
 command MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
