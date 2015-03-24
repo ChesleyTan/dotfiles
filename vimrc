@@ -841,7 +841,7 @@ endif
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
 let g:nerdtree_tabs_open_on_gui_startup = 1
-let g:nerdtree_tabs_open_on_console_startup = 1
+let g:nerdtree_tabs_open_on_console_startup = 0
 let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
 let g:nerdtree_tabs_open_on_new_tab = 1
