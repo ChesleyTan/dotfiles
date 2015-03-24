@@ -815,6 +815,8 @@ command Tree NERDTreeTabsToggle
 nnoremap <Leader>t :Tree<CR>
 let g:SuperTabDefaultCompletionType = 'context'
 nnoremap <Leader>c :SyntasticCheck<CR>
+" Quick leader toggle for Syntastic checking
+nnoremap <Leader>tc :SyntasticToggleMode<CR>
 "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
 " NeoComplete Settings {{{
 if has('lua')
