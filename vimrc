@@ -212,6 +212,8 @@ function s:SetMappings()
     \gV:call setreg('"', old_reg, old_regtype)<CR>
     " Easy delete to black hole register
     nnoremap D "_dd
+    " Center selected text with surrounding whitespace
+    vnoremap . :call CenterSelection()<CR>
     " Quick toggle terminal background transparency
     nnoremap <Leader>tt :call ToggleTransparentTerminalBackground()<CR>
     " Quick toggle fold method
@@ -404,6 +406,46 @@ endfunction
 command ColorColumnToggle call ColorColumnToggle()
 function! OpenInExternalProgram()
     call system('xdg-open ' . expand('%') . ' &')
+endfunction
+function! GetVisualSelection()
+    try
+        " Save old v register contents
+        let v_save = @v
+        " Yank visual selection to v register
+        normal! gv"vy
+        " Return register contents
+        return @v
+    finally
+        " Restore old register contents
+        let @v = v_save
+    endtry
+endfunction
+" Source: http://stackoverflow.com/a/26140622
+function! CenterSelection()
+    let v = GetVisualSelection()
+    " \zs and \ze to start and end match respectively
+    " \s* to match any whitespace
+    let lregex = '^\zs\s*\ze\S'
+    let rregex = '\s*$'
+    let whitespace = matchstr(v, lregex)
+    let whitespace .= matchstr(v, rregex)
+    let length = len(whitespace)
+    let v = substitute(v, lregex, whitespace[length/2:], '')
+    let v = substitute(v, rregex, whitespace[:length/2-1], '')
+    " Save virtualedit setting
+    let ve_save = &virtualedit
+    " Save old v register contents
+    let v_save = @v
+    " Change virtualedit to all to allow editing in all modes
+    let &virtualedit = 'all'
+    " Set contents of v register to centered text
+    call setreg('v', v, visualmode())
+    " Replace the selected text with the centered version
+    normal! gvx"vP
+    " Restore old v register contents
+    let @v = v_save
+    " Restore virtualedit setting
+    let &virtualedit = ve_save
 endfunction
 command OpenInExternalProgram call OpenInExternalProgram()
 function! CustomNotesFoldText()
@@ -974,3 +1016,4 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
+
