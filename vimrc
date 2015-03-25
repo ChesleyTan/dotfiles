@@ -181,7 +181,7 @@ function s:SetMappings()
     " Delete to first character on line
     inoremap <C-u> <C-o>d^
     " Mapping for autoformat
-    nnoremap <C-f> mkggVGgq'k
+    nnoremap <C-f> mkgggqG'k
     " Spell ignore commands
     command SpellIgnore normal zg
     command SpellIgnoreRemove normal zug
@@ -782,6 +782,9 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 if has('nvim')
     NeoBundle 'benekastah/neomake'
+    augroup neomakeCheck
+        autocmd BufWritePost * Neomake
+    augroup END
 endif
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'luochen1990/rainbow'
@@ -818,6 +821,7 @@ nnoremap <Leader>c :SyntasticCheck<CR>
 " Quick leader toggle for Syntastic checking
 nnoremap <Leader>tc :SyntasticToggleMode<CR>
 "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
+let g:syntastic_check_on_wq = 0
 " NeoComplete Settings {{{
 if has('lua')
     let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
@@ -842,6 +846,7 @@ endif
 " }}}
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
+let g:easytags_async = 1
 let g:nerdtree_tabs_open_on_gui_startup = 1
 let g:nerdtree_tabs_open_on_console_startup = 0
 let g:nerdtree_tabs_no_startup_for_diff = 1
