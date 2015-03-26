@@ -72,7 +72,7 @@ set guioptions-=L "Remove left-hand scrollbar
 set guioptions-=r "Remove right-hand scrollbar
 set guioptions-=T "Remove toolbar
 set guioptions-=e "Remove GUI-style tabline
-set guifont=Source\ Code\ Pro\ 13 "Set gui font
+set guifont=Source\ Code\ Pro\ 12 "Set gui font
 set winaltkeys=no "Disable use of alt key to access menu
 
 " Session settings
@@ -124,7 +124,7 @@ function s:SetMappings()
     nnoremap <expr> i SmartInsertModeEnter()
     " Easy buffer switching
     nnoremap <Leader>b :buffers<CR>:buffer<Space>
-    nnoremap t :tabnew
+    nnoremap t :tabnew 
     " Clear hlsearch using Return/Enter
     nnoremap <CR> :noh<CR><CR>
     " Allow saving when forgetting to start vim with sudo
@@ -760,20 +760,37 @@ call neobundle#begin(expand('$HOME/.vim/bundle'))
 NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
-NeoBundle 'ChesleyTan/wordCount.vim'
+NeoBundleLazy 'ChesleyTan/wordCount.vim', {
+    \'autoload' : {
+        \'commands' : ['WordCount',
+                      \'wordCount#WordCount']
+    \}
+\}
 NeoBundle 'ervandew/supertab'
 NeoBundle 'Yggdroot/indentLine'
 NeoBundle 'xolox/vim-easytags'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-notes'
-NeoBundle 'itchyny/calendar.vim'
+NeoBundleLazy 'itchyny/calendar.vim', {
+    \'autoload' : {
+        \'commands' : 'Calendar'
+    \}
+\}
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'scrooloose/syntastic'
 NeoBundle 'scrooloose/nerdtree'
 NeoBundle 'jistr/vim-nerdtree-tabs'
-NeoBundle 'Lokaltog/vim-easymotion'
+NeoBundleLazy 'Lokaltog/vim-easymotion', {
+    \'autoload' : {
+        \'mappings' : '<Leader><Leader>'
+    \}
+\}
 NeoBundle 'Shougo/unite.vim'
-NeoBundleLazy 'davidhalter/jedi-vim'
+NeoBundleLazy 'davidhalter/jedi-vim', {
+    \'autoload' : {
+        \'filetypes' : 'python'
+    \}
+\}
 "NeoBundle 'Valloric/YouCompleteMe'
 if has('lua')
     NeoBundle 'Shougo/neocomplete.vim'
@@ -791,12 +808,21 @@ NeoBundle 'luochen1990/rainbow'
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
-NeoBundle 'chrisbra/unicode.vim'
-NeoBundle 'KabbAmine/zeavim.vim'
-
-augroup neoBundleLazySource
-    autocmd FileType python NeoBundleSource jedi-vim
-augroup END
+NeoBundleLazy 'chrisbra/unicode.vim', {
+    \'autoload': {
+        \'commands': ['Digraphs',
+                     \'UnicodeTable',
+                     \'UnicodeName',
+                     \'SearchUnicode',
+                     \'DownloadUnicode']
+    \}
+\}
+NeoBundleLazy 'KabbAmine/zeavim.vim', {
+    \'autoload': {
+        \'mappings': ['<Leader>z',
+                     \'<Leader>Z']
+    \}
+\}
 
 " You can specify revision/branch/tag.
 " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -1030,6 +1056,8 @@ call s:SetMappings()
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
     tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
+    " Use :terminal to execute shell command
+    nnoremap <Leader>c :terminal 
 endif
 " }}}
 " Add the virtualenv's site-packages to vim path
