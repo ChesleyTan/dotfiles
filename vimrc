@@ -1027,8 +1027,10 @@ endif
 call s:SetMappings()
 " }}}
 " Neovim {{{
-tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
-tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
+if has('nvim')
+    tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
+    tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
+endif
 " }}}
 " Add the virtualenv's site-packages to vim path
 py << EOF
