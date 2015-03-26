@@ -792,6 +792,7 @@ NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
 NeoBundle 'chrisbra/unicode.vim'
+NeoBundle 'KabbAmine/zeavim.vim'
 
 augroup neoBundleLazySource
     autocmd FileType python NeoBundleSource jedi-vim
@@ -1024,6 +1025,10 @@ else
     call Custom()
 endif
 call s:SetMappings()
+" }}}
+" Neovim {{{
+tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
+tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
 " }}}
 " Add the virtualenv's site-packages to vim path
 py << EOF
