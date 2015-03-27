@@ -5,17 +5,17 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Actions.NoBorders
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
-import XMonad.Hooks.SetWMName
-import XMonad.Hooks.Minimize
 import XMonad.Hooks.FadeInactive
+import XMonad.Hooks.Minimize
 import XMonad.Hooks.ManageDocks
-import XMonad.Layout.Minimize
-import XMonad.Layout.Maximize
+import XMonad.Hooks.SetWMName
+import XMonad.Layout.Grid
 import XMonad.Layout.Spacing
+import XMonad.Layout.Maximize
+import XMonad.Layout.Minimize
+import XMonad.Layout.MosaicAlt
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
-import XMonad.Layout.MosaicAlt
-import XMonad.Layout.Grid
 import XMonad.Layout.TwoPane
 import XMonad.Prompt
 import XMonad.Util.Run
@@ -165,6 +165,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
 
     -- Lock screen
     , ((modm .|. shiftMask, xK_l), spawn "dbus-send --type=method_call --dest=org.gnome.ScreenSaver /org/gnome/ScreenSaver org.gnome.ScreenSaver.Lock")
+
     ]
 
     ++

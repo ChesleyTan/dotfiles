@@ -799,9 +799,6 @@ NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 if has('nvim')
     NeoBundle 'benekastah/neomake'
-    augroup neomakeCheck
-        autocmd BufWritePost * Neomake
-    augroup END
 endif
 NeoBundle 'sjl/gundo.vim.git'
 NeoBundle 'luochen1990/rainbow'
