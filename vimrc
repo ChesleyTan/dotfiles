@@ -761,7 +761,7 @@ NeoBundleFetch 'Shougo/neobundle.vim'
 
 " Add or remove your Bundles here:
 NeoBundleLazy 'ChesleyTan/wordCount.vim', {
-    \'autoload' : {
+    \'autoload': {
         \'commands' : ['WordCount',
                       \'wordCount#WordCount']
     \}
@@ -772,22 +772,34 @@ NeoBundle 'xolox/vim-easytags'
 NeoBundle 'xolox/vim-misc'
 NeoBundle 'xolox/vim-notes'
 NeoBundleLazy 'itchyny/calendar.vim', {
-    \'autoload' : {
+    \'autoload': {
         \'commands' : 'Calendar'
     \}
 \}
 NeoBundle 'Raimondi/delimitMate'
 NeoBundle 'scrooloose/syntastic'
-NeoBundle 'scrooloose/nerdtree'
-NeoBundle 'jistr/vim-nerdtree-tabs'
+NeoBundleLazy 'scrooloose/nerdtree', {
+    \'autoload': {
+        \'commands' : 'NERDTreeToggle'
+    \}
+\}
+NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
+    \'autoload': {
+        \'commands' : 'NERDTreeTabsToggle'
+    \}
+\}
 NeoBundleLazy 'Lokaltog/vim-easymotion', {
-    \'autoload' : {
+    \'autoload': {
         \'mappings' : '<Leader><Leader>'
     \}
 \}
-NeoBundle 'Shougo/unite.vim'
+NeoBundleLazy 'Shougo/unite.vim', {
+    \'autoload': {
+        \'commands' : 'Unite'
+    \}
+\}
 NeoBundleLazy 'davidhalter/jedi-vim', {
-    \'autoload' : {
+    \'autoload': {
         \'filetypes' : 'python'
     \}
 \}
@@ -798,10 +810,22 @@ endif
 NeoBundle 'SirVer/ultisnips'
 NeoBundle 'honza/vim-snippets'
 if has('nvim')
-    NeoBundle 'benekastah/neomake'
+    NeoBundleLazy 'benekastah/neomake', {
+        \'autoload': {
+            \'commands' : 'Neomake'
+        \}
+    \}
 endif
-NeoBundle 'sjl/gundo.vim.git'
-NeoBundle 'luochen1990/rainbow'
+NeoBundleLazy 'sjl/gundo.vim.git', {
+    \'autoload': {
+        \'commands': 'GundoToggle'
+    \}
+\}
+NeoBundleLazy 'luochen1990/rainbow', {
+    \'autoload': {
+        \'commands': 'RainbowToggle'
+    \}
+\}
 NeoBundle 'gorodinskiy/vim-coloresque'
 NeoBundle 'tomasr/molokai'
 NeoBundle 'altercation/vim-colors-solarized.git'
@@ -871,7 +895,7 @@ endif
 " Disable easytag's warning about vim's updatetime being too low
 let g:easytags_updatetime_warn = 0
 let g:easytags_async = 1
-let g:nerdtree_tabs_open_on_gui_startup = 1
+let g:nerdtree_tabs_open_on_gui_startup = 0
 let g:nerdtree_tabs_open_on_console_startup = 0
 let g:nerdtree_tabs_no_startup_for_diff = 1
 let g:nerdtree_tabs_smart_startup_focus = 1
