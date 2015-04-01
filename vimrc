@@ -675,7 +675,9 @@ function SetStatusline()
         setlocal statusline+=%#Green_34#%{gitStatus}%##   " Git status
     endif
     setlocal statusline+=%=                                        " Left/right separator
-    setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
+    if exists("*SyntasticStatuslineFlag()")
+        setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
+    endif
     "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
     setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~'))}%##%#Green_41#\|%##  " File path with truncated names
     setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
