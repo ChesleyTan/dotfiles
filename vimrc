@@ -754,111 +754,113 @@ if has('vim_starting')
     set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 endif
 
-" Required:
-call neobundle#begin(expand('$HOME/.vim/bundle'))
+if exists("*neobundle#begin")
+    " Required:
+    call neobundle#begin(expand('$HOME/.vim/bundle'))
 
-" Required:
-" Let NeoBundle manage NeoBundle
-NeoBundleFetch 'Shougo/neobundle.vim'
+    " Required:
+    " Let NeoBundle manage NeoBundle
+    NeoBundleFetch 'Shougo/neobundle.vim'
 
-" Add or remove your Bundles here:
-NeoBundleLazy 'ChesleyTan/wordCount.vim', {
-    \'autoload': {
-        \'commands' : ['WordCount',
-                      \'wordCount#WordCount']
-    \}
-\}
-NeoBundle 'ervandew/supertab'
-NeoBundle 'Yggdroot/indentLine'
-NeoBundle 'xolox/vim-easytags'
-NeoBundle 'xolox/vim-misc'
-NeoBundle 'xolox/vim-notes'
-NeoBundleLazy 'itchyny/calendar.vim', {
-    \'autoload': {
-        \'commands' : 'Calendar'
-    \}
-\}
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'scrooloose/syntastic'
-NeoBundleLazy 'scrooloose/nerdtree', {
-    \'autoload': {
-        \'commands' : 'NERDTreeToggle'
-    \}
-\}
-NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
-    \'autoload': {
-        \'commands' : 'NERDTreeTabsToggle'
-    \}
-\}
-NeoBundleLazy 'Lokaltog/vim-easymotion', {
-    \'autoload': {
-        \'mappings' : '<Leader><Leader>'
-    \}
-\}
-NeoBundleLazy 'Shougo/unite.vim', {
-    \'autoload': {
-        \'commands' : 'Unite'
-    \}
-\}
-NeoBundleLazy 'davidhalter/jedi-vim', {
-    \'autoload': {
-        \'filetypes' : 'python'
-    \}
-\}
-"NeoBundle 'Valloric/YouCompleteMe'
-if has('lua')
-    NeoBundle 'Shougo/neocomplete.vim'
-endif
-NeoBundle 'SirVer/ultisnips'
-NeoBundle 'honza/vim-snippets'
-if has('nvim')
-    NeoBundleLazy 'benekastah/neomake', {
+    " Add or remove your Bundles here:
+    NeoBundleLazy 'ChesleyTan/wordCount.vim', {
         \'autoload': {
-            \'commands' : 'Neomake'
+            \'commands' : ['WordCount',
+                        \'wordCount#WordCount']
         \}
     \}
+    NeoBundle 'ervandew/supertab'
+    NeoBundle 'Yggdroot/indentLine'
+    NeoBundle 'xolox/vim-easytags'
+    NeoBundle 'xolox/vim-misc'
+    NeoBundle 'xolox/vim-notes'
+    NeoBundleLazy 'itchyny/calendar.vim', {
+        \'autoload': {
+            \'commands' : 'Calendar'
+        \}
+    \}
+    NeoBundle 'Raimondi/delimitMate'
+    NeoBundle 'scrooloose/syntastic'
+    NeoBundleLazy 'scrooloose/nerdtree', {
+        \'autoload': {
+            \'commands' : 'NERDTreeToggle'
+        \}
+    \}
+    NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
+        \'autoload': {
+            \'commands' : 'NERDTreeTabsToggle'
+        \}
+    \}
+    NeoBundleLazy 'Lokaltog/vim-easymotion', {
+        \'autoload': {
+            \'mappings' : '<Leader><Leader>'
+        \}
+    \}
+    NeoBundleLazy 'Shougo/unite.vim', {
+        \'autoload': {
+            \'commands' : 'Unite'
+        \}
+    \}
+    NeoBundleLazy 'davidhalter/jedi-vim', {
+        \'autoload': {
+            \'filetypes' : 'python'
+        \}
+    \}
+    "NeoBundle 'Valloric/YouCompleteMe'
+    if has('lua')
+        NeoBundle 'Shougo/neocomplete.vim'
+    endif
+    NeoBundle 'SirVer/ultisnips'
+    NeoBundle 'honza/vim-snippets'
+    if has('nvim')
+        NeoBundleLazy 'benekastah/neomake', {
+            \'autoload': {
+                \'commands' : 'Neomake'
+            \}
+        \}
+    endif
+    NeoBundleLazy 'sjl/gundo.vim.git', {
+        \'autoload': {
+            \'commands': 'GundoToggle'
+        \}
+    \}
+    NeoBundleLazy 'luochen1990/rainbow', {
+        \'autoload': {
+            \'commands': 'RainbowToggle'
+        \}
+    \}
+    NeoBundle 'gorodinskiy/vim-coloresque'
+    NeoBundle 'tomasr/molokai'
+    NeoBundle 'altercation/vim-colors-solarized.git'
+    NeoBundleLazy 'chrisbra/unicode.vim', {
+        \'autoload': {
+            \'commands': ['Digraphs',
+                        \'UnicodeTable',
+                        \'UnicodeName',
+                        \'SearchUnicode',
+                        \'DownloadUnicode']
+        \}
+    \}
+    NeoBundleLazy 'KabbAmine/zeavim.vim', {
+        \'autoload': {
+            \'mappings': ['<Leader>z',
+                        \'<Leader>Z']
+        \}
+    \}
+
+    " You can specify revision/branch/tag.
+    " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+
+    " Required:
+    call neobundle#end()
+
+    " Required (Re-enable because neobundle disables this):
+    filetype plugin indent on
+
+    " If there are uninstalled bundles found on startup,
+    " this will conveniently prompt you to install them.
+    NeoBundleCheck
 endif
-NeoBundleLazy 'sjl/gundo.vim.git', {
-    \'autoload': {
-        \'commands': 'GundoToggle'
-    \}
-\}
-NeoBundleLazy 'luochen1990/rainbow', {
-    \'autoload': {
-        \'commands': 'RainbowToggle'
-    \}
-\}
-NeoBundle 'gorodinskiy/vim-coloresque'
-NeoBundle 'tomasr/molokai'
-NeoBundle 'altercation/vim-colors-solarized.git'
-NeoBundleLazy 'chrisbra/unicode.vim', {
-    \'autoload': {
-        \'commands': ['Digraphs',
-                     \'UnicodeTable',
-                     \'UnicodeName',
-                     \'SearchUnicode',
-                     \'DownloadUnicode']
-    \}
-\}
-NeoBundleLazy 'KabbAmine/zeavim.vim', {
-    \'autoload': {
-        \'mappings': ['<Leader>z',
-                     \'<Leader>Z']
-    \}
-\}
-
-" You can specify revision/branch/tag.
-" NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
-
-" Required:
-call neobundle#end()
-
-" Required (Re-enable because neobundle disables this):
-filetype plugin indent on
-
-" If there are uninstalled bundles found on startup,
-" this will conveniently prompt you to install them.
-NeoBundleCheck
 " }}}
 let g:ConqueTerm_Color = 1
 let g:ConqueTerm_TERM = 'xterm-256color'
@@ -873,7 +875,7 @@ nnoremap <Leader>tc :SyntasticToggleMode<CR>
 "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
 let g:syntastic_check_on_wq = 0
 " NeoComplete Settings {{{
-if has('lua')
+if has('lua') && exists("*neocomplete#close_popup()")
     let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
     let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
     let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
