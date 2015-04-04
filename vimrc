@@ -101,6 +101,14 @@ augroup END
 set list
 execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
+" Constants/Global variables {{{
+let g:defaultStatuslineColor_cterm = 235
+let g:defaultStatuslineColor_gui = '#073642'
+let g:insertModeStatuslineColor_cterm = 23
+let g:insertModeStatuslineColor_gui = '#173762'
+let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
+let g:gitInfo = "" " Placeholder value to initialize variable
+" }}}
 " Custom mappings {{{
 function s:SetMappings()
     :command Q q
@@ -600,6 +608,8 @@ endfunction
 " }}}
 " Statusline {{{
 " Functions for generating statusline {{{
+" Uses an external python script to fetch and display the git info asynchronously
+" (using neovim msgpack-rpc)
 function Git()
     if exists('$NVIM_LISTEN_ADDRESS')
         call system('python ' . g:scriptsDirectory . 'git.py $NVIM_LISTEN_ADDRESS $PWD &')
@@ -641,14 +651,18 @@ function GitRemote(branch) " Note: this function takes a while to execute
     if output=="" || output=~?"fatal" " Checkpoint for error
         return ""
     elseif output =~? "local out of date"
-        return " (!)Local repo out of date: Use git pull"
+        return " (!)Local repo out of date"
     else
         return ""
     endif
 endfunction
 function! RefreshGitInfo()
-    let g:gitBranch=GitBranch()
-    let g:gitStatus=GitStatus() . GitRemote(g:gitBranch)
+    if has('nvim')
+        call Git()
+    else
+        let gitBranch=GitBranch()
+        let g:gitInfo=gitBranch . GitStatus() . GitRemote(gitBranch)
+    endif
 endfunction
 call RefreshGitInfo()
 " }}}
@@ -677,8 +691,7 @@ function SetStatusline()
     setlocal statusline+=\ %#Blue_37#B:%n/%{bufnr('$')}%##                  " Buffer number
     setlocal statusline+=\ %#Blue_37#T:%{tabpagenr()}/%{tabpagenr('$')}%##  " Tab number
     if winWidth > 100
-        setlocal statusline+=\ %#Green_34#%{gitBranch}%## " Git branch
-        setlocal statusline+=%#Green_34#%{gitStatus}%##   " Git status
+        setlocal statusline+=\ %#Green_34#%{g:gitInfo}%## " Git info
     endif
     setlocal statusline+=%=                                        " Left/right separator
     if exists("*SyntasticStatuslineFlag()")
@@ -745,13 +758,6 @@ function ReverseColors()
     call ToggleStatuslineColor()
 endfunction
 " }}}
-" }}}
-" Constants {{{
-let g:defaultStatuslineColor_cterm = 235
-let g:defaultStatuslineColor_gui = '#073642'
-let g:insertModeStatuslineColor_cterm = 23
-let g:insertModeStatuslineColor_gui = '#173762'
-let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 " }}}
 " Plugins configuration/constants {{{
 function! InitializePlugins()
@@ -874,7 +880,6 @@ function! InitializePlugins()
         command Tree NERDTreeTabsToggle
         nnoremap <Leader>t :Tree<CR>
         let g:SuperTabDefaultCompletionType = 'context'
-        nnoremap <Leader>c :SyntasticCheck<CR>
         " Quick leader toggle for Syntastic checking
         nnoremap <Leader>tc :SyntasticToggleMode<CR>
         "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
