@@ -84,6 +84,7 @@ augroup defaults
     " Clear augroup
     autocmd!
     " Execute runtime configurations for plugins
+    autocmd VimEnter * call InitializePlugins()
     autocmd VimEnter * call PluginConfig()
     " Regenerate statusline to truncate intelligently
     autocmd VimResized * call SetStatusline()
@@ -599,6 +600,11 @@ endfunction
 " }}}
 " Statusline {{{
 " Functions for generating statusline {{{
+function Git()
+    if exists('$NVIM_LISTEN_ADDRESS')
+        call system('python ' . g:scriptsDirectory . 'git.py $NVIM_LISTEN_ADDRESS $PWD &')
+    endif
+endfunction
 function GitBranch()
     let output=system("git branch | grep '*' | grep -o '[^* ]*'")
     if output=="" || output=~?"fatal"
@@ -745,198 +751,201 @@ let g:defaultStatuslineColor_cterm = 235
 let g:defaultStatuslineColor_gui = '#073642'
 let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
+let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 " }}}
 " Plugins configuration/constants {{{
-" Add locally installed bundles to runtimepath
-set runtimepath+=$HOME/.vim/bundle/conque
-" NeoBundle Scripts {{{
-if has('vim_starting')
-    set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
-endif
+function! InitializePlugins()
+    try
+        " Add locally installed bundles to runtimepath
+        set runtimepath+=$HOME/.vim/bundle/conque
+        " NeoBundle Scripts {{{
+        set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 
-if exists("*neobundle#begin")
-    " Required:
-    call neobundle#begin(expand('$HOME/.vim/bundle'))
+        " Required:
+        call neobundle#begin(expand('$HOME/.vim/bundle'))
 
-    " Required:
-    " Let NeoBundle manage NeoBundle
-    NeoBundleFetch 'Shougo/neobundle.vim'
+        " Required:
+        " Let NeoBundle manage NeoBundle
+        NeoBundleFetch 'Shougo/neobundle.vim'
 
-    " Add or remove your Bundles here:
-    NeoBundleLazy 'ChesleyTan/wordCount.vim', {
-        \'autoload': {
-            \'commands' : ['WordCount',
-                        \'wordCount#WordCount']
-        \}
-    \}
-    NeoBundle 'ervandew/supertab'
-    NeoBundle 'Yggdroot/indentLine'
-    NeoBundle 'xolox/vim-easytags'
-    NeoBundle 'xolox/vim-misc'
-    NeoBundle 'xolox/vim-notes'
-    NeoBundleLazy 'itchyny/calendar.vim', {
-        \'autoload': {
-            \'commands' : 'Calendar'
-        \}
-    \}
-    NeoBundle 'Raimondi/delimitMate'
-    NeoBundle 'scrooloose/syntastic'
-    NeoBundleLazy 'scrooloose/nerdtree', {
-        \'autoload': {
-            \'commands' : 'NERDTreeToggle'
-        \}
-    \}
-    NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
-        \'autoload': {
-            \'commands' : 'NERDTreeTabsToggle'
-        \}
-    \}
-    NeoBundleLazy 'Lokaltog/vim-easymotion', {
-        \'autoload': {
-            \'mappings' : '<Leader><Leader>'
-        \}
-    \}
-    NeoBundleLazy 'Shougo/unite.vim', {
-        \'autoload': {
-            \'commands' : 'Unite'
-        \}
-    \}
-    NeoBundleLazy 'davidhalter/jedi-vim', {
-        \'autoload': {
-            \'filetypes' : 'python'
-        \}
-    \}
-    "NeoBundle 'Valloric/YouCompleteMe'
-    if has('lua')
-        NeoBundle 'Shougo/neocomplete.vim'
-    endif
-    NeoBundle 'SirVer/ultisnips'
-    NeoBundle 'honza/vim-snippets'
-    if has('nvim')
-        NeoBundleLazy 'benekastah/neomake', {
+        " Add or remove your Bundles here:
+        NeoBundleLazy 'ChesleyTan/wordCount.vim', {
             \'autoload': {
-                \'commands' : 'Neomake'
+                \'commands' : ['WordCount',
+                            \'wordCount#WordCount']
             \}
         \}
-    endif
-    NeoBundleLazy 'sjl/gundo.vim.git', {
-        \'autoload': {
-            \'commands': 'GundoToggle'
+        NeoBundle 'ervandew/supertab'
+        NeoBundle 'Yggdroot/indentLine'
+        NeoBundle 'xolox/vim-easytags'
+        NeoBundle 'xolox/vim-misc'
+        NeoBundle 'xolox/vim-notes'
+        NeoBundleLazy 'itchyny/calendar.vim', {
+            \'autoload': {
+                \'commands' : 'Calendar'
+            \}
         \}
-    \}
-    NeoBundleLazy 'luochen1990/rainbow', {
-        \'autoload': {
-            \'commands': 'RainbowToggle'
+        NeoBundle 'Raimondi/delimitMate'
+        NeoBundle 'scrooloose/syntastic'
+        NeoBundleLazy 'scrooloose/nerdtree', {
+            \'autoload': {
+                \'commands' : 'NERDTreeToggle'
+            \}
         \}
-    \}
-    NeoBundle 'gorodinskiy/vim-coloresque'
-    NeoBundle 'tomasr/molokai'
-    NeoBundle 'altercation/vim-colors-solarized.git'
-    NeoBundleLazy 'chrisbra/unicode.vim', {
-        \'autoload': {
-            \'commands': ['Digraphs',
-                        \'UnicodeTable',
-                        \'UnicodeName',
-                        \'SearchUnicode',
-                        \'DownloadUnicode']
+        NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
+            \'autoload': {
+                \'commands' : 'NERDTreeTabsToggle'
+            \}
         \}
-    \}
-    NeoBundleLazy 'KabbAmine/zeavim.vim', {
-        \'autoload': {
-            \'mappings': ['<Leader>z',
-                        \'<Leader>Z']
+        NeoBundleLazy 'Lokaltog/vim-easymotion', {
+            \'autoload': {
+                \'mappings' : '<Leader><Leader>'
+            \}
         \}
-    \}
+        NeoBundleLazy 'Shougo/unite.vim', {
+            \'autoload': {
+                \'commands' : 'Unite'
+            \}
+        \}
+        NeoBundleLazy 'davidhalter/jedi-vim', {
+            \'autoload': {
+                \'filetypes' : 'python'
+            \}
+        \}
+        "NeoBundle 'Valloric/YouCompleteMe'
+        if has('lua')
+            NeoBundle 'Shougo/neocomplete.vim'
+        endif
+        NeoBundle 'SirVer/ultisnips'
+        NeoBundle 'honza/vim-snippets'
+        if has('nvim')
+            NeoBundleLazy 'benekastah/neomake', {
+                \'autoload': {
+                    \'commands' : 'Neomake'
+                \}
+            \}
+        endif
+        NeoBundleLazy 'sjl/gundo.vim.git', {
+            \'autoload': {
+                \'commands': 'GundoToggle'
+            \}
+        \}
+        NeoBundleLazy 'luochen1990/rainbow', {
+            \'autoload': {
+                \'commands': 'RainbowToggle'
+            \}
+        \}
+        NeoBundle 'gorodinskiy/vim-coloresque'
+        NeoBundle 'tomasr/molokai'
+        NeoBundle 'altercation/vim-colors-solarized.git'
+        NeoBundleLazy 'chrisbra/unicode.vim', {
+            \'autoload': {
+                \'commands': ['Digraphs',
+                            \'UnicodeTable',
+                            \'UnicodeName',
+                            \'SearchUnicode',
+                            \'DownloadUnicode']
+            \}
+        \}
+        NeoBundleLazy 'KabbAmine/zeavim.vim', {
+            \'autoload': {
+                \'mappings': ['<Leader>z',
+                            \'<Leader>Z']
+            \}
+        \}
 
-    " You can specify revision/branch/tag.
-    " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+        " You can specify revision/branch/tag.
+        " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 
-    " Required:
-    call neobundle#end()
+        " Required:
+        call neobundle#end()
 
-    " Required (Re-enable because neobundle disables this):
-    filetype plugin indent on
+        " Required (Re-enable because neobundle disables this):
+        filetype plugin indent on
 
-    " If there are uninstalled bundles found on startup,
-    " this will conveniently prompt you to install them.
-    NeoBundleCheck
-endif
-" }}}
-let g:ConqueTerm_Color = 1
-let g:ConqueTerm_TERM = 'xterm-256color'
-let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
-let g:indentLine_char = '┆'
-command Tree NERDTreeTabsToggle
-nnoremap <Leader>t :Tree<CR>
-let g:SuperTabDefaultCompletionType = 'context'
-nnoremap <Leader>c :SyntasticCheck<CR>
-" Quick leader toggle for Syntastic checking
-nnoremap <Leader>tc :SyntasticToggleMode<CR>
-"let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
-let g:syntastic_check_on_wq = 0
-" NeoComplete Settings {{{
-if has('lua') && exists("*neocomplete#close_popup()")
-    let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
-    let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
-    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
-    let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
-    let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
-    let g:neocomplete#cursor_hold_i_time = 300 " Time to delay generation of autocompletions
-    inoremap <expr><C-g> neocomplete#undo_completion()
-    inoremap <expr><C-l> neocomplete#complete_common_string()
-    " <CR>: close popup and save indent.
-    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    function! s:my_cr_function()
-        return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    endfunction
-    " <C-h>, <BS>: close popup and delete backword char.
-    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    " Quick leader toggle for autocompletion
-    nnoremap <Leader>ta :NeoCompleteToggle<CR>
-endif
-" }}}
-" Disable easytag's warning about vim's updatetime being too low
-let g:easytags_updatetime_warn = 0
-let g:easytags_async = 1
-let g:nerdtree_tabs_open_on_gui_startup = 0
-let g:nerdtree_tabs_open_on_console_startup = 0
-let g:nerdtree_tabs_no_startup_for_diff = 1
-let g:nerdtree_tabs_smart_startup_focus = 1
-let g:nerdtree_tabs_open_on_new_tab = 1
-let g:nerdtree_tabs_meaningful_tab_names = 1
-let g:nerdtree_tabs_autoclose = 1
-let g:nerdtree_tabs_synchronize_view = 1
-let g:nerdtree_tabs_synchronize_focus = 1
-let g:gundo_width = 30
-let g:gundo_preview_height = 20
-let g:gundo_right = 1
-let g:gundo_preview_bottom = 1
-command DiffTree GundoToggle
-let g:notes_directories = ['~/Dropbox/Shared Notes']
-let g:notes_word_boundaries = 1
-nnoremap <Leader>n :Note 
-let g:EclimCompletionMethod = 'omnifunc'
-let g:calendar_google_calendar = 0
-let g:calendar_google_task = 0
-let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
-let g:jedi#popup_on_dot = 0
-let g:jedi#popup_select_first = 0
-let g:jedi#goto_assignments_command = "<Leader>G"
-let g:jedi#goto_definitions_command = "<Leader>D"
-let g:jedi#usages_command = "<Leader>N"
-let g:jedi#rename_command = "<Leader>R"
-let g:UltiSnipsExpandTrigger = "<Tab>"
-let g:UltiSnipsListSnippets = "<Leader><Tab>"
-let g:UltiSnipsJumpForwardTrigger = "<Tab>"
-let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
-let g:UltiSnipsEditSplit = "vertical"
-let g:rainbow_active = 0
-nnoremap <Leader>u :Unite file buffer<CR>
-nnoremap <Leader>uo :Unite output:
-if has('nvim')
-    nnoremap <Leader>m :Neomake
-endif
+        " If there are uninstalled bundles found on startup,
+        " this will conveniently prompt you to install them.
+        NeoBundleCheck
+        " }}}
+        let g:ConqueTerm_Color = 1
+        let g:ConqueTerm_TERM = 'xterm-256color'
+        let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
+        let g:indentLine_char = '┆'
+        command Tree NERDTreeTabsToggle
+        nnoremap <Leader>t :Tree<CR>
+        let g:SuperTabDefaultCompletionType = 'context'
+        nnoremap <Leader>c :SyntasticCheck<CR>
+        " Quick leader toggle for Syntastic checking
+        nnoremap <Leader>tc :SyntasticToggleMode<CR>
+        "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
+        let g:syntastic_check_on_wq = 0
+        " NeoComplete Settings {{{
+        if has('lua') && exists("*neocomplete#close_popup()")
+            let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
+            let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
+            let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
+            let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
+            let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
+            let g:neocomplete#cursor_hold_i_time = 300 " Time to delay generation of autocompletions
+            inoremap <expr><C-g> neocomplete#undo_completion()
+            inoremap <expr><C-l> neocomplete#complete_common_string()
+            " <CR>: close popup and save indent.
+            inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+            function! s:my_cr_function()
+                return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+            endfunction
+            " <C-h>, <BS>: close popup and delete backword char.
+            inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+            inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+            " Quick leader toggle for autocompletion
+            nnoremap <Leader>ta :NeoCompleteToggle<CR>
+        endif
+        " }}}
+        " Disable easytag's warning about vim's updatetime being too low
+        let g:easytags_updatetime_warn = 0
+        let g:easytags_async = 1
+        let g:nerdtree_tabs_open_on_gui_startup = 0
+        let g:nerdtree_tabs_open_on_console_startup = 0
+        let g:nerdtree_tabs_no_startup_for_diff = 1
+        let g:nerdtree_tabs_smart_startup_focus = 1
+        let g:nerdtree_tabs_open_on_new_tab = 1
+        let g:nerdtree_tabs_meaningful_tab_names = 1
+        let g:nerdtree_tabs_autoclose = 1
+        let g:nerdtree_tabs_synchronize_view = 1
+        let g:nerdtree_tabs_synchronize_focus = 1
+        let g:gundo_width = 30
+        let g:gundo_preview_height = 20
+        let g:gundo_right = 1
+        let g:gundo_preview_bottom = 1
+        command DiffTree GundoToggle
+        let g:notes_directories = ['~/Dropbox/Shared Notes']
+        let g:notes_word_boundaries = 1
+        nnoremap <Leader>n :Note 
+        let g:EclimCompletionMethod = 'omnifunc'
+        let g:calendar_google_calendar = 0
+        let g:calendar_google_task = 0
+        let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
+        let g:jedi#popup_on_dot = 0
+        let g:jedi#popup_select_first = 0
+        let g:jedi#goto_assignments_command = "<Leader>G"
+        let g:jedi#goto_definitions_command = "<Leader>D"
+        let g:jedi#usages_command = "<Leader>N"
+        let g:jedi#rename_command = "<Leader>R"
+        let g:UltiSnipsExpandTrigger = "<Tab>"
+        let g:UltiSnipsListSnippets = "<Leader><Tab>"
+        let g:UltiSnipsJumpForwardTrigger = "<Tab>"
+        let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
+        let g:UltiSnipsEditSplit = "vertical"
+        let g:rainbow_active = 0
+        nnoremap <Leader>u :Unite file buffer<CR>
+        nnoremap <Leader>uo :Unite output:
+        if has('nvim')
+            nnoremap <Leader>m :Neomake
+        endif
+    catch /:E117:/
+        echom "NeoBundle not installed!"
+    endtry
+endfunction
 
 " }}}
 " tabline from StackOverflow (with modifications) {{{
@@ -1096,4 +1105,3 @@ if 'VIRTUAL_ENV' in os.environ:
     activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
     execfile(activate_this, dict(__file__=activate_this))
 EOF
-
