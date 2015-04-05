@@ -106,6 +106,7 @@ let g:defaultStatuslineColor_gui = '#073642'
 let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
+let g:showGitInfo = 0 " This determines whether to show git info in statusline
 let g:gitInfo = "" " Placeholder value to initialize variable
 " }}}
 " Custom mappings {{{
@@ -655,13 +656,27 @@ function GitRemote(branch) " Note: this function takes a while to execute
     endif
 endfunction
 function! RefreshGitInfo()
-    if has('nvim')
-        call Git()
+    if g:showGitInfo == 1
+        " If nvim, use asynchronous msgpack-rpc method
+        if has('nvim')
+            call Git()
+        " Otherwise, use standard synchronous method
+        else
+            let gitBranch=GitBranch()
+            let g:gitInfo=gitBranch . GitStatus() . GitRemote(gitBranch)
+        endif
     else
-        let gitBranch=GitBranch()
-        let g:gitInfo=gitBranch . GitStatus() . GitRemote(gitBranch)
+        let g:gitInfo = "" " Clear old git info
     endif
 endfunction
+function! ToggleGitInfo()
+    if g:showGitInfo == 1
+        let g:showGitInfo = 0
+    else
+        let g:showGitInfo = 1
+    endif
+endfunction
+command ToggleGitInfo call ToggleGitInfo()
 call RefreshGitInfo()
 " }}}
 " Custom statusline {{{
