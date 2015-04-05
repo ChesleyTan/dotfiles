@@ -106,13 +106,13 @@ let g:defaultStatuslineColor_gui = '#073642'
 let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
-let g:showGitInfo = 0 " This determines whether to show git info in statusline
+let g:showGitInfo = 1 " This determines whether to show git info in statusline
 let g:gitInfo = "" " Placeholder value to initialize variable
 " }}}
 " Custom mappings {{{
-function s:SetMappings()
-    :command Q q
-    :command W w
+function! s:SetMappings()
+    command! Q q
+    command! W w
     cmap Q! q!
     " Prevent Ex Mode
     map Q <Nop>
@@ -192,14 +192,14 @@ function s:SetMappings()
     " Mapping for autoformat
     nnoremap <C-f> mkgggqG'k
     " Spell ignore commands
-    command SpellIgnore normal zg
-    command SpellIgnoreRemove normal zug
-    command SpellIgnoreOnce normal zG
-    command SpellIgnoreOnceRemove normal zuG
-    command SpellWrong normal zw
-    command SpellWrongRemove normal zuw
-    command SpellWrongOnce normal zW
-    command SpellWrongOnceRemove normal zuW
+    command! SpellIgnore normal zg
+    command! SpellIgnoreRemove normal zug
+    command! SpellIgnoreOnce normal zG
+    command! SpellIgnoreOnceRemove normal zuG
+    command! SpellWrong normal zw
+    command! SpellWrongRemove normal zuw
+    command! SpellWrongOnce normal zW
+    command! SpellWrongOnceRemove normal zuW
     " Navigation mappings
     " Jump to beginning of tag
     nnoremap {{ vat<Esc>'<
@@ -282,7 +282,7 @@ function! WordProcessorMode()
         setlocal complete-=k
     endif
 endfunction
-command WPM call WordProcessorMode()
+command! WPM call WordProcessorMode()
 function! s:DiffWithSaved()
     let filetype=&filetype
     diffthis
@@ -300,22 +300,22 @@ function! Molokai()
     colorscheme molokai
     call ToggleStatuslineColor()
 endfunction
-command Molokai call Molokai()
+command! Molokai call Molokai()
 function! Solarized()
     set background=dark
     colorscheme solarized
     highlight Folded term=NONE cterm=NONE gui=NONE
     call ToggleStatuslineColor()
 endfunction
-command Solarized call Solarized()
+command! Solarized call Solarized()
 function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
 endfunction
-command ToggleStatuslineColor call ToggleStatuslineColor()
+command! ToggleStatuslineColor call ToggleStatuslineColor()
 function! Custom()
     call ColorschemeInit()
 endfunction
-command Custom call Custom()
+command! Custom call Custom()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
@@ -350,7 +350,7 @@ endfunction
 function! Rot13()
     normal mkggg?G'k
 endfunction
-command Rot13 call Rot13()
+command! Rot13 call Rot13()
 function! DeflateWhitespace(string)
     let i = 0
     let newString = ""
@@ -384,15 +384,15 @@ function! LAG()
         "set laststatus=2 " Enable statusline
     endif
 endfunction
-command LAG call LAG()
+command! LAG call LAG()
 function! ShowWhitespace()
     /\s\+$
 endfunction
-command ShowWhitespace call ShowWhitespace()
+command! ShowWhitespace call ShowWhitespace()
 function! RemoveWhitespace() range
     execute "silent!" . a:firstline . ',' . a:lastline . "s/\\s\\+$"
 endfunction
-command -range=% RemoveWhitespace <line1>,<line2>call RemoveWhitespace()
+command! -range=% RemoveWhitespace <line1>,<line2>call RemoveWhitespace()
 function! SyntaxToggle()
     if exists('g:syntax_on')
         syntax off
@@ -403,7 +403,7 @@ function! SyntaxToggle()
         call ColorschemeInit()
     endif
 endfunction
-command SyntaxToggle call SyntaxToggle()
+command! SyntaxToggle call SyntaxToggle()
 function! ColorColumnToggle()
     if &colorcolumn != 80
         set colorcolumn=80
@@ -411,7 +411,7 @@ function! ColorColumnToggle()
         set colorcolumn=""
     endif
 endfunction
-command ColorColumnToggle call ColorColumnToggle()
+command! ColorColumnToggle call ColorColumnToggle()
 function! OpenInExternalProgram()
     call system('xdg-open ' . expand('%') . ' &')
 endfunction
@@ -467,18 +467,18 @@ function! CenterSelection()
     " Restore virtualedit setting
     let &virtualedit = ve_save
 endfunction
-command OpenInExternalProgram call OpenInExternalProgram()
+command! OpenInExternalProgram call OpenInExternalProgram()
 function! CustomNotesFoldText()
     " Show number of lines in fold
     return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
-command MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
+command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
 
 " }}}
 " Custom colorscheme {{{
 " Note that these highlight commands have to be formed with concatenation and then
 " be evaluated with :execute because :highlight does not accept variables as arguments
-function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, guisp, font)
+function! s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, guisp, font)
     execute 'highlight clear ' . a:group
     let cmd = 'highlight '
     let cmd .= a:group
@@ -511,7 +511,7 @@ function s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, gu
     endif
     silent execute cmd
 endfunction
-function ColorschemeInit()
+function! ColorschemeInit()
     " Colors inspired by flatcolor colorscheme created by Max St
     call s:Highlight('Normal', '', '', '15', '234', '', '#ECF0F1', '#1C1C1C', '', '')
     call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
@@ -609,12 +609,12 @@ endfunction
 " Functions for generating statusline {{{
 " Uses an external python script to fetch and display the git info asynchronously
 " (using neovim msgpack-rpc)
-function Git()
+function! Git()
     if exists('$NVIM_LISTEN_ADDRESS')
         call system('python ' . g:scriptsDirectory . 'git.py $NVIM_LISTEN_ADDRESS $PWD &')
     endif
 endfunction
-function GitBranch()
+function! GitBranch()
     let output=system("git branch | grep '*' | grep -o '[^* ]*'")
     if output=="" || output=~?"fatal"
         return ""
@@ -622,7 +622,7 @@ function GitBranch()
         return "[Git][" . output[0 : strlen(output)-2] . " " " Strip newline ^@
     endif
 endfunction
-function GitStatus()
+function! GitStatus()
     let output=system('git status')
     let retStr=""
     if output=="" || output=~?"fatal"
@@ -639,7 +639,7 @@ function GitStatus()
     let retStr.="]"
     return retStr
 endfunction
-function GitRemote(branch) " Note: this function takes a while to execute
+function! GitRemote(branch) " Note: this function takes a while to execute
     let remotes=split(system("git remote")) " Get names of remotes
     if remotes==[] " End if no remotes found or error
         return ""
@@ -676,11 +676,11 @@ function! ToggleGitInfo()
         let g:showGitInfo = 1
     endif
 endfunction
-command ToggleGitInfo call ToggleGitInfo()
+command! ToggleGitInfo call ToggleGitInfo()
 call RefreshGitInfo()
 " }}}
 " Custom statusline {{{
-function SetStatusline()
+function! SetStatusline()
     let bufName = bufname('%')
     " Do not modify the statusline for NERDTree or Gundo
     if bufName =~# "NERD" || bufName =~# "Gundo"
@@ -720,7 +720,7 @@ endfunction
 call SetStatusline()
 " }}}
 " Statusline color changing function {{{
-function RefreshColors(statusLineColor, gui_statusLineColor)
+function! RefreshColors(statusLineColor, gui_statusLineColor)
     let l:isEnteringInsertMode = 0
     if a:statusLineColor == g:insertModeStatuslineColor_cterm
         let l:isEnteringInsertMode = 1
@@ -762,7 +762,7 @@ function RefreshColors(statusLineColor, gui_statusLineColor)
     execute 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 
-function ReverseColors()
+function! ReverseColors()
     if &background == "light"
         set background=dark
     else
@@ -889,7 +889,7 @@ try
     let g:ConqueTerm_TERM = 'xterm-256color'
     let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
     let g:indentLine_char = '┆'
-    command Tree NERDTreeTabsToggle
+    command! Tree NERDTreeTabsToggle
     nnoremap <Leader>t :Tree<CR>
     let g:SuperTabDefaultCompletionType = 'context'
     " Quick leader toggle for Syntastic checking
@@ -934,7 +934,7 @@ try
     let g:gundo_preview_height = 20
     let g:gundo_right = 1
     let g:gundo_preview_bottom = 1
-    command DiffTree GundoToggle
+    command! DiffTree GundoToggle
     let g:notes_directories = ['~/Dropbox/Shared Notes']
     let g:notes_word_boundaries = 1
     nnoremap <Leader>n :Note 
@@ -964,9 +964,9 @@ catch /:E117:/
 endtry
 
 " }}}
-" tabline from StackOverflow (with modifications) {{{
+" tabline from StackOverflow (with auto-resizing modifications) {{{
 set tabline+=%!MyTabLine()
-function MyTabLine()
+function! MyTabLine()
     let tabline = ''
     " Iterate through each tab page
     let numTabs = tabpagenr('$')
@@ -1076,7 +1076,7 @@ endfunction
 augroup ft_java
     autocmd Filetype java call s:FileType_Java()
 augroup END
-function s:FileType_Java()
+function! s:FileType_Java()
     " Use Ctrl-] to expand abbreviation
     inoreabbrev psvm public static void main(String[] args) {}<esc>i<CR><esc>ko
     inoreabbrev sysout System.out.println("");<esc>2hi
@@ -1085,7 +1085,7 @@ endfunction
 augroup ft_c
     autocmd Filetype c call s:FileType_C()
 augroup END
-function s:FileType_C()
+function! s:FileType_C()
     inoreabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
 augroup ft_notes
