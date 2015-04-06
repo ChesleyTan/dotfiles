@@ -67,6 +67,9 @@ if [[ $ans == "y" ]]; then
         printf "${GREEN}Linked ~/.zshrc${RESET}\n"
         ln -s $PWD/zsh $HOME/.zsh
         printf "${GREEN}Linked ~/.zsh/${RESET}\n"
+        echo "Updating submodules...."
+        git submodule init
+        git submodule update
     fi
 fi
 
