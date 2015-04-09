@@ -23,7 +23,7 @@ else:
 
 ########## Git Status ##########
 output = subprocess.Popen("cd %s && git status" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
-if "fatal" in output:
+if output == "":
     pass
 else:
     if "Changes to be committed" in output:
