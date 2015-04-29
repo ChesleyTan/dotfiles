@@ -51,6 +51,14 @@ autoload predict-off
 # use advanced completion system
 autoload -U compinit && compinit
 
+# Enable vi mode
+bindkey -v
+
+# Enable command line edit with v
+autoload -Uz edit-command-line
+zle -N edit-command-line
+bindkey -M vicmd 'v' edit-command-line
+
 source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # Color support {{{
