@@ -32,6 +32,8 @@ set noshowmatch " Do not temporarily jump to match when inserting an end brace
 set nocursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
+let mapleader = '\'
+let maplocalleader = ','
 syntax enable " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
