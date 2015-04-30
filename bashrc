@@ -184,39 +184,22 @@ xterm*)
 esac
 # }}}
 # Global functions {{{
+function mkcd() {
+    mkdir $1
+    cd $1
+}
+
 function back() {
     eval cd $(echo $OLDPWD | sed -r 's/[ ]+/\\ /g')
 }
-function clearapachelog(){
-    if [ "$(id -u)" != "0" ]; then
-        echo "This script must be run as root"
-    else
-        echo "" > /var/log/apache2/error.log
-    fi
+
+function swp() {
+    TMP_FILE=$1.$RANDOM.$$
+    mv $1 $TMP_FILE
+    mv $2 $1
+    mv $TMP_FILE $2
 }
-function removeClassFiles(){
-    if [ $# == 0 ]; then
-        echo "No arguments given. Aborted."
-    elif [ $# != 1 ]; then
-        echo "Too many arguments."
-    else
-        files=$(find $1 | grep '.class')
-        if [[ $files == "" ]]; then
-            echo "No files to remove"
-            return
-        fi
-        echo "Files to be removed:"
-        echo "$files"
-        echo "Are you sure want to delete these files? [y/n]"
-        read ans
-        if [ $ans == "y" ]; then
-            rm -v $files
-            echo "Files removed."
-        else
-            echo "Removal aborted."
-        fi
-    fi
-}
+
 function reminder(){
     PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
     for word in "$@"
@@ -226,6 +209,7 @@ function reminder(){
     PS1="${PS1:0:$[${#PS1}-1]})\[$(tput sgr0)\] " # Remove trailing space, reset font color, add close parentheses
     echo "Reminder set: $@"
 }
+
 function sourcebash(){
     source ~/.bashrc
 }
