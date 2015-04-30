@@ -5,6 +5,7 @@ import XMonad.Actions.UpdatePointer
 import XMonad.Actions.NoBorders
 import XMonad.Actions.WorkspaceNames
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.Minimize
 import XMonad.Hooks.ManageDocks
@@ -323,7 +324,7 @@ main = do
                         }
 
     let myLogHook = dynamicLogWithPP =<< workspaceNamesPP myLogPP
-    xmonad $ defaultConfig {
+    xmonad $ ewmh defaultConfig {
         terminal           = myTerminal,
         focusFollowsMouse  = myFocusFollowsMouse,
         clickJustFocuses   = myClickJustFocuses,
