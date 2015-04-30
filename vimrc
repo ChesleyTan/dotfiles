@@ -473,6 +473,7 @@ function! CustomNotesFoldText()
     return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
+command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf)"
 
 " }}}
 " Custom colorscheme {{{
