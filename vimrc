@@ -704,8 +704,8 @@ function! SetStatusline()
     setlocal statusline+=%#Orange_202#%r%##      " Read only flag
     setlocal statusline+=%#Blue_51#%m\%##        " Modified flag
     setlocal statusline+=%h                      " Help file flag
-    setlocal statusline+=\ %#Blue_37#B:%n/%{bufnr('$')}%##                  " Buffer number
-    setlocal statusline+=\ %#Blue_37#T:%{tabpagenr()}/%{tabpagenr('$')}%##  " Tab number
+    setlocal statusline+=\ %#Blue_37#[B:%n/%{bufnr('$')}%##                  " Buffer number
+    setlocal statusline+=\ %#Blue_37#T:%{tabpagenr()}/%{tabpagenr('$')}]%##  " Tab number
     if winWidth > 100
         setlocal statusline+=\ %#Green_34#%{g:gitInfo}%## " Git info
     endif
