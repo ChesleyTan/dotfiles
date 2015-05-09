@@ -146,10 +146,10 @@ function! s:SetMappings()
     " Easy page up/down
     nnoremap <C-Up> <C-u>
     nnoremap <C-Down> <C-d>
-    nnoremap <C-k> <C-u>
-    nnoremap <C-j> <C-d>
-    vnoremap <C-k> <C-u>
-    vnoremap <C-j> <C-d>
+    nnoremap <C-k> 3k
+    nnoremap <C-j> 3j
+    vnoremap <C-k> 3k
+    vnoremap <C-j> 3j
 
     " Allow window commands in insert mode (currently overridden by omnicomplete binding)
     " imap <C-w> <C-o><C-w>
