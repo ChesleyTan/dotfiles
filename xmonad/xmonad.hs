@@ -17,6 +17,7 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.MosaicAlt
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
+import XMonad.Layout.SimplestFloat
 import XMonad.Layout.TwoPane
 import XMonad.Prompt
 import XMonad.Util.Run
@@ -228,8 +229,9 @@ fullLayout       = named "full"     (maximize (minimize (noBorders (avoidStruts 
 gridLayout       = named "grid"     (maximize (minimize (spacing 2 (avoidStruts (Grid)))))
 mosaicLayout     = named "mosaic"   (maximize (minimize (spacing 2 (avoidStruts (MosaicAlt M.empty)))))
 twoPaneLayout    = named "two pane" (maximize (minimize (avoidStruts (TwoPane (3/100) (1/2)))))
+floatLayout      = named "float"    (maximize (minimize (avoidStruts (simplestFloat))))
 
-myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLayout ||| twoPaneLayout
+myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLayout ||| twoPaneLayout ||| floatLayout
 
 
 ------------------------------------------------------------------------
