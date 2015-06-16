@@ -47,6 +47,11 @@ set completeopt=longest,menuone,preview
 set wildmode=longest,list,full
 set wildmenu
 
+" Create ~/.vim directory if it does not exist
+if !isdirectory($HOME . '/.vim/')
+    call mkdir($HOME . '/.vim/')
+endif
+
 " Backup settings
 set backup " Back up previous versions of files
 set backupdir=$HOME/.vim/backup// " Store backups in a central directory
