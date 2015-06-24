@@ -40,6 +40,7 @@ Config { font = "xft:Source Code Pro:semibold:size=8:antialias=true"
                       , "--high", "#2ECC71"
                       , "--normal", "#E67E22"
                       ] 200
+        , Run Com "bash" ["/home/chesley/bin/Volume.sh"] "volume" 10
         , Run Date "%a %b %_d %r" "date" 10
         , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensorTemp" 50
         , Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300
@@ -61,6 +62,7 @@ Config { font = "xft:Source Code Pro:semibold:size=8:antialias=true"
                      \[</fc>%cpu% %memory%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%sensorTemp%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc><fc=#555555>V:</fc>%volume%<fc=#3498DB>]</fc>\
                      \}{\
                      \<fc=#3498DB>[</fc><fc=#555555>DB:</fc> %dropboxStatus%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc>\
