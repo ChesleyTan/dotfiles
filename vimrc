@@ -906,7 +906,7 @@ try
     "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
     let g:syntastic_check_on_wq = 0
     " NeoComplete Settings {{{
-    if has('lua') && exists("*neocomplete#close_popup()")
+    if has('lua')
         let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
         let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
         let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
