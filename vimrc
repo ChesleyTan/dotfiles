@@ -196,7 +196,7 @@ function! s:SetMappings()
     vnoremap <C-x> "+x
     inoremap <C-p> <C-o>"+p
     " Delete to first character on line
-    inoremap <C-u> <C-o>d^
+    inoremap <C-u> <C-o>d^<C-o>x
     " Mapping for autoformat
     nnoremap <C-f> mkgggqG'k
     " Spell ignore commands
