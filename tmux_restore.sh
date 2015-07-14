@@ -15,6 +15,10 @@ then
     tmux split-window -h -c "$PWD"
     tmux select-layout tiled
 
+    tmux new-window -n alt
+    tmux split-window -h -c "$PWD"
+    tmux select-layout tiled
+
     # Set up custom arrangement for home
     if [[ $input == 1 ]]; then
         tmux new-window -n feeds
