@@ -964,6 +964,7 @@ try
     let g:UltiSnipsEditSplit = "vertical"
     let g:rainbow_active = 0
     nnoremap <Leader>u :Unite file buffer<CR>
+    nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
     if has('nvim')
         nnoremap <Leader>m :Neomake
