@@ -17,6 +17,7 @@ import XMonad.Layout.Minimize
 import XMonad.Layout.MosaicAlt
 import XMonad.Layout.Named
 import XMonad.Layout.NoBorders
+import XMonad.Layout.PerWorkspace
 import XMonad.Layout.SimplestFloat
 import XMonad.Layout.TwoPane
 import XMonad.Prompt
@@ -60,7 +61,7 @@ myModMask = mod4Mask
 -- A tagging example:
 --
 -- > workspaces = ["web", "irc", "code" ] ++ map show [4..9]
-myWorkspaces = ["1:main","2:web","3:office","4:doc","5","6","7","8","9"]
+myWorkspaces = ["1:main","2:web","3:office","4:doc","5:float","6","7","8","9"]
 
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor = "#353535"
@@ -231,7 +232,8 @@ mosaicLayout     = named "mosaic"   (maximize (minimize (spacing 2 (avoidStruts 
 twoPaneLayout    = named "two pane" (maximize (minimize (avoidStruts (TwoPane (3/100) (1/2)))))
 floatLayout      = named "float"    (maximize (minimize (avoidStruts (simplestFloat))))
 
-myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLayout ||| twoPaneLayout ||| floatLayout
+myLayout = onWorkspace "5:float" floatLayout $
+           tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLayout ||| twoPaneLayout ||| floatLayout
 
 
 ------------------------------------------------------------------------
@@ -251,14 +253,15 @@ myLayout = tallLayout ||| mosaicLayout ||| gridLayout ||| fullLayout ||| wideLay
 
 myManageHook = composeAll [
       className =? "MPlayer"            --> doFloat
-    , className =? "Gimp"               --> doFloat
     , resource  =? "desktop_window"     --> doIgnore
     , resource  =? "kdesktop"           --> doIgnore
     , className =? "Do"                 --> doIgnore
   --, className =? "Google-chrome-stable" --> doShift "2:web"
   --, className =? "Google-chrome" --> doShift "2:web"
+    , className =? "Gimp"               --> doShift "5:float"
+    , className =? "Gimp-2.8"           --> doShift "5:float"
     , className =? "libreoffice-writer" --> doShift "3:office"
-    , className =? "zeal"               --> doShift "4:doc"
+    , className =? "Zeal"               --> doShift "4:doc"
     ]
 
 ------------------------------------------------------------------------
