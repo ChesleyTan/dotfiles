@@ -966,6 +966,7 @@ try
     nnoremap <Leader>u :Unite file buffer<CR>
     nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
+    nnoremap <Leader>umru :Unite output:ol<CR>
     if has('nvim')
         nnoremap <Leader>m :Neomake
     endif
