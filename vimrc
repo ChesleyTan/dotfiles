@@ -33,8 +33,8 @@ set nocursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
 set scrolloff=2 " Keep cursor 2 rows above the bottom when scrolling
-let mapleader = '\'
-let maplocalleader = ','
+let mapleader = ' '
+let maplocalleader = '\'
 syntax enable " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
