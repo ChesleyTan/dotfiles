@@ -958,7 +958,7 @@ try
     let g:jedi#usages_command = "<Leader>N"
     let g:jedi#rename_command = "<Leader>R"
     let g:UltiSnipsExpandTrigger = "<Tab>"
-    let g:UltiSnipsListSnippets = "<Leader><Tab>"
+    let g:UltiSnipsListSnippets = "<LocalLeader><Tab>"
     let g:UltiSnipsJumpForwardTrigger = "<Tab>"
     let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
     let g:UltiSnipsEditSplit = "vertical"
