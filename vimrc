@@ -130,8 +130,8 @@ function! s:SetMappings()
     nnoremap ; :
     " Map : to ; in normal mode
     nnoremap : ;
-    " Use <Leader>k to insert digraph
-    inoremap <Leader>k <C-k>
+    " Use <LocalLeader>k to insert digraph
+    inoremap <LocalLeader>k <C-k>
     " Use Control + (hjkl) to mimic arrow keys for navigating menus in insert mode
     inoremap <C-k> <Up>
     inoremap <C-j> <Down>
