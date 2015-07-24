@@ -1,4 +1,4 @@
-Config { font = "xft:Source Code Pro:semibold:size=8:antialias=true"
+Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
     , position = BottomSize C 100 0
     , bgColor = "#111111"
     , fgColor = "#F1C40F"
