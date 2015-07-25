@@ -1,3 +1,4 @@
+{-# LANGUAGE NoMonomorphismRestriction #-}
 import XMonad
 import XMonad.Actions.CycleWS
 import XMonad.Actions.GridSelect
@@ -66,6 +67,21 @@ myWorkspaces = ["1:main","2:web","3:office","4:doc","5:float","6","7","8","9"]
 -- Border colors for unfocused and focused windows, respectively.
 myNormalBorderColor = "#353535"
 myFocusedBorderColor = "#48D700"
+
+-- GridSelect module configuration
+gsconfig2 colorizer = (buildDefaultGSConfig colorizer) { gs_cellheight = 28
+                                                       , gs_cellwidth = 200
+                                                       , gs_cellpadding = 6
+                                                       , gs_font = "xft:Open Sans:semibold:size=11"
+                                                       }
+greenColorizer = colorRangeFromClassName
+                    black               -- lowest inactive bg
+                    (0x00, 0xFF, 0x5F)  -- highest inactive bg
+                    (0x00, 0x5F, 0xFF)  -- active bg
+                    black               -- inactive fg
+                    white               -- active fg
+   where black = minBound
+         white = maxBound
 
 ------------------------------------------------------------------------
 -- Key bindings. Add, modify or remove key bindings here.
@@ -138,7 +154,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList $
     , ((modm              , xK_q), spawn "xmonad --recompile; xmonad --restart")
 
     -- Run GridSelect module
-    , ((modm, xK_g), goToSelected defaultGSConfig)
+    , ((modm, xK_g), goToSelected $ gsconfig2 greenColorizer)
 
     -- Minimize keybindings
     , ((modm,               xK_m), withFocused minimizeWindow)
