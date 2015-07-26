@@ -102,6 +102,8 @@ augroup defaults
     " Change statusline color when entering insert mode
     autocmd InsertEnter * call RefreshColors(g:insertModeStatuslineColor_cterm, g:insertModeStatuslineColor_gui)
     autocmd InsertLeave * call ToggleStatuslineColor()
+    " Detect true-color terminal
+    autocmd VimEnter * call DetectTrueColor()
 augroup END
 
 " List/listchars
@@ -482,6 +484,11 @@ function! CustomNotesFoldText()
 endfunction
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf)"
+function DetectTrueColor()
+    if $NVIM_TUI_ENABLE_TRUE_COLOR
+        call Solarized()
+    endif
+endfunction
 
 " }}}
 " Custom colorscheme {{{
