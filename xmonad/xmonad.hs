@@ -69,16 +69,16 @@ myNormalBorderColor = "#353535"
 myFocusedBorderColor = "#48D700"
 
 -- GridSelect module configuration
-gsconfig2 colorizer = (buildDefaultGSConfig colorizer) { gs_cellheight = 28
+gsconfig2 colorizer = (buildDefaultGSConfig colorizer) { gs_cellheight = 32
                                                        , gs_cellwidth = 200
                                                        , gs_cellpadding = 6
                                                        , gs_font = "xft:Open Sans:semibold:size=11"
                                                        }
 greenColorizer = colorRangeFromClassName
-                    black               -- lowest inactive bg
+                    (0x44, 0x44, 0x44)  -- lowest inactive bg
                     (0x00, 0xFF, 0x5F)  -- highest inactive bg
                     (0x00, 0x5F, 0xFF)  -- active bg
-                    black               -- inactive fg
+                    white               -- inactive fg
                     white               -- active fg
    where black = minBound
          white = maxBound
