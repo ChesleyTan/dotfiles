@@ -196,7 +196,7 @@ function! s:SetMappings()
     " Easy system clipboard copy/paste
     vnoremap <C-c> "+y
     vnoremap <C-x> "+x
-    inoremap <C-p> <C-o>"+p
+    inoremap <C-p> <Left><C-o>"+p
     " Delete to first character on line
     inoremap <C-u> <C-o>d^<C-o>x
     " Mapping for autoformat
