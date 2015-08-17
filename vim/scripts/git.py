@@ -16,7 +16,7 @@ remote_name = ""
 ########## Git Branch ##########
 output = subprocess.Popen("cd %s && git branch | grep '*' | grep -o '[^* ]*'" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"').replace('\n','')
 if output == "" or "fatal" in output:
-    pass
+    sys.exit(0)
 else:
     branch_name = output
     s += "[Git][" + branch_name + " " # Excludes trailing newline
@@ -32,7 +32,13 @@ else:
         s += "\u2714"
     if "modified" in output:
         s += " \u0394"
-    s += "]"
+
+########## Git Stash ##########
+output = subprocess.Popen("cd %s && git stash list | wc -l" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"').replace('\n', '')
+if output != "0":
+    s += " \u26c1 " + output
+
+s += "]"
 
 ########## Git Remote ##########
 output = subprocess.Popen("cd %s && git remote" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')

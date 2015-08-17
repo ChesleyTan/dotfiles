@@ -117,6 +117,7 @@ let g:insertModeStatuslineColor_cterm = 23
 let g:insertModeStatuslineColor_gui = '#173762'
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 let g:showGitInfo = 1 " This determines whether to show git info in statusline
+let g:inGitRepo = 0
 let g:gitInfo = "" " Placeholder value to initialize variable
 " }}}
 " Custom mappings {{{
@@ -635,15 +636,16 @@ function! GitBranch()
     if output=="" || output=~?"fatal"
         return ""
     else
+        let g:inGitRepo=1
         return "[Git][" . output[0 : strlen(output)-2] . " " " Strip newline ^@
     endif
 endfunction
 function! GitStatus()
-    let output=system('git status')
-    let retStr=""
-    if output=="" || output=~?"fatal"
+    if g:inGitRepo == 0
         return ""
     endif
+    let output=system('git status')
+    let retStr=""
     if output=~?"Changes to be committed"
         let retStr.="\u2718"
     else
@@ -652,10 +654,13 @@ function! GitStatus()
     if output=~?"modified"
         let retStr.=" \u0394"
     endif
-    let retStr.="]"
+    let retStr.=GitStashLength() . "]"
     return retStr
 endfunction
 function! GitRemote(branch) " Note: this function takes a while to execute
+    if g:inGitRepo == 0
+        return ""
+    endif
     let remotes=split(system("git remote")) " Get names of remotes
     if remotes==[] " End if no remotes found or error
         return ""
@@ -663,12 +668,21 @@ function! GitRemote(branch) " Note: this function takes a while to execute
         let remotename=remotes[0] " Get name of first remote
     endif
     let output=system("git remote show " . remotename . " | grep \"" . a:branch . "\"")
-    if output=="" || output=~?"fatal" " Checkpoint for error
-        return ""
-    elseif output =~? "local out of date"
+    if output =~? "local out of date"
         return " (!)Local repo out of date"
     else
         return ""
+    endif
+endfunction
+function! GitStashLength()
+    if g:inGitRepo == 0
+        return ""
+    endif
+    let stashLength=system("git stash list | wc -l")
+    if stashLength=="0\n" || stashLength=="" || stashLength=~?"fatal"
+        return ""
+    else
+        return " \u26c1 " . stashLength[0 : strlen(stashLength)-2] " Strip trailing newline
     endif
 endfunction
 function! RefreshGitInfo()
