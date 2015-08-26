@@ -269,6 +269,7 @@ myLayout = onWorkspace "5:float" floatLayout $
 
 myManageHook = composeAll [
       className =? "MPlayer"            --> doFloat
+    , className =? "Eclipse"            --> doFloat
     , resource  =? "desktop_window"     --> doIgnore
     , resource  =? "kdesktop"           --> doIgnore
     , className =? "Do"                 --> doIgnore
