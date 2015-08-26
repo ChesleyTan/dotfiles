@@ -14,7 +14,7 @@ scrollbars none
 skip_taskbar true
 sticky true
 tint_color "#111111"
-tint_level 150
+tint_level 165
 transparent true
 vertical false
 window_layer normal
