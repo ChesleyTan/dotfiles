@@ -269,14 +269,15 @@ myLayout = onWorkspace "5:float" floatLayout $
 
 myManageHook = composeAll [
       className =? "MPlayer"            --> doFloat
-    , className =? "Eclipse"            --> doFloat
     , resource  =? "desktop_window"     --> doIgnore
     , resource  =? "kdesktop"           --> doIgnore
     , className =? "Do"                 --> doIgnore
+    , className =? "Java"               --> doIgnore
   --, className =? "Google-chrome-stable" --> doShift "2:web"
   --, className =? "Google-chrome" --> doShift "2:web"
     , className =? "Gimp"               --> doShift "5:float"
     , className =? "Gimp-2.8"           --> doShift "5:float"
+    , className =? "Eclipse"            --> doShift "5:float"
     , className =? "libreoffice-writer" --> doShift "3:office"
     , className =? "Zeal"               --> doShift "4:doc"
     ]
