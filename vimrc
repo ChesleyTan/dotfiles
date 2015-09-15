@@ -104,6 +104,8 @@ augroup defaults
     autocmd InsertLeave * call ToggleStatuslineColor()
     " Detect true-color terminal
     autocmd VimEnter * call DetectTrueColor()
+    " Detect noeol files
+    autocmd VimEnter * call DetectEOL()
 augroup END
 
 " List/listchars
@@ -244,6 +246,8 @@ function! s:SetMappings()
     nnoremap <Leader>tn :set number!<CR>
     " Quick toggle for color column at 80 characters
     nnoremap <Leader>t8 :call ColorColumnToggle()<CR>
+    " Quick toggle for automatic newline insertion at end of line
+    nnoremap <Leader>tl :call EOLToggle()<CR>
 endfunction
 " }}}
 " Custom functions {{{
@@ -423,6 +427,24 @@ function! ColorColumnToggle()
     endif
 endfunction
 command! ColorColumnToggle call ColorColumnToggle()
+function DetectEOL()
+    if &endofline == 0
+        set noendofline
+        set binary
+    endif
+endfunction
+function! EOLToggle()
+    if &endofline == 1
+        set noendofline
+        set binary
+        echo "Disabled eol"
+    else
+        set endofline
+        set nobinary
+        echo "Enabled eol"
+    endif
+endfunction
+command! EOLToggle call EOLToggle()
 function! OpenInExternalProgram()
     call system('xdg-open ' . expand('%') . ' &')
 endfunction
