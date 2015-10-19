@@ -24,7 +24,11 @@ export PATH="/bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/vendor_
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 
-export EDITOR="vim"
+if hash nvim 2> /dev/null; then
+    export EDITOR="nvim"
+else
+    export EDITOR="vim"
+fi
 
 setopt AUTO_CD
 setopt AUTO_PUSHD

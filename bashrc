@@ -24,7 +24,11 @@ shopt -s checkwinsize
 # make less more friendly for non-text input files, see lesspipe(1)
 [ -x /usr/bin/lesspipe ] && eval "$(SHELL=/bin/sh lesspipe)"
 
-export EDITOR=vim
+if hash nvim 2> /dev/null; then
+    export EDITOR="nvim"
+else
+    export EDITOR="vim"
+fi
 
 # Color support {{{
 # Force color in terminal
