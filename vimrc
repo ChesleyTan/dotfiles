@@ -131,6 +131,8 @@ function! s:SetMappings()
     map Q <Nop>
     " Use jj to exit insert mode, rather than <Esc>
     inoremap jj <Esc>
+    " Use jk to exit insert mode, rather than <Esc>
+    inoremap jk <Esc>
     " Map ; to : in normal mode
     nnoremap ; :
     " Map : to ; in normal mode
