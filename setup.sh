@@ -22,6 +22,17 @@ if [[ $ans == "y" ]]; then
     fi
 fi
 
+echo "Using nvim? (y/n)"
+read ans
+if [[ $ans == "y" ]]; then
+    ln -s ~/.vim ~/.config/nvim
+    printf "${GREEN}Linked ~/.vim/${RESET}\n"
+    ln -s ~/.vimrc ~/.config/nvim/init.vim
+    printf "${GREEN}Linked ~/.vimrc${RESET}\n"
+    mkdir -p ~/.local/share/nvim/shada
+fi
+
+
 echo "Using emacs? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
