@@ -46,7 +46,7 @@ remotes = output.split(' ')
 if remotes == []:
     s += "no remotes"
 else:
-    remote_name = remotes[0] # Get the name of the first remote
+    remote_name = remotes[0].strip() # Get the name of the first remote
     output = subprocess.Popen("cd %s && git remote show %s | grep '%s'" % (PWD,
         remote_name, branch_name), shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
     if output == "" or "fatal" in output:
