@@ -950,6 +950,8 @@ try
     nnoremap <Leader>tc :SyntasticToggleMode<CR>
     "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
     let g:syntastic_check_on_wq = 0
+    let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
+                                            \W0232,C0325,C0301'
     " NeoComplete Settings {{{
     if has('lua')
         let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
