@@ -45,6 +45,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
         , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensorTemp" 50
         , Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300
         , Run Com "bash" ["/home/chesley/bin/DropboxStatus.sh"] "dropboxStatus" 300
+        , Run Com "bash" ["/home/chesley/bin/CpuLoad.sh"] "cpuLoad" 300
         , Run DiskU [ ("/", "<fc=#2ECC71>/:</fc><usedp><fc=#555555>%</fc>")
                     , ("/home", "<fc=#2ECC71>/home:</fc><usedp><fc=#555555>%</fc>")
                     ] [ "-L", "20"
@@ -60,6 +61,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
         , alignSep = "}{"
         , template = " %batteryNotification%<fc=#3498DB>\
                      \[</fc>%cpu% %memory%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc><fc=#555555>L:</fc>%cpuLoad%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%sensorTemp%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc><fc=#555555>V:</fc>%volume%<fc=#3498DB>]</fc>\
