@@ -40,9 +40,9 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
                       , "--high", "#2ECC71"
                       , "--normal", "#E67E22"
                       ] 200
-        , Run Com "bash" ["/home/chesley/bin/Volume.sh"] "volume" 10
+        , Run Com "bash" ["/home/chesley/bin/VolumeXmobarColorizer.sh"] "volume" 10
         , Run Date "%a %b %_d %r" "date" 10
-        , Run Com "sh" ["/home/chesley/bin/SensorTemp.sh"] "sensorTemp" 50
+        , Run Com "bash" ["/home/chesley/bin/SensorTempXmobarColorizer.sh"] "sensorTemp" 50
         , Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300
         , Run Com "bash" ["/home/chesley/bin/DropboxStatus.sh"] "dropboxStatus" 300
         , Run Com "bash" ["/home/chesley/bin/CpuLoad.sh"] "cpuLoad" 300
