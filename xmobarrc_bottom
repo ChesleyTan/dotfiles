@@ -56,6 +56,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
                       ] 6000
         , Run DynNetwork ["-t", "<fc=#555555>N:▲</fc><tx>K <fc=#555555>▼</fc><rx>K"] 50
         , Run DiskIO [("sda", "<fc=#555555>D:▲</fc><read> <fc=#555555>▼</fc><write>")] [] 50
+        , Run Com "bash" ["/home/chesley/bin/NetworkXmobarColorizer.sh"] "network" 100
     ]
         , sepChar = "%"
         , alignSep = "}{"
@@ -67,6 +68,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true"
                      \<fc=#3498DB>[</fc><fc=#555555>V:</fc>%volume%<fc=#3498DB>]</fc>\
                      \}{\
                      \<fc=#3498DB>[</fc><fc=#555555>DB:</fc> %dropboxStatus%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc>%network%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc>\
                      \<fc=#3498db>[</fc>%disku%<fc=#3498db>]</fc>\
                      \ <fc=#00D75F></fc> \
