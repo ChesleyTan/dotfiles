@@ -1,4 +1,4 @@
-Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size=9:antialias=true,Deja Vu Sans Mono:size=9:antialias=true"
+Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size=9:antialias=true,OpenSymbol:size=9:antialias=true,Deja Vu Sans Mono:size=9:antialias=true"
     , position = BottomSize C 100 0
     , bgColor = "#111111"
     , fgColor = "#F1C40F"
@@ -39,13 +39,13 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                       , "--low", "#E74C4C"
                       , "--high", "#2ECC71"
                       , "--normal", "#E67E22"
-                      ] 200
+                      ] 300
         , Run Com "bash" ["/home/chesley/bin/VolumeXmobarColorizer.sh"] "volume" 10
         , Run Date "%a %b %_d %r" "date" 10
         , Run Com "bash" ["/home/chesley/bin/SensorTempXmobarColorizer.sh"] "sensorTemp" 50
         , Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300
-        , Run Com "bash" ["/home/chesley/bin/DropboxStatus.sh"] "dropboxStatus" 300
-        , Run Com "bash" ["/home/chesley/bin/CpuLoad.sh"] "cpuLoad" 300
+        , Run Com "bash" ["/home/chesley/bin/DropboxStatusXmobarColorizer.sh"] "dropboxStatus" 100
+        , Run Com "bash" ["/home/chesley/bin/CpuLoadXmobarColorizer.sh"] "cpuLoad" 250
         , Run DiskU [ ("/", "<fc=#2ECC71>/:</fc><usedp><fc=#555555>%</fc>")
                     , ("/home", "<fc=#2ECC71>/home:</fc><usedp><fc=#555555>%</fc>")
                     ] [ "-L", "20"
