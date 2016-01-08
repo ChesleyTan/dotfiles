@@ -55,7 +55,10 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                       , "--high", "#E74C4C"
                       ] 6000
         , Run DynNetwork ["-t", "<fc=#555555>N:▲</fc><tx>K <fc=#555555>▼</fc><rx>K"] 50
-        , Run DiskIO [("sda", "<fc=#555555>D:▲</fc><read> <fc=#555555>▼</fc><write>")] [] 50
+        , Run DiskIO [ ("sda", "<fc=#555555>D1:▲</fc><read> <fc=#555555>▼</fc><write>")
+                     , ("sdb", "<fc=#555555>D2:▲</fc><read> <fc=#555555>▼</fc><write>")
+                     , ("sdc", "<fc=#555555>D3:▲</fc><read> <fc=#555555>▼</fc><write>")
+                     ] [] 50
         , Run Com "bash" ["/home/chesley/bin/NetworkXmobarColorizer.sh"] "network" 100
     ]
         , sepChar = "%"
