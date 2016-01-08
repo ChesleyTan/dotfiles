@@ -1,4 +1,9 @@
-Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size=9:antialias=true,OpenSymbol:size=9:antialias=true,Deja Vu Sans Mono:size=9:antialias=true"
+Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size=9:antialias=true,OpenSymbol:size=9:antialias=true,xft:Deja Vu Sans Mono:size=9:antialias=true"
+    , additionalFonts = [ "xft:Source Code Pro:semibold:size=9:antialias=true"
+                        , "Symbola:size=9:antialias=true"
+                        , "OpenSymbol:size=9:antialias=true"
+                        , "xft:DejaVu Sans Mono:size=9:antialias=true"
+                        ]
     , position = BottomSize C 100 0
     , bgColor = "#111111"
     , fgColor = "#F1C40F"
@@ -68,9 +73,9 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                      \<fc=#3498DB>[</fc><fc=#555555>L:</fc>%cpuLoad%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%sensorTemp%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>\
-                     \<fc=#3498DB>[</fc><fc=#555555>V:</fc>%volume%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc>%volume%<fc=#3498DB>]</fc>\
                      \}{\
-                     \<fc=#3498DB>[</fc><fc=#555555>DB:</fc> %dropboxStatus%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc><fc=#555555>DB:</fc>%dropboxStatus%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%network%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc>\
                      \<fc=#3498db>[</fc>%disku%<fc=#3498db>]</fc>\
