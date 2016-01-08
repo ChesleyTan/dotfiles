@@ -10,9 +10,9 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
     , overrideRedirect = False  -- False to make window behave as a dock.
     ,                           -- Useful for tiling window managers.
     , pickBroadest = False      -- When using multiple displays,
-                                -- choose to broadest to display on
+                                -- choose the broadest to display on
     , iconRoot = "."            -- Folder to search for icons
-    , commands = [ Run Weather "KITH" [ "-t", "<tempF>°F rh <rh>% <windMph> wmph"
+    , commands = [ Run Weather "KITH" [ "-t", "<tempF><fc=#555555>°F</fc> <skyCondition> <rh><fc=#555555>%rh</fc> <windMph><fc=#555555>wmph</fc>"
                                       , "-L", "40"
                                       , "-H", "80"
                                       , "--normal", "#48D700"
