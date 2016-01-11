@@ -884,10 +884,10 @@ try
             \'filetypes' : 'python'
         \}
     \}
-    "NeoBundle 'Valloric/YouCompleteMe'
-    if has('lua')
-        NeoBundle 'Shougo/neocomplete.vim'
-    endif
+    NeoBundle 'Valloric/YouCompleteMe'
+    "if has('lua')
+    "    NeoBundle 'Shougo/neocomplete.vim'
+    "endif
     NeoBundle 'SirVer/ultisnips'
     NeoBundle 'honza/vim-snippets'
     if has('nvim')
@@ -1004,8 +1004,8 @@ try
     let g:jedi#goto_definitions_command = "<Leader>D"
     let g:jedi#usages_command = "<Leader>N"
     let g:jedi#rename_command = "<Leader>R"
-    let g:UltiSnipsExpandTrigger = "<Tab>"
-    let g:UltiSnipsListSnippets = "<LocalLeader><Tab>"
+    let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
+    let g:UltiSnipsListSnippets = "<LocalLeader><LocalLeader>"
     let g:UltiSnipsJumpForwardTrigger = "<Tab>"
     let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
     let g:UltiSnipsEditSplit = "vertical"
@@ -1163,7 +1163,6 @@ call s:SetMappings()
 " Neovim {{{
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
-    tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
     " Use :terminal to execute shell command
     nnoremap <Leader>c :terminal 
 endif
