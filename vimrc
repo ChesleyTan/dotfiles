@@ -847,7 +847,7 @@ try
                         \'wordCount#WordCount']
         \}
     \}
-    NeoBundle 'ervandew/supertab'
+    "NeoBundle 'ervandew/supertab'
     NeoBundle 'Yggdroot/indentLine'
     NeoBundle 'xolox/vim-easytags'
     NeoBundle 'xolox/vim-misc'
