@@ -953,26 +953,26 @@ try
     let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
                                             \W0232,C0325,C0301'
     " NeoComplete Settings {{{
-    if has('lua')
-        let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
-        let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
-        let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
-        let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
-        let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
-        let g:neocomplete#cursor_hold_i_time = 300 " Time to delay generation of autocompletions
-        inoremap <expr><C-g> neocomplete#undo_completion()
-        inoremap <expr><C-l> neocomplete#complete_common_string()
-        " <CR>: close popup and save indent.
-        inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-        function! s:my_cr_function()
-            return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-        endfunction
-        " <C-h>, <BS>: close popup and delete backword char.
-        inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-        inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-        " Quick leader toggle for autocompletion
-        nnoremap <Leader>ta :NeoCompleteToggle<CR>
-    endif
+    "if has('lua')
+    "    let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
+    "    let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
+    "    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
+    "    let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
+    "    let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
+    "    let g:neocomplete#cursor_hold_i_time = 300 " Time to delay generation of autocompletions
+    "    inoremap <expr><C-g> neocomplete#undo_completion()
+    "    inoremap <expr><C-l> neocomplete#complete_common_string()
+    "    " <CR>: close popup and save indent.
+    "    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
+    "    function! s:my_cr_function()
+    "        return pumvisible() ? neocomplete#close_popup() : "\<CR>"
+    "    endfunction
+    "    " <C-h>, <BS>: close popup and delete backword char.
+    "    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
+    "    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
+    "    " Quick leader toggle for autocompletion
+    "    nnoremap <Leader>ta :NeoCompleteToggle<CR>
+    "endif
     " }}}
     " Disable easytag's warning about vim's updatetime being too low
     let g:easytags_updatetime_warn = 0
