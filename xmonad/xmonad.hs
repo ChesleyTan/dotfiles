@@ -317,8 +317,7 @@ myDzenBar = "dzen2 -x '0' -y '0' -h '18' -w '1600' -ta 'l' -fg '#FFFFFF' -bg '#1
 -- Version using trayer as system tray
 -- mySysTray = "sleep 3; trayer --edge top --align right --SetDockType true --SetPartialStrut true --expand true --transparent true --alpha 110 --tint 0x111111 --height 18 --widthtype request &"
 -- Version using stalonetray as system tray (See ~/.stalonetrayrc for configuration)
--- Opens twice as a workaround for strange icon size glitch
-mySysTray = "stalonetray & sysTrayPid=$! && sleep 1 && kill $sysTrayPid && stalonetray"
+mySysTray = "stalonetray"
 
 main = do
     xmonadBar <- if usingBar == "dzen"

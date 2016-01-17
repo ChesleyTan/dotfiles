@@ -21,3 +21,4 @@ window_layer normal
 window_strut top
 window_type dock
 xsync false
+kludges force_icons_size
