@@ -897,7 +897,7 @@ try
             \}
         \}
     endif
-    NeoBundleLazy 'sjl/gundo.vim.git', {
+    NeoBundleLazy 'sjl/gundo.vim', {
         \'autoload': {
             \'commands': 'GundoToggle'
         \}
