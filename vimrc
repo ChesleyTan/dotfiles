@@ -220,8 +220,8 @@ function! s:SetMappings()
     nnoremap {{ vat<Esc>'<
     " Jump to end of tag
     nnoremap }} vat<Esc>'>
-    nnoremap <Tab> ==
-    vnoremap <Tab> =
+    nnoremap <Tab> gt
+    nnoremap <S-Tab> gT
     " Search forwards for selected text
     vnoremap <silent> * :<C-u>
     \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
