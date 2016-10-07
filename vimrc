@@ -336,13 +336,12 @@ command! Custom call Custom()
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
-    if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == -1
-        if (g:original_bg_color == -1)
+    if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == ""
+        if g:original_bg_color == ""
             execute "highlight Normal ctermbg=NONE"
         else
             execute "highlight Normal ctermbg=" . g:original_bg_color
         endif
-        let g:original_bg_color = -1
     else
         let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
         highlight Normal ctermbg=NONE
