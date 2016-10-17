@@ -256,23 +256,21 @@ endfunction
 
 " This function is called by autocmd when vim starts
 function! PluginConfig()
-    if exists(":PingEclim") && !(eclim#PingEclim(0))
-        "echom "Eclimd not started"
-    endif
-    if !exists(":PingEclim") || (!(eclim#PingEclim(0)) && isdirectory(expand("$HOME/.vim/bundle/javacomplete")))
-        augroup javacomplete
-            autocmd Filetype java setlocal runtimepath+=$HOME/.vim/bundle/javacomplete
-            autocmd Filetype java setlocal omnifunc=javacomplete#Complete
-            autocmd Filetype java setlocal completefunc=javacomplete#CompleteParamsInfo
-        augroup END
-        if &filetype ==? 'java'
+    " Javacomplete config {{{
+    if isdirectory(expand("$HOME/.vim/bundle/javacomplete"))
+        function! s:InitJavaComplete()
             setlocal runtimepath+=$HOME/.vim/bundle/javacomplete
             setlocal omnifunc=javacomplete#Complete
             setlocal completefunc=javacomplete#CompleteParamsInfo
+        endfunction
+        augroup javacomplete
+            autocmd Filetype java call s:InitJavaComplete()
+        augroup END
+        if &filetype ==? 'java'
+            call s:InitJavaComplete()
         endif
-    else
-        "echom "Eclim enabled"
     endif
+    "}}}
 endfunction
 function! WordProcessorMode()
     if !exists('b:current_mode')
