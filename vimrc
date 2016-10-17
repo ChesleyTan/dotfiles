@@ -33,6 +33,7 @@ set nocursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
 set scrolloff=2 " Keep cursor 2 rows above the bottom when scrolling
+set nofixendofline " Disable automatic adding of EOL
 let mapleader = ' '
 let maplocalleader = '\'
 syntax enable " Enable syntax highlighting
@@ -104,8 +105,6 @@ augroup defaults
     autocmd InsertLeave * call ToggleStatuslineColor()
     " Detect true-color terminal
     autocmd VimEnter * call DetectTrueColor()
-    " Detect noeol files
-    autocmd VimEnter * call DetectEOL()
 augroup END
 
 " List/listchars
@@ -387,18 +386,6 @@ function! SmartInsertModeEnter()
         return "i"
     endif
 endfunction
-function! LAG()
-    if &cursorline == 1
-        set nocursorline " Disable cursorline
-        set nonumber     " Disable line numbers
-        "set laststatus=0 " Disable statusline
-    else
-        set cursorline   " Enable cursorline
-        set number       " Enable line numbers
-        "set laststatus=2 " Enable statusline
-    endif
-endfunction
-command! LAG call LAG()
 function! ShowWhitespace()
     /\s\+$
 endfunction
@@ -426,20 +413,12 @@ function! ColorColumnToggle()
     endif
 endfunction
 command! ColorColumnToggle call ColorColumnToggle()
-function DetectEOL()
-    if &endofline == 0
-        set noendofline
-        set binary
-    endif
-endfunction
 function! EOLToggle()
     if &endofline == 1
         set noendofline
-        set binary
         echo "Disabled eol"
     else
         set endofline
-        set nobinary
         echo "Enabled eol"
     endif
 endfunction
@@ -447,6 +426,7 @@ command! EOLToggle call EOLToggle()
 function! OpenInExternalProgram()
     call system('xdg-open ' . expand('%') . ' &')
 endfunction
+command! OpenInExternalProgram call OpenInExternalProgram()
 function! GetVisualSelection()
     try
         " Save old v register contents
@@ -499,14 +479,10 @@ function! CenterSelection()
     " Restore virtualedit setting
     let &virtualedit = ve_save
 endfunction
-command! OpenInExternalProgram call OpenInExternalProgram()
-function! CustomNotesFoldText()
-    " Show number of lines in fold
-    return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
-endfunction
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf)"
 function DetectTrueColor()
+    " Automatically apply Solarized colorscheme if true-color is available
     if $NVIM_TUI_ENABLE_TRUE_COLOR
         call Solarized()
     endif
@@ -1143,6 +1119,10 @@ augroup END
 function! s:FileType_C()
     inoreabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
+function! CustomNotesFoldText()
+    " Show number of lines in fold
+    return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
+endfunction
 augroup ft_notes
     autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
 augroup END
@@ -1164,14 +1144,3 @@ if has('nvim')
     nnoremap <Leader>c :terminal 
 endif
 " }}}
-" Add the virtualenv's site-packages to vim path
-py << EOF
-import os.path
-import sys
-import vim
-if 'VIRTUAL_ENV' in os.environ:
-    project_base_dir = os.environ['VIRTUAL_ENV']
-    sys.path.insert(0, project_base_dir)
-    activate_this = os.path.join(project_base_dir, 'bin/activate_this.py')
-    execfile(activate_this, dict(__file__=activate_this))
-EOF
