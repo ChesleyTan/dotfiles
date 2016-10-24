@@ -898,6 +898,11 @@ try
                         \'<Leader>Z']
         \}
     \}
+    NeoBundleLazy 'majutsushi/tagbar', {
+        \'autoload': {
+            \'commands': 'TagbarToggle'
+        \}
+    \}
 
     " You can specify revision/branch/tag.
     " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
@@ -987,6 +992,7 @@ try
     nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
     nnoremap <Leader>umru :Unite output:ol<CR>
+    nnoremap <F8> :TagbarToggle<CR>
     if has('nvim')
         nnoremap <Leader>m :Neomake
     endif
