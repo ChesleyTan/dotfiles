@@ -802,7 +802,6 @@ endfunction
 " Plugins configuration/constants {{{
 try
     " Add locally installed bundles to runtimepath
-    set runtimepath+=$HOME/.vim/bundle/conque
     " NeoBundle Scripts {{{
     set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
 
@@ -917,9 +916,6 @@ try
     " this will conveniently prompt you to install them.
     NeoBundleCheck
     " }}}
-    let g:ConqueTerm_Color = 1
-    let g:ConqueTerm_TERM = 'xterm-256color'
-    let g:ConqueTerm_PromptRegex = '^\w\+@[0-9A-Za-z_.-]\+:[0-9A-Za-z_./\~,:-]\+\$'
     let g:indentLine_char = '┆'
     command! Tree NERDTreeTabsToggle
     nnoremap <Leader>t :Tree<CR>
