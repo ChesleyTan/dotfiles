@@ -710,7 +710,7 @@ call RefreshGitInfo()
 function! SetStatusline()
     let bufName = bufname('%')
     " Do not modify the statusline for NERDTree or Gundo
-    if bufName =~# "NERD" || bufName =~# "Gundo"
+    if bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
         return
     endif
     let winWidth = winwidth(0)
