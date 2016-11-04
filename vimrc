@@ -328,6 +328,7 @@ endfunction
 command! ToggleStatuslineColor call ToggleStatuslineColor()
 function! Custom()
     call ColorschemeInit()
+    call ToggleStatuslineColor()
 endfunction
 command! Custom call Custom()
 " Store default bg color
