@@ -710,7 +710,7 @@ call RefreshGitInfo()
 " Custom statusline {{{
 function! SetStatusline()
     let bufName = bufname('%')
-    " Do not modify the statusline for NERDTree or Gundo
+    " Do not modify the statusline for plugin-handled windows
     if bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
         return
     endif
@@ -1057,8 +1057,10 @@ function! MyTabLine()
             elseif getbufvar(bufIndex, "&buftype") == 'quickfix'
                 let tmp .= '[Q]'
             else
-                " Do not show NERDTree or Gundo in the bufferlist
-                if currentBufName =~# "NERD" || currentBufName =~# "Gundo"
+                " Do not show plugin-handled windows in the bufferlist
+                if (currentBufName =~# "NERD"
+                \|| currentBufName =~# "Gundo"
+                \|| currentBufName =~# "__Tagbar__")
                     let newBufNameAdded = 0
                 else
                     let tmp .= pathshorten(fnamemodify(currentBufName, ':~:.'))
