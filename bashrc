@@ -202,7 +202,7 @@ function mkcd() {
 }
 
 function back() {
-    eval cd $(echo $OLDPWD | sed -r 's/[ ]+/\\ /g')
+    cd "$OLDPWD"
 }
 
 function swp() {
