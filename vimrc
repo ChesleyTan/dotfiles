@@ -480,8 +480,8 @@ function! CenterSelection()
     " Restore virtualedit setting
     let &virtualedit = ve_save
 endfunction
-command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf) &"
-command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . fnameescape(expand('%:p')) . " -o /tmp/" . fnameescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . fnameescape(expand('%:t:r')) . ".pdf)"
+command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf) &"
+command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont=Georgia" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf)"
 function DetectTrueColor()
     " Automatically apply Solarized colorscheme if true-color is available
     if $NVIM_TUI_ENABLE_TRUE_COLOR
