@@ -739,7 +739,7 @@ function! SetStatusline()
         setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
     endif
     "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
-    setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~'))}%##%#Green_41#\|%##  " File path with truncated names
+    setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~:h'))}%##%#Green_41#\|%##  " File path with truncated names
     setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
     setlocal statusline+=R:%3l/%3L               " Cursor line/total lines, reserve 3 spaces for each
     setlocal statusline+=%#Green_41#\|%##%3p     " Percent through file, reserve 3 spaces
