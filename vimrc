@@ -842,11 +842,6 @@ try
             \'commands' : 'NERDTreeTabsToggle'
         \}
     \}
-    NeoBundleLazy 'Lokaltog/vim-easymotion', {
-        \'autoload': {
-            \'mappings' : '<Leader><Leader>'
-        \}
-    \}
     NeoBundleLazy 'Shougo/unite.vim', {
         \'autoload': {
             \'commands' : 'Unite'
@@ -858,6 +853,11 @@ try
         \}
     \}
     NeoBundle 'Valloric/YouCompleteMe'
+    NeoBundleLazy 'rdnetto/YCM-Generator', {
+        \'autoload': {
+            \'commands' : 'YcmGenerateConfig'
+        \}
+    \}
     "if has('lua')
     "    NeoBundle 'Shougo/neocomplete.vim'
     "endif
@@ -881,7 +881,6 @@ try
         \}
     \}
     NeoBundle 'gorodinskiy/vim-coloresque'
-    NeoBundle 'tomasr/molokai'
     NeoBundle 'altercation/vim-colors-solarized.git'
     NeoBundleLazy 'chrisbra/unicode.vim', {
         \'autoload': {
@@ -920,10 +919,8 @@ try
     let g:indentLine_char = '┆'
     command! Tree NERDTreeTabsToggle
     nnoremap <Leader>t :Tree<CR>
-    let g:SuperTabDefaultCompletionType = 'context'
     " Quick leader toggle for Syntastic checking
     nnoremap <Leader>tc :SyntasticToggleMode<CR>
-    "let g:ycm_register_as_syntastic_checker = 0 " Prevent YCM-Syntastic conflict
     let g:syntastic_check_on_wq = 0
     let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
                                             \W0232,C0325,C0301'
@@ -969,7 +966,6 @@ try
     let g:notes_directories = ['~/Dropbox/Shared Notes']
     let g:notes_word_boundaries = 1
     nnoremap <Leader>n :Note 
-    let g:EclimCompletionMethod = 'omnifunc'
     let g:calendar_google_calendar = 1
     let g:calendar_google_task = 0
     let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
