@@ -64,10 +64,14 @@ zle -N edit-command-line
 bindkey -M vicmd 'v' edit-command-line
 
 # Plugin configuration {{{
-source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
-if [[ "$ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE" = "" ]]; then
+if [[ "$ZSH_SYNTAX_HIGHLIGHTING_PLUGIN" == "" ]]; then
+    source $ZSH/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+    ZSH_SYNTAX_HIGHLIGHTING_PLUGIN=1
+fi
+if [[ "$ZSH_AUTOSUGGESTIONS_PLUGIN" = "" ]]; then
     source $ZSH/zsh-autosuggestions/zsh-autosuggestions.zsh
     ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE="fg=5"
+    ZSH_AUTOSUGGESTIONS_PLUGIN=1
 fi
 
 # }}}
