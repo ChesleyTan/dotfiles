@@ -12,6 +12,11 @@ nvim = attach('socket', path=ADDRESS)
 s = ""
 branch_name = ""
 remote_name = ""
+
+def finish():
+    nvim.command('let g:gitInfo="%s"' % s)
+    sys.exit(0)
+
 # Ported from ~/.vimrc, so we're not using python's regex libraries
 ########## Git Branch ##########
 output = subprocess.Popen("cd %s && git branch | grep '*' | grep -o '[^* ]*'" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"').replace('\n','')
@@ -41,19 +46,19 @@ if output != "0":
 s += "]"
 
 ########## Git Remote ##########
-output = subprocess.Popen("cd %s && git remote" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
-remotes = output.split(' ')
-if remotes == []:
-    s += "no remotes"
-else:
-    remote_name = remotes[0].strip() # Get the name of the first remote
-    output = subprocess.Popen("cd %s && git remote show %s | grep '%s'" % (PWD,
-        remote_name, branch_name), shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
-    if output == "" or "fatal" in output:
-        pass
-    elif "local out of date" in output:
-        s += "(!)Local repo out of date"
-    else:
-        pass # Local is up to date
+#output = subprocess.Popen("cd %s && git remote" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
+#remotes = output.split(' ')
+#if remotes == []:
+#    s += "no remotes"
+#else:
+#    remote_name = remotes[0].strip() # Get the name of the first remote
+#    output = subprocess.Popen("cd %s && git remote show %s | grep '%s'" % (PWD,
+#        remote_name, branch_name), shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
+#    if output == "" or "fatal" in output:
+#        pass
+#    elif "local out of date" in output:
+#        s += "(!)Local repo out of date"
+#    else:
+#        pass # Local is up to date
 
-nvim.command('let g:gitInfo="%s"' % s)
+finish()
