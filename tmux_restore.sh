@@ -1,16 +1,16 @@
-#!/bin/bash                                                                                                   
-
-echo "Choose a work profile: "
-echo "1) Home"
-echo "2) Work"
-read input
+#!/bin/bash
 
 SESSIONNAME="Coding"
 tmux has-session -t $SESSIONNAME &> /dev/null
 
-if [ $? != 0 ] 
+if [ $? != 0 ]
 then
-    tmux new-session -s $SESSIONNAME -n main -d 
+    echo "Choose a work profile: "
+    echo "1) Home"
+    echo "2) Work"
+    read input
+
+    tmux new-session -s $SESSIONNAME -n main -d
     tmux split-window -h -c "$PWD"
     tmux split-window -h -c "$PWD"
     tmux select-layout tiled
