@@ -214,6 +214,7 @@ function! s:SetMappings()
     command! SpellWrongRemove normal zuw
     command! SpellWrongOnce normal zW
     command! SpellWrongOnceRemove normal zuW
+    command! SpellSuggest normal z=
     " Navigation mappings
     " Jump to beginning of tag
     nnoremap {{ vat<Esc>'<
