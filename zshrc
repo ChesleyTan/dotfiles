@@ -201,6 +201,14 @@ function User() {
         echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
     fi
 }
+function SuspendedJobs() {
+    jobs_suspended="$(jobs | grep suspended | wc -l)"
+    if [[ "$jobs_suspended" == "0" ]]; then
+        return
+    else
+        echo -n "$(tput bold)$(tput setaf 35)(${jobs_suspended})$(tput sgr0) "
+    fi
+}
 
 # Store last exit status code before generating a prompt
 exitStatus=0
@@ -217,9 +225,9 @@ else
 fi
 
 prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(GitBranch)\$(Sign)
->> "
+\$(SuspendedJobs)>> "
 PS1=$prompt1
-#RPS1=''
+#RPS1=""
 
 #if [ "$TERM" == "linux" ]; then
 #   export PS1=$prompt1

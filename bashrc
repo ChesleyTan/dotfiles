@@ -155,6 +155,14 @@ function User() {
         echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
     fi
 }
+function StoppedJobs() {
+    jobs_stopped="$(jobs | grep Stopped | wc -l)"
+    if [[ "$jobs_stopped" == "0" ]]; then
+        return
+    else
+        echo -n "$(tput bold)$(tput setaf 35)(${jobs_stopped})$(tput sgr0) "
+    fi
+}
 
 # Store last exit status code before generating a prompt
 status=0
@@ -166,7 +174,7 @@ else
     is256ColorTerm=false
 fi
 
-prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(GitBranch)\$(Sign)\n>> "
+prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(GitBranch)\$(Sign)\n\$(StoppedJobs)>> "
 PS1=$prompt1
 
 #if [ "$TERM" == "linux" ]; then
