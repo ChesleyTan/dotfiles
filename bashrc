@@ -88,7 +88,7 @@ function SensorTemp() {
 }
 function ramUsage() {
     if [[ $showSysInfo == true ]]; then
-        echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -7 | tail -1) MB | $(tput sgr0)"
+        echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -6 | tail -1) MB | $(tput sgr0)"
     fi
 }
 function batteryInfo() {
