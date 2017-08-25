@@ -950,7 +950,7 @@ try
         nnoremap <Leader>m :Neomake
     endif
 catch /:E117:/
-    echom "NeoBundle not installed!"
+    echom "Plugin manager not installed!"
 endtry
 
 " }}}
