@@ -804,118 +804,76 @@ endfunction
 " Plugins configuration/constants {{{
 try
     " Add locally installed bundles to runtimepath
-    " NeoBundle Scripts {{{
-    set runtimepath+=$HOME/.vim/bundle/neobundle.vim/
+    " Plugin Scripts {{{
 
-    " Required:
-    call neobundle#begin(expand('$HOME/.vim/bundle'))
+    call plug#begin(expand('$HOME/.vim/plugged'))
 
-    " Required:
-    " Let NeoBundle manage NeoBundle
-    NeoBundleFetch 'Shougo/neobundle.vim'
-
-    " Add or remove your Bundles here:
-    NeoBundleLazy 'ChesleyTan/wordCount.vim', {
-        \'autoload': {
-            \'commands' : ['WordCount',
-                        \'wordCount#WordCount']
-        \}
+    Plug 'ChesleyTan/wordCount.vim', {
+        \'on': 'WordCount'
     \}
-    "NeoBundle 'ervandew/supertab'
-    NeoBundle 'Yggdroot/indentLine'
-    NeoBundle 'xolox/vim-easytags'
-    NeoBundle 'xolox/vim-misc'
-    NeoBundle 'xolox/vim-notes'
-    NeoBundleLazy 'itchyny/calendar.vim', {
-        \'autoload': {
-            \'commands' : 'Calendar'
-        \}
+    Plug 'ervandew/supertab'
+    Plug 'Yggdroot/indentLine'
+    Plug 'xolox/vim-easytags'
+    Plug 'xolox/vim-misc'
+    Plug 'xolox/vim-notes'
+    Plug 'itchyny/calendar.vim', {
+        \'on': 'Calendar'
     \}
-    NeoBundle 'Raimondi/delimitMate'
-    NeoBundle 'scrooloose/syntastic'
-    NeoBundleLazy 'scrooloose/nerdtree', {
-        \'autoload': {
-            \'commands' : 'NERDTreeToggle'
-        \}
+    Plug 'Raimondi/delimitMate'
+    Plug 'scrooloose/syntastic'
+    Plug 'scrooloose/nerdtree', {
+        \'on': 'NERDTreeToggle'
     \}
-    NeoBundleLazy 'jistr/vim-nerdtree-tabs', {
-        \'autoload': {
-            \'commands' : 'NERDTreeTabsToggle'
-        \}
+    Plug 'jistr/vim-nerdtree-tabs', {
+        \'on': 'NERDTreeTabsToggle'
     \}
-    NeoBundleLazy 'Shougo/unite.vim', {
-        \'autoload': {
-            \'commands' : 'Unite'
-        \}
+    Plug 'Shougo/unite.vim', {
+        \'on': 'Unite'
     \}
-    NeoBundleLazy 'davidhalter/jedi-vim', {
-        \'autoload': {
-            \'filetypes' : 'python'
-        \}
+    Plug 'davidhalter/jedi-vim', {
+        \'for': 'python'
     \}
-    NeoBundle 'Valloric/YouCompleteMe'
-    NeoBundleLazy 'rdnetto/YCM-Generator', {
-        \'autoload': {
-            \'commands' : 'YcmGenerateConfig'
-        \}
+    Plug 'eagletmt/neco-ghc', {
+        \'for': 'haskell'
+    \}
+    Plug 'Valloric/YouCompleteMe'
+    Plug 'rdnetto/YCM-Generator', {
+        \'branch': 'stable',
+        \'for': 'YcmGenerateConfig'
     \}
     "if has('lua')
-    "    NeoBundle 'Shougo/neocomplete.vim'
+    "    Plug 'Shougo/neocomplete.vim'
     "endif
-    NeoBundle 'SirVer/ultisnips'
-    NeoBundle 'honza/vim-snippets'
+    "Plug 'SirVer/ultisnips'
+    Plug 'honza/vim-snippets'
     if has('nvim')
-        NeoBundleLazy 'benekastah/neomake', {
-            \'autoload': {
-                \'commands' : 'Neomake'
-            \}
+        Plug 'benekastah/neomake', {
+            \'on': 'Neomake'
         \}
     endif
-    NeoBundleLazy 'sjl/gundo.vim', {
-        \'autoload': {
-            \'commands': 'GundoToggle'
-        \}
+    Plug 'sjl/gundo.vim', {
+        \'on': 'GundoToggle'
     \}
-    NeoBundleLazy 'luochen1990/rainbow', {
-        \'autoload': {
-            \'commands': 'RainbowToggle'
-        \}
+    Plug 'luochen1990/rainbow', {
+        \'on': 'RainbowToggle'
     \}
-    NeoBundle 'gorodinskiy/vim-coloresque'
-    NeoBundle 'altercation/vim-colors-solarized.git'
-    NeoBundleLazy 'chrisbra/unicode.vim', {
-        \'autoload': {
-            \'commands': ['Digraphs',
-                        \'UnicodeTable',
-                        \'UnicodeName',
-                        \'SearchUnicode',
-                        \'DownloadUnicode']
-        \}
+    Plug 'gorodinskiy/vim-coloresque'
+    Plug 'altercation/vim-colors-solarized'
+    Plug 'chrisbra/unicode.vim', {
+        \'on': ['Digraphs',
+               \'UnicodeTable',
+               \'UnicodeName',
+               \'SearchUnicode',
+               \'DownloadUnicode']
     \}
-    NeoBundleLazy 'KabbAmine/zeavim.vim', {
-        \'autoload': {
-            \'mappings': ['<Leader>z',
-                        \'<Leader>Z']
-        \}
-    \}
-    NeoBundleLazy 'majutsushi/tagbar', {
-        \'autoload': {
-            \'commands': 'TagbarToggle'
-        \}
+    Plug 'KabbAmine/zeavim.vim'
+    Plug 'majutsushi/tagbar', {
+        \'on': 'TagbarToggle'
     \}
 
-    " You can specify revision/branch/tag.
-    " NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
+    " Initialize plugin system
+    call plug#end()
 
-    " Required:
-    call neobundle#end()
-
-    " Required (Re-enable because neobundle disables this):
-    filetype plugin indent on
-
-    " If there are uninstalled bundles found on startup,
-    " this will conveniently prompt you to install them.
-    NeoBundleCheck
     " }}}
     let g:indentLine_char = '┆'
     command! Tree NERDTreeTabsToggle
@@ -970,6 +928,7 @@ try
     let g:calendar_google_calendar = 1
     let g:calendar_google_task = 0
     let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
+    let g:ycm_semantic_triggers = {'haskell' : ['.']}
     let g:jedi#popup_on_dot = 0
     let g:jedi#popup_select_first = 0
     let g:jedi#goto_assignments_command = "<Leader>G"
@@ -1127,6 +1086,9 @@ function! CustomNotesFoldText()
 endfunction
 augroup ft_notes
     autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
+augroup END
+augroup ft_haskell
+    autocmd Filetype haskell setlocal omnifunc=necoghc#omnifunc
 augroup END
 " }}}
 " Pre-start function calls (non-autocommand) {{{
