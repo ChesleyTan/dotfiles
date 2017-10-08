@@ -54,6 +54,7 @@ if !isdirectory($HOME . '/.vim/')
 endif
 
 " Backup settings
+set directory=. "Store swapfiles in the same directory as the file
 set backup " Back up previous versions of files
 set backupdir=$HOME/.vim/backup// " Store backups in a central directory
 set backupdir+=. " Alternatively, store backups in the same directory as the file
