@@ -258,11 +258,8 @@ endfunction
 " This function is called by autocmd when vim starts
 function! PluginConfig()
     " Javacomplete config {{{
-    if isdirectory(expand("$HOME/.vim/bundle/javacomplete"))
         function! s:InitJavaComplete()
-            setlocal runtimepath+=$HOME/.vim/bundle/javacomplete
             setlocal omnifunc=javacomplete#Complete
-            setlocal completefunc=javacomplete#CompleteParamsInfo
         endfunction
         augroup javacomplete
             autocmd Filetype java call s:InitJavaComplete()
@@ -270,7 +267,6 @@ function! PluginConfig()
         if &filetype ==? 'java'
             call s:InitJavaComplete()
         endif
-    endif
     "}}}
 endfunction
 function! WordProcessorMode()
@@ -836,6 +832,9 @@ try
     \}
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
+    \}
+    Plug 'artur-shaik/vim-javacomplete2', {
+        \'for': 'java'
     \}
     Plug 'Valloric/YouCompleteMe'
     Plug 'rdnetto/YCM-Generator', {
