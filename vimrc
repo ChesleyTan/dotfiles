@@ -817,7 +817,11 @@ try
         \'on': 'Calendar'
     \}
     Plug 'Raimondi/delimitMate'
-    Plug 'scrooloose/syntastic'
+    if !has('nvim')
+        Plug 'scrooloose/syntastic'
+    else
+        Plug 'benekastah/neomake'
+    endif
     Plug 'scrooloose/nerdtree', {
         \'on': 'NERDTreeToggle'
     \}
@@ -846,11 +850,6 @@ try
     "endif
     "Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
-    if has('nvim')
-        Plug 'benekastah/neomake', {
-            \'on': 'Neomake'
-        \}
-    endif
     Plug 'sjl/gundo.vim', {
         \'on': 'GundoToggle'
     \}
@@ -878,11 +877,17 @@ try
     let g:indentLine_char = '┆'
     command! Tree NERDTreeTabsToggle
     nnoremap <Leader>t :Tree<CR>
-    " Quick leader toggle for Syntastic checking
-    nnoremap <Leader>tc :SyntasticToggleMode<CR>
-    let g:syntastic_check_on_wq = 0
-    let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
-                                            \W0232,C0325,C0301'
+    if !has('nvim')
+        " Quick leader toggle for Syntastic checking
+        nnoremap <Leader>tc :SyntasticToggleMode<CR>
+        let g:syntastic_check_on_wq = 0
+        let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
+                                                \W0232,C0325,C0301'
+    else
+        nnoremap <Leader>m :Neomake
+        " Automatically run neomake when writing a buffer
+        call neomake#configure#automake('w')
+    endif
     " NeoComplete Settings {{{
     "if has('lua')
     "    let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
@@ -946,9 +951,6 @@ try
     nnoremap <Leader>uo :Unite output:
     nnoremap <Leader>umru :Unite output:ol<CR>
     nnoremap <F8> :TagbarToggle<CR>
-    if has('nvim')
-        nnoremap <Leader>m :Neomake
-    endif
 catch /:E117:/
     echom "Plugin manager not installed!"
 endtry
