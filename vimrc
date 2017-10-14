@@ -808,7 +808,6 @@ try
     Plug 'ChesleyTan/wordCount.vim', {
         \'on': 'WordCount'
     \}
-    Plug 'ervandew/supertab'
     Plug 'Yggdroot/indentLine'
     Plug 'xolox/vim-easytags'
     Plug 'xolox/vim-misc'
@@ -823,7 +822,7 @@ try
         Plug 'benekastah/neomake'
     endif
     Plug 'scrooloose/nerdtree', {
-        \'on': 'NERDTreeToggle'
+        \'on': ['NERDTreeToggle', 'NERDTreeTabsToggle']
     \}
     Plug 'jistr/vim-nerdtree-tabs', {
         \'on': 'NERDTreeTabsToggle'
@@ -848,7 +847,7 @@ try
     "if has('lua')
     "    Plug 'Shougo/neocomplete.vim'
     "endif
-    "Plug 'SirVer/ultisnips'
+    Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'sjl/gundo.vim', {
         \'on': 'GundoToggle'
@@ -884,6 +883,8 @@ try
         let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
                                                 \W0232,C0325,C0301'
     else
+        " Quick leader toggle for Neomake checking
+        nnoremap <Leader>tc :NeomakeToggle<CR>
         nnoremap <Leader>m :Neomake
         " Automatically run neomake when writing a buffer
         call neomake#configure#automake('w')
