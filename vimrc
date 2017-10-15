@@ -839,7 +839,9 @@ try
     Plug 'artur-shaik/vim-javacomplete2', {
         \'for': 'java'
     \}
-    Plug 'Valloric/YouCompleteMe'
+    Plug 'Valloric/YouCompleteMe', {
+        \'do': './install.py --clang-completer'
+    \}
     Plug 'rdnetto/YCM-Generator', {
         \'branch': 'stable',
         \'for': 'YcmGenerateConfig'
