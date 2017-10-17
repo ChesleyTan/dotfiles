@@ -949,6 +949,10 @@ try
     let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
     let g:UltiSnipsEditSplit = "vertical"
     let g:rainbow_active = 0
+    let g:rainbow_conf = {
+        \'guifgs': ['63', '178', '33', '195'],
+        \'ctermfgs': ['63', '178', '33', '195']
+    \}
     nnoremap <Leader>u :Unite file buffer<CR>
     nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
