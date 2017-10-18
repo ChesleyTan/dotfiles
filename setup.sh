@@ -127,3 +127,13 @@ if [[ $ans == "y" ]]; then
         printf "${GREEN}Linked ~/.xmonad/${RESET}\n"
     fi
 fi
+
+echo "Using fzf? (y/n)"
+read ans
+if [[ $ans == "y" ]]; then
+    git submodule init
+    git submodule update
+    $PWD/zsh/fzf/install
+    printf "${GREEN}Installed fzf${RESET}\n"
+fi
+

@@ -301,3 +301,5 @@ if [[ -e $HOME/.zshrc_local ]]; then
     . $HOME/.zshrc_local
 fi
 # }}}
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh

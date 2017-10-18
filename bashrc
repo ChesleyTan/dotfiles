@@ -259,3 +259,5 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
 fi
 # }}}
 # vim:fdm=marker
+
+[ -f ~/.fzf.bash ] && source ~/.fzf.bash
