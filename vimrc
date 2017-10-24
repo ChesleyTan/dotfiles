@@ -24,7 +24,7 @@ set mouse=nvc " Allow using mouse to change cursor position in normal, visual,
               " and command line modes
 set timeoutlen=300 " Timeout for entering key combinations
 set t_Co=256 " Enable 256 colors
-set textwidth=80 " Maximum width in characters
+set textwidth=100 " Maximum width in characters
 set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
 set foldmethod=marker " Use vim markers for folding
 set foldnestmax=4 " Maximum nested folds
@@ -276,7 +276,7 @@ function! WordProcessorMode()
     if b:current_mode ==# "default"
         let b:current_mode="wpm"
         " Break line before one-letter words when possible
-        setlocal textwidth=80
+        setlocal textwidth=120
         setlocal formatoptions=t1
         setlocal noexpandtab
         setlocal spell spelllang=en_us
@@ -405,8 +405,10 @@ function! SyntaxToggle()
 endfunction
 command! SyntaxToggle call SyntaxToggle()
 function! ColorColumnToggle()
-    if &colorcolumn != 80
-        set colorcolumn=80
+    if exists('b:current_mode') && b:current_mode == "wpm" && &colorcolumn != 120
+        set colorcolumn=120
+    elseif (!exists('b:current_mode') || b:current_mode == "default") && &colorcolumn != 100
+        set colorcolumn=100
     else
         set colorcolumn=""
     endif
