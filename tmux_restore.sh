@@ -8,7 +8,13 @@ then
     echo "Choose a work profile: "
     echo "1) Home"
     echo "2) Work"
+    echo "3) None"
     read input
+
+    if [[ $input == 3 ]]; then
+        tmux
+        exit 0
+    fi
 
     tmux new-session -s $SESSIONNAME -n main -d
     tmux split-window -h -c "$PWD"

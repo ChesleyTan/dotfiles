@@ -7,3 +7,6 @@
 [submodule "include/fzf"]
 	path = include/fzf
 	url = https://github.com/junegunn/fzf
+[submodule "include/tmux/tmux-resurrect"]
+	path = include/tmux/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect

@@ -71,11 +71,13 @@ read ans
 if [[ $ans == "y" ]]; then
     if [[ -a ~/.zshrc ]]; then
         printf "${RED}~/.zshrc already exists!${RESET}\n"
-    elif [[ -a ~/.zsh/ ]]; then
-        printf "${RED}~/.zsh/ already exists!${RESET}\n"
     else
         ln -s $PWD/zshrc $HOME/.zshrc
         printf "${GREEN}Linked ~/.zshrc${RESET}\n"
+    fi
+    if [[ -a ~/.zsh/ ]]; then
+        printf "${RED}~/.zsh/ already exists!${RESET}\n"
+    else
         ln -s $PWD/include/zsh $HOME/.zsh
         printf "${GREEN}Linked ~/.zsh/${RESET}\n"
         echo "Updating submodules...."
@@ -92,6 +94,15 @@ if [[ $ans == "y" ]]; then
     else
         ln -s $PWD/tmux.conf $HOME/.tmux.conf
         printf "${GREEN}Linked ~/.tmux.conf${RESET}\n"
+    fi
+    if [[ -a ~/.tmux/ ]]; then
+        printf "${RED}~/.tmux/ already exists!${RESET}\n"
+    else
+        ln -s $PWD/include/tmux $HOME/.tmux
+        printf "${GREEN}Linked ~/.tmux/${RESET}\n"
+        echo "Updating submodules...."
+        git submodule init
+        git submodule update
     fi
 fi
 
