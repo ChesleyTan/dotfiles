@@ -258,6 +258,7 @@ if [ -f /etc/bash_completion ] && ! shopt -oq posix; then
     . /etc/bash_completion
 fi
 # }}}
-# vim:fdm=marker
-
+# Plugin configuration {{{
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
+# }}}
+# vim:fdm=marker

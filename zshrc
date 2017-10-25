@@ -301,5 +301,6 @@ if [[ -e $HOME/.zshrc_local ]]; then
     . $HOME/.zshrc_local
 fi
 # }}}
-
+# Plugin configuration {{{
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+# }}}
