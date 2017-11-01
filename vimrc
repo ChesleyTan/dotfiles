@@ -425,7 +425,7 @@ function! EOLToggle()
 endfunction
 command! EOLToggle call EOLToggle()
 function! OpenInExternalProgram()
-    call system('xdg-open ' . expand('%') . ' &')
+    call system('xdg-open "' . expand('%') . '" &')
 endfunction
 command! OpenInExternalProgram call OpenInExternalProgram()
 function! GetVisualSelection()
