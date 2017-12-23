@@ -29,7 +29,7 @@ set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
 set foldmethod=marker " Use vim markers for folding
 set foldnestmax=4 " Maximum nested folds
 set noshowmatch " Do not temporarily jump to match when inserting an end brace
-set nocursorline " Highlight current line
+set cursorline " Highlight current line
 set lazyredraw " Conservative redrawing
 set backspace=indent,eol,start " Allow full functionality of backspace
 set scrolloff=2 " Keep cursor 2 rows above the bottom when scrolling
@@ -1099,7 +1099,10 @@ augroup ft_notes
     autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
 augroup END
 augroup ft_haskell
+    " Disable haskell-vim omnifunc
+    let g:haskellmode_completion_ghc = 0
     autocmd Filetype haskell setlocal omnifunc=necoghc#omnifunc
+    let g:necoghc_enable_detailed_browse = 1
 augroup END
 " }}}
 " Pre-start function calls (non-autocommand) {{{
