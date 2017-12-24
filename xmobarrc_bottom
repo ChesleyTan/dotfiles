@@ -45,6 +45,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                       , "--high", "#2ECC71"
                       , "--normal", "#E67E22"
                       ] 300
+        , Run Com "bash" ["/home/chesley/bin/ChargingStatus.sh"] "chargingStatus" 300
         , Run Com "bash" ["/home/chesley/bin/VolumeXmobarColorizer.sh"] "volume" 10
         , Run Date "%a %b %_d %r" "date" 10
         , Run Com "bash" ["/home/chesley/bin/SensorTempXmobarColorizer.sh"] "sensorTemp" 50
@@ -72,7 +73,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                      \[</fc>%cpu% %memory%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc><fc=#555555>L:</fc>%cpuLoad%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%sensorTemp%<fc=#3498DB>]</fc>\
-                     \<fc=#3498DB>[</fc>%battery%<fc=#3498DB>]</fc>\
+                     \<fc=#3498DB>[</fc>%battery%%chargingStatus%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%volume%<fc=#3498DB>]</fc>\
                      \}{\
                      \<fc=#3498DB>[</fc><fc=#555555>DB:</fc>%dropboxStatus%<fc=#3498DB>]</fc>\
