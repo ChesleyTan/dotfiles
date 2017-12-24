@@ -736,9 +736,6 @@ function! SetStatusline()
         setlocal statusline+=\ %#Green_34#%{g:gitInfo}%## " Git info
     endif
     setlocal statusline+=%=                                        " Left/right separator
-    if exists("*SyntasticStatuslineFlag()")
-        setlocal statusline+=%#Red_196#%{SyntasticStatuslineFlag()}%## " Syntastic plugin flag
-    endif
     "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
     setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~:h'))}%##%#Green_41#\|%##  " File path with truncated names
     setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
@@ -819,11 +816,7 @@ try
         \'on': 'Calendar'
     \}
     Plug 'Raimondi/delimitMate'
-    if !has('nvim')
-        Plug 'scrooloose/syntastic'
-    else
-        Plug 'benekastah/neomake'
-    endif
+    Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle', 'NERDTreeTabsToggle']
     \}
@@ -836,22 +829,31 @@ try
     Plug 'davidhalter/jedi-vim', {
         \'for': 'python'
     \}
+    Plug 'zchee/deoplete-jedi', {
+        \'for': 'python'
+    \}
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
     \}
     Plug 'artur-shaik/vim-javacomplete2', {
         \'for': 'java'
     \}
-    Plug 'Valloric/YouCompleteMe', {
-        \'do': './install.py --clang-completer'
-    \}
-    Plug 'rdnetto/YCM-Generator', {
-        \'branch': 'stable',
-        \'for': 'YcmGenerateConfig'
-    \}
-    "if has('lua')
-    "    Plug 'Shougo/neocomplete.vim'
-    "endif
+
+    "Plug 'Valloric/YouCompleteMe', {
+    "    \'do': './install.py --clang-completer'
+    "\}
+    "Plug 'rdnetto/YCM-Generator', {
+    "    \'branch': 'stable',
+    "    \'for': 'YcmGenerateConfig'
+    "\}
+
+    if has('nvim')
+        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+    else
+        Plug 'Shougo/deoplete.nvim'
+        Plug 'roxma/nvim-yarp'
+        Plug 'roxma/vim-hug-neovim-rpc'
+    endif
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'sjl/gundo.vim', {
@@ -879,46 +881,24 @@ try
 
     " }}}
     let g:indentLine_char = '┆'
-    command! Tree NERDTreeTabsToggle
-    nnoremap <Leader>t :Tree<CR>
-    if !has('nvim')
-        " Quick leader toggle for Syntastic checking
-        nnoremap <Leader>tc :SyntasticToggleMode<CR>
-        let g:syntastic_check_on_wq = 0
-        let g:syntastic_python_pylint_post_args='--disable=C0111,R0914,R0912,R0915,R0913,R0904,
-                                                \W0232,C0325,C0301'
-    else
-        " Quick leader toggle for Neomake checking
-        nnoremap <Leader>tc :NeomakeToggle<CR>
-        nnoremap <Leader>m :Neomake
-        " Automatically run neomake when writing a buffer
-        call neomake#configure#automake('w')
-    endif
-    " NeoComplete Settings {{{
-    "if has('lua')
-    "    let g:neocomplete#enable_at_startup = 1 " Enable neocomplete
-    "    let g:neocomplete#enable_smart_case = 1 " Ignore case unless a capital letter is included
-    "    let g:neocomplete#sources#syntax#min_keyword_length = 3 " Only show completions longer than 3 chars
-    "    let g:neocomplete#enable_fuzzy_completion = 0 " Disable fuzzy completion
-    "    let g:neocomplete#enable_cursor_hold_i = 1 " Enable delaying generation of autocompletions until the cursor is held
-    "    let g:neocomplete#cursor_hold_i_time = 300 " Time to delay generation of autocompletions
-    "    inoremap <expr><C-g> neocomplete#undo_completion()
-    "    inoremap <expr><C-l> neocomplete#complete_common_string()
-    "    " <CR>: close popup and save indent.
-    "    inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-    "    function! s:my_cr_function()
-    "        return pumvisible() ? neocomplete#close_popup() : "\<CR>"
-    "    endfunction
-    "    " <C-h>, <BS>: close popup and delete backword char.
-    "    inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-    "    inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-    "    " Quick leader toggle for autocompletion
-    "    nnoremap <Leader>ta :NeoCompleteToggle<CR>
-    "endif
+    " Neomake settings {{{
+    " Quick leader toggle for Neomake checking
+    nnoremap <Leader>tc :NeomakeToggle<CR>
+    nnoremap <Leader>m :Neomake
+    " Automatically run neomake when writing a buffer
+    call neomake#configure#automake('w')
+    " }}}
+    " Deoplete settings {{{
+    let g:deoplete#enable_at_startup = 1
+    " Quick leader toggle for autocompletion
+    nnoremap <Leader>ta :call deoplete#toggle()<CR>
     " }}}
     " Disable easytag's warning about vim's updatetime being too low
     let g:easytags_updatetime_warn = 0
     let g:easytags_async = 1
+    " NERDTree settings {{{
+    command! Tree NERDTreeTabsToggle
+    nnoremap <Leader>t :Tree<CR>
     let g:nerdtree_tabs_open_on_gui_startup = 0
     let g:nerdtree_tabs_open_on_console_startup = 0
     let g:nerdtree_tabs_no_startup_for_diff = 1
@@ -928,6 +908,7 @@ try
     let g:nerdtree_tabs_autoclose = 1
     let g:nerdtree_tabs_synchronize_view = 1
     let g:nerdtree_tabs_synchronize_focus = 1
+    " }}}
     let g:gundo_width = 30
     let g:gundo_preview_height = 20
     let g:gundo_right = 1
