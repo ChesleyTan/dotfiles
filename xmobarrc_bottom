@@ -17,7 +17,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
     , pickBroadest = False      -- When using multiple displays,
                                 -- choose the broadest to display on
     , iconRoot = "."            -- Folder to search for icons
-    , commands = [ Run Weather "KITH" [ "-t", "<tempF><fc=#555555>°F</fc> <skyCondition> <rh><fc=#555555>%rh</fc> <windMph><fc=#555555>wmph</fc>"
+    , commands = [ Run Weather "KLGA" [ "-t", "<tempF><fc=#555555>°F</fc> <skyCondition> <rh><fc=#555555>%rh</fc> <windMph><fc=#555555>wmph</fc>"
                                       , "-L", "40"
                                       , "-H", "80"
                                       , "--normal", "#48D700"
@@ -30,6 +30,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                   , "--low", "#2ECC71"
                   , "--normal", "#E67E22"
                   , "--high", "#E74C4C"
+                  , "-w", "2"
                   ] 20
         , Run Memory [ "-t", "<fc=#555555>M:</fc><usedratio><fc=#555555>%</fc>"
                      , "-L", "25"
@@ -37,6 +38,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                      , "--low", "#2ECC71"
                      , "--high", "#E74C4C"
                      , "--normal", "#E67E22"
+                     , "-w", "2"
                      ] 50
         , Run Battery [ "-t", "<left><fc=#555555>%</fc><fc=#555555>(</fc><timeleft><fc=#555555>)</fc>"
                       , "-L", "10"
@@ -81,7 +83,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                      \<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc>\
                      \<fc=#3498db>[</fc>%disku%<fc=#3498db>]</fc>\
                      \ <fc=#00D75F></fc> \
-                     \<fc=#1ABC9C>%KITH%</fc>\
+                     \<fc=#1ABC9C>%KLGA%</fc>\
                      \ <fc=#00D75F></fc> \
                      \<fc=#1ABC9C>%date%</fc> "
 }
