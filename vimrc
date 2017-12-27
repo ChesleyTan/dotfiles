@@ -943,7 +943,8 @@ try
     nnoremap <Leader>umru :Unite output:ol<CR>
     nnoremap <F8> :TagbarToggle<CR>
 catch /:E117:/
-    echom "Plugin manager not installed!"
+    echom "Error initializing plugins -- plugin manager not installed?"
+    echom v:exception
 endtry
 
 " }}}
