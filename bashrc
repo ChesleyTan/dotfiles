@@ -13,6 +13,10 @@ shopt -s histappend
 HISTSIZE=99999
 HISTFILESIZE=99999
 
+# bind keys for history search
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
+
 # check the window size after each command and, if necessary,
 # update the values of LINES and COLUMNS.
 shopt -s checkwinsize
