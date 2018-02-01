@@ -144,6 +144,8 @@ function! s:SetMappings()
     inoremap <C-j> <Down>
     inoremap <C-h> <Left>
     inoremap <C-l> <Right>
+    inoremap <expr> <Tab> pumvisible() ? "\<C-N>" : "\<Tab>"
+    inoremap <expr> <S-Tab> pumvisible() ? "\<C-P>" : "\<S-Tab>"
     " Smart indent when entering insert mode
     nnoremap <expr> i SmartInsertModeEnter()
     " Easy buffer switching
