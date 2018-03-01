@@ -239,6 +239,9 @@ function! s:SetMappings()
     \gV:call setreg('"', old_reg, old_regtype)<CR>
     " Easy delete to black hole register
     nnoremap D "_dd
+    " Goto commands
+    command! GotoWindow normal <C-w>f
+    command! GotoTab normal <C-w>gf
     " Center selected text with surrounding whitespace
     vnoremap . :call CenterSelection()<CR>
     " Quick toggle terminal background transparency
@@ -429,6 +432,16 @@ command! EOLToggle call EOLToggle()
 function! OpenInExternalProgram()
     call system('xdg-open "' . expand('%') . '" &')
 endfunction
+let g:original_conceallevel=&conceallevel
+function! ConcealToggle()
+    if &conceallevel == 0
+        let &conceallevel=g:original_conceallevel
+    else
+        let g:original_conceallevel=&conceallevel
+        set conceallevel=0
+    endif
+endfunction
+command! ConcealToggle call ConcealToggle()
 command! OpenInExternalProgram call OpenInExternalProgram()
 function! GetVisualSelection()
     try
