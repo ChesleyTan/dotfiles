@@ -114,9 +114,9 @@ execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
 " Constants/Global variables {{{
 let g:defaultStatuslineColor_cterm = 235
-let g:defaultStatuslineColor_gui = '#073642'
+let g:defaultStatuslineColor_gui = '#262626'
 let g:insertModeStatuslineColor_cterm = 23
-let g:insertModeStatuslineColor_gui = '#173762'
+let g:insertModeStatuslineColor_gui = '#005F5F'
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 let g:showGitInfo = 1 " This determines whether to show git info in statusline
 let g:inGitRepo = 0
@@ -611,7 +611,7 @@ function! ColorschemeInit()
     call s:Highlight('SpellCap', '', 'underline,bold', '214', '', 'undercurl', '', '', '#FFAF00', '')
     call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#5FFFFF', '')
     call s:Highlight('SpellRare', '', 'underline,bold', '195', '', 'undercurl', '', '', '#DFFFFF', '')
-    call s:Highlight('Conceal', '', '', '41', '', '', '#2ECC71', '', '', '')
+    call s:Highlight('Conceal', '', '', '235', '', '', '#262626', '', '', '')
     call s:Highlight('ModeMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
     call s:Highlight('Pmenu', '', '', '76', '233', '', '#5FD700', '#121212', '', '')
     call s:Highlight('PmenuSel', 'bold', 'bold', '252', '235', 'bold', '#D0D0D0', '#262626', '', '')
@@ -761,39 +761,39 @@ endfunction
 call SetStatusline()
 " }}}
 " Statusline color changing function {{{
-function! RefreshColors(statusLineColor, gui_statusLineColor)
+function! RefreshColors(statusLineColor, guiStatusLineColor)
     let l:isEnteringInsertMode = 0
     if a:statusLineColor == g:insertModeStatuslineColor_cterm
         let l:isEnteringInsertMode = 1
     endif
-    call s:Highlight('Red_196', 'bold', 'bold', '196', a:statusLineColor, 'bold', '#FF0000', a:gui_statusLineColor, '', '')
-    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:gui_statusLineColor, '', '')
-    call s:Highlight('Green_34', 'bold', 'bold', '34', a:statusLineColor, 'bold', '#00AF00', a:gui_statusLineColor, '', '')
-    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:gui_statusLineColor, '', '')
-    call s:Highlight('Blue_37', 'bold', 'bold', '37', a:statusLineColor, 'bold', '#1ABC9C', a:gui_statusLineColor, '', '')
-    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:gui_statusLineColor, '', '')
-    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:gui_statusLineColor, '', '')
+    call s:Highlight('Red_196', 'bold', 'bold', '196', a:statusLineColor, 'bold', '#FF0000', a:guiStatusLineColor, '', '')
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:guiStatusLineColor, '', '')
+    call s:Highlight('Green_34', 'bold', 'bold', '34', a:statusLineColor, 'bold', '#00AF00', a:guiStatusLineColor, '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:guiStatusLineColor, '', '')
+    call s:Highlight('Blue_37', 'bold', 'bold', '37', a:statusLineColor, 'bold', '#1ABC9C', a:guiStatusLineColor, '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:guiStatusLineColor, '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:guiStatusLineColor, '', '')
     "Status line of current window
-    call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:gui_statusLineColor, '', '')
+    call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:guiStatusLineColor, '', '')
     "Status line color for noncurrent window
-    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#EEEEEE', a:gui_statusLineColor, '', '')
+    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#EEEEEE', a:guiStatusLineColor, '', '')
     "Line numbers
-    call s:Highlight('LineNr', '', '', '118', a:statusLineColor, '', '#87FF00', a:gui_statusLineColor, '', '')
+    call s:Highlight('LineNr', '', '', '118', a:statusLineColor, '', '#87FF00', a:guiStatusLineColor, '', '')
     "Vertical split divider
-    call s:Highlight('VertSplit', 'bold', 'bold', '43', a:statusLineColor, 'bold', '#00D7AF', a:gui_statusLineColor, '', '')
+    call s:Highlight('VertSplit', 'bold', 'bold', '43', a:statusLineColor, 'bold', '#00D7AF', a:guiStatusLineColor, '', '')
     "Nonselected tabs
-    call s:Highlight('TabLine', '', '', '118', a:statusLineColor, '', '#87FF00', a:gui_statusLineColor, '', '')
+    call s:Highlight('TabLine', '', '', '118', a:statusLineColor, '', '#87FF00', a:guiStatusLineColor, '', '')
     "Empty space on tab bar
-    call s:Highlight('TabLineFill', '', '', '', a:statusLineColor, '', '', a:gui_statusLineColor, '', '')
+    call s:Highlight('TabLineFill', '', '', '', a:statusLineColor, '', '', a:guiStatusLineColor, '', '')
     "Selected tab
     if l:isEnteringInsertMode == 1
-        call s:Highlight('TabLineSel', '', '', '45', a:statusLineColor, '', '#00D7FF', a:gui_statusLineColor, '', '')
+        call s:Highlight('TabLineSel', '', '', '45', a:statusLineColor, '', '#00D7FF', a:guiStatusLineColor, '', '')
     else
         call s:Highlight('TabLineSel', '', '', '255', '23', '', '#EEEEEE', '#005F5F', '', '')
     endif
     "Current line highlighting
     if l:isEnteringInsertMode == 1
-        call s:Highlight('CursorLineNr', 'bold', 'bold', '45', '23', 'bold', '#00D7FF', '#005F5F', '', '')
+        call s:Highlight('CursorLineNr', 'bold', 'bold', '45', '26', 'bold', '#00D7FF', '#173762', '', '')
     else
         call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
     endif
@@ -846,6 +846,10 @@ try
     \}
     Plug 'zchee/deoplete-jedi', {
         \'for': 'python'
+    \}
+    Plug 'vim-python/python-syntax', {
+        \'for': 'python',
+        \'do': 'mkdir -p $HOME/.vim/syntax; cp syntax/python.vim $HOME/.vim/syntax'
     \}
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
@@ -945,6 +949,7 @@ try
     let g:jedi#goto_definitions_command = "<Leader>D"
     let g:jedi#usages_command = "<Leader>N"
     let g:jedi#rename_command = "<Leader>R"
+    let g:python_highlight_all = 1
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
     let g:UltiSnipsListSnippets = "<LocalLeader><LocalLeader>"
     let g:UltiSnipsJumpForwardTrigger = "<Tab>"
