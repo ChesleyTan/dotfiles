@@ -40,7 +40,7 @@ syntax enable " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
 colorscheme default " Set default colors
-if has('nvim')
+if has('nvim') || has('termguicolors')
     set termguicolors " Enable gui colors in terminal (i.e., 24-bit color)
 endif
 
@@ -313,21 +313,20 @@ endfunction
 command! DiffSaved call s:DiffWithSaved()
 " Close the diff and return to last modified buffer
 command! DiffQuit diffoff | b#
-function! Molokai()
-    if !has("gui_running")
-        let g:rehash256 = 1
-    endif
-    colorscheme molokai
-    call ToggleStatuslineColor()
-endfunction
-command! Molokai call Molokai()
 function! Solarized()
     set background=dark
     colorscheme NeoSolarized
-    highlight Folded term=NONE cterm=NONE gui=NONE
+    highlight ErrorMsg term=NONE cterm=NONE gui=NONE
+    highlight Conceal ctermfg=239 guifg=#4e4e4e
     call ToggleStatuslineColor()
 endfunction
 command! Solarized call Solarized()
+function! OneDark()
+    set background=dark
+    colorscheme onedark
+    call ToggleStatuslineColor()
+endfunction
+command! OneDark call OneDark()
 function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
 endfunction
@@ -567,7 +566,7 @@ function! ColorschemeInit()
     call s:Highlight('Debug', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
     call s:Highlight('Function', '', '', '202', '', '', '#FF5F00', '', '', '')
     call s:Highlight('Identifier', '', '', '202', '', '', '#FF5F00', '', '', '')
-    call s:Highlight('Comment', '', '', '41', '', '', '#2ECC71', '', '', '')
+    call s:Highlight('Comment', 'italic', 'italic', '41', '', 'italic', '#2ECC71', '', '', '')
     call s:Highlight('CommentEmail', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
     call s:Highlight('CommentUrl', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
     call s:Highlight('SpecialComment', 'bold', 'bold', '41', '', 'bold', '#2ECC71', '', '', '')
@@ -614,7 +613,7 @@ function! ColorschemeInit()
     call s:Highlight('SpellCap', '', 'underline,bold', '214', '', 'undercurl', '', '', '#FFAF00', '')
     call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#5FFFFF', '')
     call s:Highlight('SpellRare', '', 'underline,bold', '195', '', 'undercurl', '', '', '#DFFFFF', '')
-    call s:Highlight('Conceal', '', '', '235', '', '', '#262626', '', '', '')
+    call s:Highlight('Conceal', '', '', '237', '', '', '#3a3a3a', '', '', '')
     call s:Highlight('ModeMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
     call s:Highlight('Pmenu', '', '', '76', '233', '', '#5FD700', '#121212', '', '')
     call s:Highlight('PmenuSel', 'bold', 'bold', '252', '235', 'bold', '#D0D0D0', '#262626', '', '')
@@ -800,10 +799,6 @@ function! RefreshColors(statusLineColor, guiStatusLineColor)
     else
         call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
     endif
-
-    "PLUGINS HIGHLIGHTING
-    "indentLine plugin
-    execute 'let g:indentLine_color_term = ' . a:statusLineColor
 endfunction
 
 function! ReverseColors()
@@ -814,6 +809,7 @@ function! ReverseColors()
     endif
     call ToggleStatuslineColor()
 endfunction
+command! ReverseColors call ReverseColors()
 " }}}
 " }}}
 " Plugins configuration/constants {{{
@@ -850,10 +846,7 @@ try
     Plug 'zchee/deoplete-jedi', {
         \'for': 'python'
     \}
-    Plug 'vim-python/python-syntax', {
-        \'for': 'python',
-        \'do': 'mkdir -p $HOME/.vim/syntax; cp syntax/python.vim $HOME/.vim/syntax'
-    \}
+    Plug 'sheerun/vim-polyglot'
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
     \}
@@ -884,8 +877,9 @@ try
     Plug 'luochen1990/rainbow', {
         \'on': 'RainbowToggle'
     \}
-    Plug 'gorodinskiy/vim-coloresque'
+    "Plug 'gorodinskiy/vim-coloresque'
     Plug 'iCyMind/NeoSolarized'
+    Plug 'joshdick/onedark.vim'
     Plug 'chrisbra/unicode.vim', {
         \'on': ['Digraphs',
                \'UnicodeTable',
@@ -903,6 +897,7 @@ try
 
     " }}}
     let g:indentLine_char = '┆'
+    let g:indentLine_setColors = 0
     " Neomake settings {{{
     " Quick leader toggle for Neomake checking
     nnoremap <Leader>tc :NeomakeToggle<CR>
@@ -952,6 +947,7 @@ try
     let g:jedi#goto_definitions_command = "<Leader>D"
     let g:jedi#usages_command = "<Leader>N"
     let g:jedi#rename_command = "<Leader>R"
+    " python-syntax configuration
     let g:python_highlight_all = 1
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
     let g:UltiSnipsListSnippets = "<LocalLeader><LocalLeader>"
@@ -964,6 +960,10 @@ try
         \'ctermfgs': ['195', '33', '178', '69']
     \}
     let g:neosolarized_contrast = "high"
+    let g:neosolarized_bold = 1
+    let g:neosolarized_underline = 1
+    let g:neosolarized_italic = 1
+    let g:onedark_terminal_italics = 1
     nnoremap <Leader>u :Unite file buffer<CR>
     nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
