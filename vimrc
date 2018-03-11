@@ -40,6 +40,9 @@ syntax enable " Enable syntax highlighting
 filetype indent on " Enable filetype-specific indentation
 filetype plugin on " Enable filetype-specific plugins
 colorscheme default " Set default colors
+if has('nvim')
+    set termguicolors " Enable gui colors in terminal (i.e., 24-bit color)
+endif
 
 " Autocompletion settings
 set completeopt=longest,menuone,preview
@@ -320,7 +323,7 @@ endfunction
 command! Molokai call Molokai()
 function! Solarized()
     set background=dark
-    colorscheme solarized
+    colorscheme NeoSolarized
     highlight Folded term=NONE cterm=NONE gui=NONE
     call ToggleStatuslineColor()
 endfunction
@@ -499,7 +502,7 @@ command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . shellescape(
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf)"
 function DetectTrueColor()
     " Automatically apply Solarized colorscheme if true-color is available
-    if $NVIM_TUI_ENABLE_TRUE_COLOR
+    if &termguicolors == 1
         call Solarized()
     endif
 endfunction
@@ -882,7 +885,7 @@ try
         \'on': 'RainbowToggle'
     \}
     Plug 'gorodinskiy/vim-coloresque'
-    Plug 'altercation/vim-colors-solarized'
+    Plug 'iCyMind/NeoSolarized'
     Plug 'chrisbra/unicode.vim', {
         \'on': ['Digraphs',
                \'UnicodeTable',
@@ -960,6 +963,7 @@ try
         \'guifgs': ['195', '33', '178', '69'],
         \'ctermfgs': ['195', '33', '178', '69']
     \}
+    let g:neosolarized_contrast = "high"
     nnoremap <Leader>u :Unite file buffer<CR>
     nnoremap <Leader>ur :Unite file buffer file_rec<CR>
     nnoremap <Leader>uo :Unite output:
