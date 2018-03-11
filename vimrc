@@ -105,7 +105,7 @@ augroup defaults
     " Refresh git information when file is changed
     autocmd BufWritePost * call RefreshGitInfo()
     " Change statusline color when entering insert mode
-    autocmd InsertEnter * call RefreshColors(g:insertModeStatuslineColor_cterm, g:insertModeStatuslineColor_gui)
+    autocmd InsertEnter * call RefreshColors(g:insertModeStatusLineColor_ctermfg, g:insertModeStatusLineColor_guifg, g:insertModeStatusLineColor_ctermbg, g:insertModeStatusLineColor_guibg)
     autocmd InsertLeave * call ToggleStatuslineColor()
     " Detect true-color terminal
     autocmd VimEnter * call DetectTrueColor()
@@ -116,10 +116,6 @@ set list
 execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
 " Constants/Global variables {{{
-let g:defaultStatuslineColor_cterm = 235
-let g:defaultStatuslineColor_gui = '#262626'
-let g:insertModeStatuslineColor_cterm = 23
-let g:insertModeStatuslineColor_gui = '#005F5F'
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 let g:showGitInfo = 1 " This determines whether to show git info in statusline
 let g:inGitRepo = 0
@@ -318,21 +314,37 @@ function! Solarized()
     colorscheme NeoSolarized
     highlight ErrorMsg term=NONE cterm=NONE gui=NONE
     highlight Conceal ctermfg=239 guifg=#4e4e4e
+    let g:defaultStatusLineColor_ctermbg = 8
+    let g:defaultStatusLineColor_guibg = '#073642'
+    let g:insertModeStatusLineColor_ctermbg = 30
+    let g:insertModeStatusLineColor_guibg = '#005F5F'
     call ToggleStatuslineColor()
 endfunction
 command! Solarized call Solarized()
 function! OneDark()
     set background=dark
     colorscheme onedark
+    let g:defaultStatusLineColor_ctermbg = 235
+    let g:defaultStatusLineColor_guibg = '#262626'
+    let g:insertModeStatusLineColor_ctermbg = 23
+    let g:insertModeStatusLineColor_guibg = '#005F5F'
     call ToggleStatuslineColor()
 endfunction
 command! OneDark call OneDark()
 function! ToggleStatuslineColor()
-    call RefreshColors(g:defaultStatuslineColor_cterm, g:defaultStatuslineColor_gui)
+    call RefreshColors(g:defaultStatusLineColor_ctermfg, g:defaultStatusLineColor_guifg, g:defaultStatusLineColor_ctermbg, g:defaultStatusLineColor_guibg)
 endfunction
 command! ToggleStatuslineColor call ToggleStatuslineColor()
 function! Custom()
     call ColorschemeInit()
+    let g:defaultStatusLineColor_ctermfg = 118
+    let g:defaultStatusLineColor_guifg = '#87FF00'
+    let g:defaultStatusLineColor_ctermbg = 235
+    let g:defaultStatusLineColor_guibg = '#262626'
+    let g:insertModeStatusLineColor_ctermfg = 118
+    let g:insertModeStatusLineColor_guifg = '#87FF00'
+    let g:insertModeStatusLineColor_ctermbg = 23
+    let g:insertModeStatusLineColor_guibg = '#005F5F'
     call ToggleStatuslineColor()
 endfunction
 command! Custom call Custom()
@@ -557,41 +569,41 @@ function! s:Highlight(group, term, cterm, ctermfg, ctermbg, gui, guifg, guibg, g
 endfunction
 function! ColorschemeInit()
     " Colors inspired by flatcolor colorscheme created by Max St
-    call s:Highlight('Normal', '', '', '15', '234', '', '#ECF0F1', '#1C1C1C', '', '')
-    call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
-    call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
-    call s:Highlight('Operator', '', '', '197', '', '', '#FF0033', '', '', '')
-    call s:Highlight('Label', '', '', '197', '', '', '#FF0033', '', '', '')
-    call s:Highlight('Repeat', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
+    call s:Highlight('Normal', '', '', '15', '234', '', '#FFFFFF', '#1C1C1C', '', '')
+    call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
+    call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
+    call s:Highlight('Operator', '', '', '197', '', '', '#FF005F', '', '', '')
+    call s:Highlight('Label', '', '', '197', '', '', '#FF005F', '', '', '')
+    call s:Highlight('Repeat', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
     call s:Highlight('Type', '', '', '196', '', '', '#FF0000', '', '', '')
-    call s:Highlight('StorageClass', '', '', '197', '', '', '#FF0033', '', '', '')
-    call s:Highlight('Structure', '', '', '197', '', '', '#FF0033', '', '', '')
-    call s:Highlight('TypeDef', 'bold', 'bold', '197', '', 'bold', '#FF0033', '', '', '')
-    call s:Highlight('Exception', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
-    call s:Highlight('Include', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
-    call s:Highlight('PreProc', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('Macro', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('Define', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('Delimiter', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('Ignore', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('PreCondit', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
-    call s:Highlight('Debug', 'bold', 'bold', '37', '', 'bold', '#1ABC9C', '', '', '')
+    call s:Highlight('StorageClass', '', '', '197', '', '', '#FF005F', '', '', '')
+    call s:Highlight('Structure', '', '', '197', '', '', '#FF005F', '', '', '')
+    call s:Highlight('TypeDef', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
+    call s:Highlight('Exception', 'bold', 'bold', '37', '', 'bold', '#00AFAF', '', '', '')
+    call s:Highlight('Include', 'bold', 'bold', '37', '', 'bold', '#00AFAF', '', '', '')
+    call s:Highlight('PreProc', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('Macro', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('Define', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('Delimiter', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('Ignore', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('PreCondit', 'bold', 'bold', '37', '', 'bold', '#00AFAF', '', '', '')
+    call s:Highlight('Debug', 'bold', 'bold', '37', '', 'bold', '#00AFAF', '', '', '')
     call s:Highlight('Function', '', '', '202', '', '', '#FF5F00', '', '', '')
     call s:Highlight('Identifier', '', '', '202', '', '', '#FF5F00', '', '', '')
-    call s:Highlight('Comment', 'italic', 'italic', '41', '', 'italic', '#2ECC71', '', '', '')
-    call s:Highlight('CommentEmail', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
-    call s:Highlight('CommentUrl', 'underline', 'underline', '41', '', 'underline', '#2ECC71', '', '', '')
-    call s:Highlight('SpecialComment', 'bold', 'bold', '41', '', 'bold', '#2ECC71', '', '', '')
-    call s:Highlight('Todo', 'bold', 'bold', '41', '', 'bold', '#2ECC71', '', '', '')
-    call s:Highlight('String', '', '', '220', '', '', '#FFD700', '', '', '')
+    call s:Highlight('Comment', 'italic', 'italic', '41', '', 'italic', '#00D75F', '', '', '')
+    call s:Highlight('CommentEmail', 'underline', 'underline', '41', '', 'underline', '#00D75F', '', '', '')
+    call s:Highlight('CommentUrl', 'underline', 'underline', '41', '', 'underline', '#00D75F', '', '', '')
+    call s:Highlight('SpecialComment', 'bold', 'bold', '41', '', 'bold', '#00D75F', '', '', '')
+    call s:Highlight('Todo', 'bold', 'bold', '41', '', 'bold', '#00D75F', '', '', '')
+    call s:Highlight('String', '', '', '220', '', '', '#FFDF00', '', '', '')
     call s:Highlight('SpecialKey', 'bold', 'bold', '236', '', 'bold', '#303030', '', '', '')
-    call s:Highlight('Special', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('SpecialChar', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('Boolean', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('Character', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('Number', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('Constant', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
-    call s:Highlight('Float', 'bold', 'bold', '68', '', 'bold', '#3498DB', '', '', '')
+    call s:Highlight('Special', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('SpecialChar', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('Boolean', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('Character', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('Number', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('Constant', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
+    call s:Highlight('Float', 'bold', 'bold', '68', '', 'bold', '#5F87D7', '', '', '')
     call s:Highlight('MatchParen', 'bold', 'bold', '202', '0', 'bold', '#FF5F00', '#000000', '', '')
     call s:Highlight('NonText', '', '', '', '', '', '', '', '', '')
     call s:Highlight('Cursor', '', '', '235', '15', '', '#262626', '#FFFFFF', '', '')
@@ -603,13 +615,13 @@ function! ColorschemeInit()
     call s:Highlight('ColorColumn', '', '', '', '235', '', '', '#262626', '', '')
     call s:Highlight('Error', 'bold', 'bold', '196', '', 'bold', '#FF0000', '', '', '')
     call s:Highlight('ErrorMsg', 'bold', 'bold', '196', '', 'bold', '#FF0000', '', '', '')
-    call s:Highlight('WarningMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
-    call s:Highlight('Title', 'bold', 'bold', '166', '', 'bold', '#EF5939', '', '', '')
+    call s:Highlight('WarningMsg', 'bold', 'bold', '220', '', 'bold', '#FFDF00', '', '', '')
+    call s:Highlight('Title', 'bold', 'bold', '166', '', 'bold', '#D75F00', '', '', '')
     call s:Highlight('Tag', 'bold', 'bold', '', '', 'bold', '', '', '', '')
     call s:Highlight('Visual', '', '', '', '237', '', '', '#3A3A3A', '', '')
     call s:Highlight('VisualNOS', '', '', '', '237', '', '', '#3A3A3A', '', '')
     call s:Highlight('Search', '', '', '235', '70', '', '#262626', '#5FAF00', '', '')
-    call s:Highlight('IncSearch', '', '', '234', '37', '', '#1C1C1C', '#1ABC9C', '', '')
+    call s:Highlight('IncSearch', '', '', '234', '37', '', '#1C1C1C', '#00AFAF', '', '')
     call s:Highlight('QuickFixLine', '', '', '', '232', '', '', '#080808', '', '')
     call s:Highlight('StatusLine', 'bold', 'bold', '118', '235', 'bold', '#87FF00', '#262626', '', '')
     call s:Highlight('StatusLineNC', 'bold', 'bold', '255', '235', 'bold', '#EEEEEE', '#262626', '', '')
@@ -619,14 +631,14 @@ function! ColorschemeInit()
     call s:Highlight('TabLineFill', '', '', '', '235', '', '', '#262626', '', '')
     call s:Highlight('TabLineSel', '', '', '255', '23', '', '#EEEEEE', '#005F5F', '', '')
     call s:Highlight('CursorLineNr', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
-    call s:Highlight('FoldColumn', '', '', '39', '235', '', '#00afff', '#262626', '', '')
-    call s:Highlight('Folded', '', '', '39', '235', '', '#00afff', '#262626', '', '')
+    call s:Highlight('FoldColumn', '', '', '39', '235', '', '#00AFFF', '#262626', '', '')
+    call s:Highlight('Folded', '', '', '39', '235', '', '#00AFFF', '#262626', '', '')
     call s:Highlight('SpellBad', '', 'underline,bold', '160', '', 'undercurl', '', '', '#D70000', '')
     call s:Highlight('SpellCap', '', 'underline,bold', '214', '', 'undercurl', '', '', '#FFAF00', '')
-    call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#5FFFFF', '')
+    call s:Highlight('SpellLocal', '', 'underline,bold', '51', '', 'undercurl', '', '', '#00FFFF', '')
     call s:Highlight('SpellRare', '', 'underline,bold', '195', '', 'undercurl', '', '', '#DFFFFF', '')
     call s:Highlight('Conceal', '', '', '237', '', '', '#3a3a3a', '', '', '')
-    call s:Highlight('ModeMsg', 'bold', 'bold', '220', '', 'bold', '#FFD700', '', '', '')
+    call s:Highlight('ModeMsg', 'bold', 'bold', '220', '', 'bold', '#FFDF00', '', '', '')
     call s:Highlight('Pmenu', '', '', '76', '233', '', '#5FD700', '#121212', '', '')
     call s:Highlight('PmenuSel', 'bold', 'bold', '252', '235', 'bold', '#D0D0D0', '#262626', '', '')
     call s:Highlight('PmenuSbar', 'bold', 'bold', '', '233', 'bold', '', '#121212', '', '')
@@ -634,17 +646,17 @@ function! ColorschemeInit()
     call s:Highlight('DiffDelete', '', '', '255', '196', '', '#EEEEEE', '#FF0000', '', '')
     call s:Highlight('DiffText', '', '', '240', '', '', '#545454', '', '', '')
     call s:Highlight('DiffChange', '', '', '236', '', '', '#343434', '', '', '')
-    call s:Highlight('DiffAdd', '', '', '22', '', '', '#004225', '', '', '')
+    call s:Highlight('DiffAdd', '', '', '22', '', '', '#005F00', '', '', '')
     call s:Highlight('Underlined', 'underline', 'underline', '', '', 'underline', '', '', '', '')
-    call s:Highlight('Directory', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('Question', '', '', '37', '', '', '#1ABC9C', '', '', '')
-    call s:Highlight('MoreMsg', '', '', '37', '', '', '#1ABC9C', '', '', '')
+    call s:Highlight('Directory', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('Question', '', '', '37', '', '', '#00AFAF', '', '', '')
+    call s:Highlight('MoreMsg', '', '', '37', '', '', '#00AFAF', '', '', '')
     call s:Highlight('WildMenu', 'bold', 'bold', '255', '23', 'bold', '#EEEEEE', '#005F5F', '', '')
     call s:Highlight('Red_196', 'bold', 'bold', '196', '235', 'bold', '#FF0000', '#262626', '', '')
     call s:Highlight('Orange_202', 'bold', 'bold', '202', '235', 'bold', '#FF5F00', '#262626', '', '')
     call s:Highlight('Green_34', 'bold', 'bold', '34', '235', 'bold', '#00AF00', '#262626', '', '')
-    call s:Highlight('Green_41', 'bold', 'bold', '41', '235', 'bold', '#2ECC71', '#262626', '', '')
-    call s:Highlight('Blue_37', 'bold', 'bold', '37', '235', 'bold', '#1ABC9C', '#262626', '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', '235', 'bold', '#00D75F', '#262626', '', '')
+    call s:Highlight('Blue_37', 'bold', 'bold', '37', '235', 'bold', '#00AFAF', '#262626', '', '')
     call s:Highlight('Blue_39', 'bold', 'bold', '39', '235', 'bold', '#00AFFF', '#262626', '', '')
     call s:Highlight('Blue_51', 'bold', 'bold', '51', '235', 'bold', '#00FFFF', '#262626', '', '')
 endfunction
@@ -775,33 +787,33 @@ endfunction
 call SetStatusline()
 " }}}
 " Statusline color changing function {{{
-function! RefreshColors(statusLineColor, guiStatusLineColor)
+function! RefreshColors(ctermfg, guifg, ctermbg, guibg)
     let l:isEnteringInsertMode = 0
-    if a:statusLineColor == g:insertModeStatuslineColor_cterm
+    if a:ctermbg == g:insertModeStatusLineColor_ctermbg
         let l:isEnteringInsertMode = 1
     endif
-    call s:Highlight('Red_196', 'bold', 'bold', '196', a:statusLineColor, 'bold', '#FF0000', a:guiStatusLineColor, '', '')
-    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:statusLineColor, 'bold', '#FF5F00', a:guiStatusLineColor, '', '')
-    call s:Highlight('Green_34', 'bold', 'bold', '34', a:statusLineColor, 'bold', '#00AF00', a:guiStatusLineColor, '', '')
-    call s:Highlight('Green_41', 'bold', 'bold', '41', a:statusLineColor, 'bold', '#2ECC71', a:guiStatusLineColor, '', '')
-    call s:Highlight('Blue_37', 'bold', 'bold', '37', a:statusLineColor, 'bold', '#1ABC9C', a:guiStatusLineColor, '', '')
-    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:statusLineColor, 'bold', '#00AFFF', a:guiStatusLineColor, '', '')
-    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:statusLineColor, 'bold', '#00FFFF', a:guiStatusLineColor, '', '')
+    call s:Highlight('Red_196', 'bold', 'bold', '196', a:ctermbg, 'bold', '#FF0000', a:guibg, '', '')
+    call s:Highlight('Orange_202', 'bold', 'bold', '202', a:ctermbg, 'bold', '#FF5F00', a:guibg, '', '')
+    call s:Highlight('Green_34', 'bold', 'bold', '34', a:ctermbg, 'bold', '#00AF00', a:guibg, '', '')
+    call s:Highlight('Green_41', 'bold', 'bold', '41', a:ctermbg, 'bold', '#00D75F', a:guibg, '', '')
+    call s:Highlight('Blue_37', 'bold', 'bold', '37', a:ctermbg, 'bold', '#00AFAF', a:guibg, '', '')
+    call s:Highlight('Blue_39', 'bold', 'bold', '39', a:ctermbg, 'bold', '#00AFFF', a:guibg, '', '')
+    call s:Highlight('Blue_51', 'bold', 'bold', '51', a:ctermbg, 'bold', '#00FFFF', a:guibg, '', '')
     "Status line of current window
-    call s:Highlight('StatusLine', 'bold', 'bold', '118', a:statusLineColor, 'bold', '#87FF00', a:guiStatusLineColor, '', '')
+    call s:Highlight('StatusLine', 'bold', 'bold', a:ctermfg, a:ctermbg, 'bold', a:guifg, a:guibg, '', '')
     "Status line color for noncurrent window
-    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:statusLineColor, 'bold', '#EEEEEE', a:guiStatusLineColor, '', '')
+    call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:ctermbg, 'bold', '#EEEEEE', a:guibg, '', '')
     "Line numbers
-    call s:Highlight('LineNr', '', '', '118', a:statusLineColor, '', '#87FF00', a:guiStatusLineColor, '', '')
+    call s:Highlight('LineNr', '', '', a:ctermfg, a:ctermbg, '', a:guifg, a:guibg, '', '')
     "Vertical split divider
-    call s:Highlight('VertSplit', 'bold', 'bold', '43', a:statusLineColor, 'bold', '#00D7AF', a:guiStatusLineColor, '', '')
+    call s:Highlight('VertSplit', 'bold', 'bold', '43', a:ctermbg, 'bold', '#00D7AF', a:guibg, '', '')
     "Nonselected tabs
-    call s:Highlight('TabLine', '', '', '118', a:statusLineColor, '', '#87FF00', a:guiStatusLineColor, '', '')
+    call s:Highlight('TabLine', '', '', a:ctermfg, a:ctermbg, '', a:guifg, a:guibg, '', '')
     "Empty space on tab bar
-    call s:Highlight('TabLineFill', '', '', '', a:statusLineColor, '', '', a:guiStatusLineColor, '', '')
+    call s:Highlight('TabLineFill', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
     "Selected tab
     if l:isEnteringInsertMode == 1
-        call s:Highlight('TabLineSel', '', '', '45', a:statusLineColor, '', '#00D7FF', a:guiStatusLineColor, '', '')
+        call s:Highlight('TabLineSel', '', '', '45', a:ctermbg, '', '#00D7FF', a:guibg, '', '')
     else
         call s:Highlight('TabLineSel', '', '', '255', '23', '', '#EEEEEE', '#005F5F', '', '')
     endif
