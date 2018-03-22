@@ -15,6 +15,10 @@ setopt HIST_IGNORE_SPACE
 # bind keys for history search
 bindkey "^[[A" history-beginning-search-backward
 bindkey "^[[B" history-beginning-search-forward
+# bind keys for line navigation
+bindkey "^[[1~" beginning-of-line
+bindkey "^[[4~" end-of-line
+bindkey "^[[3~" delete-char
 
 # User configuration
 
