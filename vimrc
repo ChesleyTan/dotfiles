@@ -78,7 +78,7 @@ if !isdirectory($HOME . '/.vim/backup/undo')
 endif
 
 " Spell settings
-set spellfile=$HOME/Dropbox/vim/spell/en.utf-8.add
+set spellfile=$HOME/T/vim/spell/en.utf-8.add
 
 " GUI settings
 set guioptions-=L "Remove left-hand scrollbar
@@ -956,12 +956,12 @@ try
     let g:gundo_right = 1
     let g:gundo_preview_bottom = 1
     command! DiffTree GundoToggle
-    let g:notes_directories = ['~/Dropbox/Shared Notes']
+    let g:notes_directories = ['~/T/vim/Shared Notes']
     let g:notes_word_boundaries = 1
     nnoremap <Leader>n :Note 
     let g:calendar_google_calendar = 1
     let g:calendar_google_task = 0
-    let g:calendar_cache_directory = expand('~/Dropbox/vim/calendar.vim')
+    let g:calendar_cache_directory = expand('~/T/vim/calendar.vim')
     let g:ycm_semantic_triggers = {'haskell' : ['.']}
     let g:jedi#popup_on_dot = 1
     let g:jedi#popup_select_first = 0
