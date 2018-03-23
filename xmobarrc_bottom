@@ -17,7 +17,7 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
     , pickBroadest = False      -- When using multiple displays,
                                 -- choose the broadest to display on
     , iconRoot = "."            -- Folder to search for icons
-    , commands = [ Run Weather "KLGA" [ "-t", "<tempF><fc=#555555>°F</fc> <skyCondition> <rh><fc=#555555>%rh</fc> <windMph><fc=#555555>wmph</fc>"
+    , commands = [ Run Weather "KITH" [ "-t", "<tempF><fc=#555555>°F</fc> <skyCondition> <rh><fc=#555555>%rh</fc> <windMph><fc=#555555>wmph</fc>"
                                       , "-L", "40"
                                       , "-H", "80"
                                       , "--normal", "#48D700"
@@ -52,7 +52,6 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
         , Run Date "%a %b %_d %r" "date" 10
         , Run Com "bash" ["/home/chesley/bin/SensorTempXmobarColorizer.sh"] "sensorTemp" 50
         , Run Com "bash" ["/home/chesley/bin/BatteryNotification.sh"] "batteryNotification" 300
-        , Run Com "bash" ["/home/chesley/bin/DropboxStatusXmobarColorizer.sh"] "dropboxStatus" 100
         , Run Com "bash" ["/home/chesley/bin/CpuLoadXmobarColorizer.sh"] "cpuLoad" 250
         , Run DiskU [ ("/", "<fc=#2ECC71>/:</fc><usedp><fc=#555555>%</fc>")
                     , ("/home", "<fc=#2ECC71>/home:</fc><usedp><fc=#555555>%</fc>")
@@ -78,12 +77,11 @@ Config { font = "xft:Source Code Pro:semibold:size=9:antialias=true,Symbola:size
                      \<fc=#3498DB>[</fc>%battery%%chargingStatus%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%volume%<fc=#3498DB>]</fc>\
                      \}{\
-                     \<fc=#3498DB>[</fc><fc=#555555>DB:</fc>%dropboxStatus%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%network%<fc=#3498DB>]</fc>\
                      \<fc=#3498DB>[</fc>%dynnetwork% %diskio%<fc=#3498DB>]</fc>\
                      \<fc=#3498db>[</fc>%disku%<fc=#3498db>]</fc>\
                      \ <fc=#00D75F></fc> \
-                     \<fc=#1ABC9C>%KLGA%</fc>\
+                     \<fc=#1ABC9C>%KITH%</fc>\
                      \ <fc=#00D75F></fc> \
                      \<fc=#1ABC9C>%date%</fc> "
 }
