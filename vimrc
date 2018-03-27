@@ -313,7 +313,11 @@ function! Solarized()
     set background=dark
     colorscheme NeoSolarized
     highlight ErrorMsg term=NONE cterm=NONE gui=NONE
-    highlight Conceal ctermfg=239 guifg=#4e4e4e
+    highlight Conceal ctermfg=239 guifg=#4E4E4E
+    highlight SpellBad guifg=#DC322F
+    highlight SpellCap guifg=#6C71C4
+    highlight SpellLocal guifg=#B58900
+    highlight SpellRare guifg=#2AA198
     let g:defaultStatusLineColor_ctermbg = 8
     let g:defaultStatusLineColor_guibg = '#073642'
     let g:insertModeStatusLineColor_ctermbg = 30
