@@ -224,6 +224,8 @@ function! s:SetMappings()
     nnoremap }} vat<Esc>'>
     nnoremap <Tab> gt
     nnoremap <S-Tab> gT
+    " Select last pasted text
+    nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
     " Search forwards for selected text
     vnoremap <silent> * :<C-u>
     \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
