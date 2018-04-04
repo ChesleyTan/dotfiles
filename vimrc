@@ -904,6 +904,10 @@ try
         Plug 'roxma/nvim-yarp'
         Plug 'roxma/vim-hug-neovim-rpc'
     endif
+    Plug 'autozimu/LanguageClient-neovim', {
+        \'branch': 'next',
+        \'do': 'bash install.sh',
+    \}
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
     Plug 'sjl/gundo.vim', {
@@ -946,6 +950,16 @@ try
     let g:deoplete#sources#jedi#show_docstring = 1
     " Quick leader toggle for autocompletion
     nnoremap <Leader>ta :call deoplete#toggle()<CR>
+    " }}}
+    " LanguageClient settings {{{
+    let g:LanguageClient_serverCommands = {
+        \'python': ['pyls'],
+        \'javascript': ['javascript-typescript-stdio'],
+        \'javascript.jsx': ['javascript-typescript-stdio'],
+    \}
+    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
     " }}}
     " Disable easytag's warning about vim's updatetime being too low
     let g:easytags_updatetime_warn = 0
