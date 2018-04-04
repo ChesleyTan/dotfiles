@@ -153,7 +153,12 @@ function! s:SetMappings()
     " Clear hlsearch using Return/Enter
     nnoremap <CR> :noh<CR><CR>
     " Allow saving when forgetting to start vim with sudo
-    cmap w!! w !sudo tee > /dev/null %
+    if has('nvim')
+        " Use suda.vim plugin if neovim
+        cmap w!! w suda://%
+    else
+        cmap w!! w !sudo tee > /dev/null %
+    endif
     " Easy toggle for paste
     nnoremap <Leader>tp :set paste!<CR>:echo "Paste mode: " . &paste<CR>
     " Easy page up/down
@@ -921,6 +926,7 @@ try
     Plug 'majutsushi/tagbar', {
         \'on': 'TagbarToggle'
     \}
+    Plug 'lambdalisue/suda.vim'
 
     " Initialize plugin system
     call plug#end()
