@@ -46,6 +46,7 @@ endif
 
 " Autocompletion settings
 set completeopt=longest,menuone,preview
+set pumheight=10 " Maximum height of pop-up menu window
 
 " Command line completion settings
 set wildmode=longest,list,full
