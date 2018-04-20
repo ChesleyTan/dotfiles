@@ -876,12 +876,6 @@ try
     Plug 'Shougo/unite.vim', {
         \'on': 'Unite'
     \}
-    Plug 'davidhalter/jedi-vim', {
-        \'for': 'python'
-    \}
-    Plug 'zchee/deoplete-jedi', {
-        \'for': 'python'
-    \}
     Plug 'sheerun/vim-polyglot'
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
@@ -948,7 +942,6 @@ try
     " }}}
     " Deoplete settings {{{
     let g:deoplete#enable_at_startup = 1
-    let g:deoplete#sources#jedi#show_docstring = 1
     " Quick leader toggle for autocompletion
     nnoremap <Leader>ta :call deoplete#toggle()<CR>
     " }}}
@@ -990,14 +983,6 @@ try
     let g:calendar_google_task = 0
     let g:calendar_cache_directory = expand('~/T/vim/calendar.vim')
     let g:ycm_semantic_triggers = {'haskell' : ['.']}
-    let g:jedi#popup_on_dot = 1
-    let g:jedi#popup_select_first = 0
-    let g:jedi#show_call_signatures = "1"
-    let g:jedi#completions_command = "<A-Space>"
-    let g:jedi#goto_assignments_command = "<Leader>G"
-    let g:jedi#goto_definitions_command = "<Leader>D"
-    let g:jedi#usages_command = "<Leader>N"
-    let g:jedi#rename_command = "<Leader>R"
     " python-syntax configuration
     let g:python_highlight_all = 1
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
