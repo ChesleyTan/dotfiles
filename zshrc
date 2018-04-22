@@ -25,14 +25,7 @@ bindkey "^[[3~" delete-char
 export PATH="${PATH}:/bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/vendor_perl:/usr/bin/core_perl"
 # export MANPATH="/usr/local/man:$MANPATH"
 
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-if hash nvim 2> /dev/null; then
+if type nvim > /dev/null; then
     export EDITOR="nvim"
 else
     export EDITOR="vim"
