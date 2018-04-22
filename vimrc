@@ -934,6 +934,7 @@ try
     " }}}
     " Deoplete settings {{{
     let g:deoplete#enable_at_startup = 1
+    let g:deoplete#max_list = 50
     " Quick leader toggle for autocompletion
     nnoremap <Leader>ta :call deoplete#toggle()<CR>
     " }}}
