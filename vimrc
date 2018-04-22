@@ -108,8 +108,6 @@ augroup defaults
     " Change statusline color when entering insert mode
     autocmd InsertEnter * call RefreshColors(g:insertModeStatusLineColor_ctermfg, g:insertModeStatusLineColor_guifg, g:insertModeStatusLineColor_ctermbg, g:insertModeStatusLineColor_guibg)
     autocmd InsertLeave * call ToggleStatuslineColor()
-    " Detect true-color terminal
-    autocmd VimEnter * call DetectTrueColor()
 augroup END
 
 " List/listchars
@@ -121,6 +119,14 @@ let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 let g:showGitInfo = 1 " This determines whether to show git info in statusline
 let g:inGitRepo = 0
 let g:gitInfo = "" " Placeholder value to initialize variable
+let g:defaultStatusLineColor_ctermfg = 118
+let g:defaultStatusLineColor_guifg = '#87FF00'
+let g:defaultStatusLineColor_ctermbg = 235
+let g:defaultStatusLineColor_guibg = '#262626'
+let g:insertModeStatusLineColor_ctermfg = 118
+let g:insertModeStatusLineColor_guifg = '#87FF00'
+let g:insertModeStatusLineColor_ctermbg = 23
+let g:insertModeStatusLineColor_guibg = '#005F5F'
 " }}}
 " Custom mappings {{{
 function! s:SetMappings()
@@ -349,14 +355,6 @@ endfunction
 command! ToggleStatuslineColor call ToggleStatuslineColor()
 function! Custom()
     call ColorschemeInit()
-    let g:defaultStatusLineColor_ctermfg = 118
-    let g:defaultStatusLineColor_guifg = '#87FF00'
-    let g:defaultStatusLineColor_ctermbg = 235
-    let g:defaultStatusLineColor_guibg = '#262626'
-    let g:insertModeStatusLineColor_ctermfg = 118
-    let g:insertModeStatusLineColor_guifg = '#87FF00'
-    let g:insertModeStatusLineColor_ctermbg = 23
-    let g:insertModeStatusLineColor_guibg = '#005F5F'
     call ToggleStatuslineColor()
 endfunction
 command! Custom call Custom()
@@ -535,12 +533,6 @@ function! CenterSelection()
 endfunction
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf) &"
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf)"
-function DetectTrueColor()
-    " Automatically apply Solarized colorscheme if true-color is available
-    if &termguicolors == 1
-        call Solarized()
-    endif
-endfunction
 
 " }}}
 " Custom colorscheme {{{
@@ -1155,6 +1147,9 @@ augroup END
 if has("gui_running")
     call Custom()
 elseif empty($DISPLAY) "If running in a tty, use solarized theme for better colors
+    call Solarized()
+" Automatically apply Solarized colorscheme if true-color is available
+elseif &termguicolors == 1
     call Solarized()
 else
     call Custom()
