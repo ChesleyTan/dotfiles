@@ -865,9 +865,7 @@ try
     Plug 'jistr/vim-nerdtree-tabs', {
         \'on': 'NERDTreeTabsToggle'
     \}
-    Plug 'Shougo/unite.vim', {
-        \'on': 'Unite'
-    \}
+    Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
     Plug 'sheerun/vim-polyglot'
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
@@ -993,10 +991,10 @@ try
     let g:neosolarized_underline = 1
     let g:neosolarized_italic = 1
     let g:onedark_terminal_italics = 1
-    nnoremap <Leader>u :Unite file buffer<CR>
-    nnoremap <Leader>ur :Unite file buffer file_rec<CR>
-    nnoremap <Leader>uo :Unite output:
-    nnoremap <Leader>umru :Unite output:ol<CR>
+    nnoremap <Leader>u :Denite file buffer<CR>
+    nnoremap <Leader>ur :Denite file buffer file_rec<CR>
+    nnoremap <Leader>uo :Denite output:
+    nnoremap <Leader>umru :Denite output:ol<CR>
     nnoremap <F8> :TagbarToggle<CR>
 catch /:E117:/
     echom "Error initializing plugins -- plugin manager not installed?"
