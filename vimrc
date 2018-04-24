@@ -847,31 +847,24 @@ try
 
     call plug#begin(expand('$HOME/.vim/plugged'))
 
-    Plug 'ChesleyTan/wordCount.vim', {
-        \'on': 'WordCount'
-    \}
     Plug 'Yggdroot/indentLine'
-    Plug 'xolox/vim-easytags'
+    Plug 'Raimondi/delimitMate'
+    Plug 'ludovicchabant/vim-gutentags'
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-notes'
-    Plug 'itchyny/calendar.vim', {
-        \'on': 'Calendar'
-    \}
-    Plug 'Raimondi/delimitMate'
+    Plug 'gu-fan/riv.vim'
     Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
-        \'on': ['NERDTreeToggle', 'NERDTreeTabsToggle']
+        \'on': ['NERDTreeToggle']
     \}
-    Plug 'jistr/vim-nerdtree-tabs', {
-        \'on': 'NERDTreeTabsToggle'
+    Plug 'Shougo/denite.nvim', {
+        \'do': ':UpdateRemotePlugins'
     \}
-    Plug 'Shougo/denite.nvim', { 'do': ':UpdateRemotePlugins' }
-    Plug 'sheerun/vim-polyglot'
-    Plug 'eagletmt/neco-ghc', {
-        \'for': 'haskell'
+    Plug 'sjl/gundo.vim', {
+        \'on': 'GundoToggle'
     \}
-    Plug 'artur-shaik/vim-javacomplete2', {
-        \'for': 'java'
+    Plug 'majutsushi/tagbar', {
+        \'on': 'TagbarToggle'
     \}
 
     "Plug 'Valloric/YouCompleteMe', {
@@ -881,9 +874,10 @@ try
     "    \'branch': 'stable',
     "    \'for': 'YcmGenerateConfig'
     "\}
-
     if has('nvim')
-        Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins' }
+        Plug 'Shougo/deoplete.nvim', {
+            \'do': ':UpdateRemotePlugins'
+        \}
     else
         Plug 'Shougo/deoplete.nvim'
         Plug 'roxma/nvim-yarp'
@@ -893,17 +887,26 @@ try
         \'branch': 'next',
         \'do': 'bash install.sh',
     \}
+    Plug 'eagletmt/neco-ghc', {
+        \'for': 'haskell'
+    \}
+    Plug 'artur-shaik/vim-javacomplete2', {
+        \'for': 'java'
+    \}
+
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
-    Plug 'sjl/gundo.vim', {
-        \'on': 'GundoToggle'
-    \}
+
+    Plug 'sheerun/vim-polyglot'
     Plug 'luochen1990/rainbow', {
         \'on': 'RainbowToggle'
     \}
-    "Plug 'gorodinskiy/vim-coloresque'
+    Plug 'chrisbra/Colorizer', {
+        \'on': 'ColorToggle'
+    \}
     Plug 'iCyMind/NeoSolarized'
     Plug 'joshdick/onedark.vim'
+
     Plug 'chrisbra/unicode.vim', {
         \'on': ['Digraphs',
                \'UnicodeTable',
@@ -912,10 +915,10 @@ try
                \'DownloadUnicode']
     \}
     Plug 'KabbAmine/zeavim.vim'
-    Plug 'majutsushi/tagbar', {
-        \'on': 'TagbarToggle'
-    \}
     Plug 'lambdalisue/suda.vim'
+    Plug 'ChesleyTan/wordCount.vim', {
+        \'on': 'WordCount'
+    \}
 
     " Initialize plugin system
     call plug#end()
@@ -946,21 +949,9 @@ try
     nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
     nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
     " }}}
-    " Disable easytag's warning about vim's updatetime being too low
-    let g:easytags_updatetime_warn = 0
-    let g:easytags_async = 1
     " NERDTree settings {{{
-    command! Tree NERDTreeTabsToggle
+    command! Tree NERDTreeToggle
     nnoremap <Leader>t :Tree<CR>
-    let g:nerdtree_tabs_open_on_gui_startup = 0
-    let g:nerdtree_tabs_open_on_console_startup = 0
-    let g:nerdtree_tabs_no_startup_for_diff = 1
-    let g:nerdtree_tabs_smart_startup_focus = 1
-    let g:nerdtree_tabs_open_on_new_tab = 1
-    let g:nerdtree_tabs_meaningful_tab_names = 1
-    let g:nerdtree_tabs_autoclose = 1
-    let g:nerdtree_tabs_synchronize_view = 1
-    let g:nerdtree_tabs_synchronize_focus = 1
     " }}}
     let g:gundo_width = 30
     let g:gundo_preview_height = 20
