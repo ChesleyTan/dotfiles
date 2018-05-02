@@ -887,6 +887,7 @@ try
         \'branch': 'next',
         \'do': 'bash install.sh',
     \}
+    Plug 'junegunn/fzf'
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
     \}
@@ -944,9 +945,12 @@ try
         \'python': ['pyls'],
         \'javascript': ['javascript-typescript-stdio'],
         \'javascript.jsx': ['javascript-typescript-stdio'],
+        \'c': ['cquery', '--log-file=/tmp/cq.log'],
+        \'cpp': ['cquery', '--log-file=/tmp/cq.log'],
     \}
     nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
     nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
     " }}}
     " NERDTree settings {{{
@@ -982,11 +986,14 @@ try
     let g:neosolarized_underline = 1
     let g:neosolarized_italic = 1
     let g:onedark_terminal_italics = 1
-    nnoremap <Leader>u :Denite file buffer<CR>
+    nnoremap <Leader>u :Denite 
     nnoremap <Leader>ur :Denite file buffer file_rec<CR>
     nnoremap <Leader>uo :Denite output:
+    nnoremap <Leader>ug :Denite grep<CR>
+    nnoremap <Leader>ul :Denite line<CR>
     nnoremap <Leader>umru :Denite output:ol<CR>
     nnoremap <F8> :TagbarToggle<CR>
+    nnoremap <Leader>f :FZF 
 catch /:E117:/
     echom "Error initializing plugins -- plugin manager not installed?"
     echom v:exception
