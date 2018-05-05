@@ -22,7 +22,7 @@ set laststatus=2 " Always show statusline on last window
 set pastetoggle=<F3> " Toggle paste mode
 set mouse=nvc " Allow using mouse to change cursor position in normal, visual,
               " and command line modes
-set timeoutlen=300 " Timeout for entering key combinations
+set notimeout " No timeout for completing keymapping
 set t_Co=256 " Enable 256 colors
 set textwidth=100 " Maximum width in characters
 set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
@@ -43,6 +43,10 @@ colorscheme default " Set default colors
 if has('nvim') || has('termguicolors')
     set termguicolors " Enable gui colors in terminal (i.e., 24-bit color)
 endif
+
+" List/listchars
+set list
+execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 
 " Autocompletion settings
 set completeopt=longest,menuone,preview
@@ -109,10 +113,6 @@ augroup defaults
     autocmd InsertEnter * call RefreshColors(g:insertModeStatusLineColor_ctermfg, g:insertModeStatusLineColor_guifg, g:insertModeStatusLineColor_ctermbg, g:insertModeStatusLineColor_guibg)
     autocmd InsertLeave * call ToggleStatuslineColor()
 augroup END
-
-" List/listchars
-set list
-execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 " }}}
 " Constants/Global variables {{{
 let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
@@ -166,8 +166,10 @@ function! s:SetMappings()
     else
         cmap w!! w !sudo tee > /dev/null %
     endif
-    " Easy toggle for paste
-    nnoremap <Leader>tp :set paste!<CR>:echo "Paste mode: " . &paste<CR>
+    " Easy delete to black hole register
+    nnoremap D "_dd
+    " Center selected text with surrounding whitespace
+    vnoremap . :call CenterSelection()<CR>
     " Easy page up/down
     nnoremap <C-Up> <C-u>
     nnoremap <C-Down> <C-d>
@@ -175,9 +177,7 @@ function! s:SetMappings()
     nnoremap <C-j> 3j
     vnoremap <C-k> 3k
     vnoremap <C-j> 3j
-
     " Allow window commands in insert mode (currently overridden by omnicomplete binding)
-    " imap <C-w> <C-o><C-w>
     " Easy split navigation using alt key
     nnoremap <A-Up> <C-w><Up>
     nnoremap <A-Down> <C-w><Down>
@@ -187,11 +187,6 @@ function! s:SetMappings()
     nnoremap <A-j> <C-w><Down>
     nnoremap <A-h> <C-w><Left>
     nnoremap <A-l> <C-w><Right>
-    " Mapping alt+(hjkl) doesn't work in terminal, so we use escape codes instead
-    nnoremap k <C-w><Up>
-    nnoremap j <C-w><Down>
-    nnoremap h <C-w><Left>
-    nnoremap l <C-w><Right>
     " Note: <bar> denotes |
     " Shortcuts for window commands
     nnoremap <bar> <C-w>v
@@ -203,22 +198,28 @@ function! s:SetMappings()
     nnoremap > <C-w>>:call SetStatusline()<CR>
     nnoremap < <C-w><:call SetStatusline()<CR>
     " Mappings to move window splits
-    nnoremap <Space><Left> <C-w>H
-    nnoremap <Space><Right> <C-w>L
-    nnoremap <Space><Up> <C-w>K
-    nnoremap <Space><Down> <C-w>J
-    nnoremap <Space>h <C-w>H
-    nnoremap <Space>l <C-w>L
-    nnoremap <Space>k <C-w>K
-    nnoremap <Space>j <C-w>J
+    nnoremap <A-S-Left> <C-w>H
+    nnoremap <A-S-Right> <C-w>L
+    nnoremap <A-S-Up> <C-w>K
+    nnoremap <A-S-Down> <C-w>J
+    nnoremap <A-H> <C-w>H
+    nnoremap <A-L> <C-w>L
+    nnoremap <A-K> <C-w>K
+    nnoremap <A-J> <C-w>J
+    " Goto commands
+    command! GotoWindow normal <C-w>f
+    command! GotoTab normal <C-w>gf
+    " Navigation mappings
+    nnoremap <Tab> gt
+    nnoremap <S-Tab> gT
     " Easy system clipboard copy/paste
     vnoremap <C-c> "+y
     vnoremap <C-x> "+x
     inoremap <C-p> <Left><C-o>"+p
+    " Select last pasted text
+    nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
     " Delete to first character on line
     inoremap <C-u> <C-o>d^
-    " Mapping for autoformat
-    nnoremap <C-f> mkgggqG'k
     " Spell ignore commands
     command! SpellIgnore normal zg
     command! SpellIgnoreRemove normal zug
@@ -229,15 +230,6 @@ function! s:SetMappings()
     command! SpellWrongOnce normal zW
     command! SpellWrongOnceRemove normal zuW
     command! SpellSuggest normal z=
-    " Navigation mappings
-    " Jump to beginning of tag
-    nnoremap {{ vat<Esc>'<
-    " Jump to end of tag
-    nnoremap }} vat<Esc>'>
-    nnoremap <Tab> gt
-    nnoremap <S-Tab> gT
-    " Select last pasted text
-    nnoremap <expr> gp '`[' . strpart(getregtype(), 0, 1) . '`]'
     " Search forwards for selected text
     vnoremap <silent> * :<C-u>
     \let old_reg=getreg('"')<Bar>let old_regtype=getregtype('"')<CR>
@@ -250,25 +242,18 @@ function! s:SetMappings()
     \gvy?<C-r><C-r>=substitute(
     \escape(@", '?\.*$^~['), '\_s\+', '\\_s\\+', 'g')<CR><CR>
     \gV:call setreg('"', old_reg, old_regtype)<CR>
-    " Easy delete to black hole register
-    nnoremap D "_dd
-    " Goto commands
-    command! GotoWindow normal <C-w>f
-    command! GotoTab normal <C-w>gf
-    " Center selected text with surrounding whitespace
-    vnoremap . :call CenterSelection()<CR>
+    " Easy toggle for paste
+    nnoremap <Leader>tp :set paste!<CR>:echo "Paste mode: " . &paste<CR>
     " Quick toggle terminal background transparency
     nnoremap <Leader>tt :call ToggleTransparentTerminalBackground()<CR>
     " Quick toggle fold method
     nnoremap <Leader>tf :call ToggleFoldMethod()<CR>
     " Quick toggle syntax highlighting
-    nnoremap <Leader>ts :call SyntaxToggle()<CR>
-    " Quick toggle line numbers
-    nnoremap <Leader>tn :set number!<CR>
+    nnoremap <Leader>ts :call ToggleSyntax()<CR>
     " Quick toggle for color column at 80 characters
-    nnoremap <Leader>t8 :call ColorColumnToggle()<CR>
+    nnoremap <Leader>t8 :call ToggleColorColumn()<CR>
     " Quick toggle for automatic newline insertion at end of line
-    nnoremap <Leader>tl :call EOLToggle()<CR>
+    nnoremap <Leader>tl :call ToggleEOL()<CR>
 endfunction
 " }}}
 " Custom functions {{{
@@ -287,6 +272,7 @@ function! PluginConfig()
         endif
     "}}}
 endfunction
+
 function! WordProcessorMode()
     if !exists('b:current_mode')
         let b:current_mode="default"
@@ -313,6 +299,7 @@ function! WordProcessorMode()
     endif
 endfunction
 command! WPM call WordProcessorMode()
+
 function! s:DiffWithSaved()
     let filetype=&filetype
     diffthis
@@ -323,6 +310,7 @@ endfunction
 command! DiffSaved call s:DiffWithSaved()
 " Close the diff and return to last modified buffer
 command! DiffQuit diffoff | b#
+
 function! Solarized()
     set background=dark
     colorscheme NeoSolarized
@@ -339,6 +327,7 @@ function! Solarized()
     call ToggleStatuslineColor()
 endfunction
 command! Solarized call Solarized()
+
 function! OneDark()
     set background=dark
     colorscheme onedark
@@ -349,15 +338,18 @@ function! OneDark()
     call ToggleStatuslineColor()
 endfunction
 command! OneDark call OneDark()
+
 function! ToggleStatuslineColor()
     call RefreshColors(g:defaultStatusLineColor_ctermfg, g:defaultStatusLineColor_guifg, g:defaultStatusLineColor_ctermbg, g:defaultStatusLineColor_guibg)
 endfunction
 command! ToggleStatuslineColor call ToggleStatuslineColor()
+
 function! Custom()
     call ColorschemeInit()
     call ToggleStatuslineColor()
 endfunction
 command! Custom call Custom()
+
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
@@ -384,6 +376,7 @@ function! ToggleTransparentTerminalBackground()
         endif
     endif
 endfunction
+
 function! ToggleFoldMethod()
     if &foldmethod ==? "manual"
         setlocal foldmethod=indent
@@ -400,10 +393,12 @@ function! ToggleFoldMethod()
     endif
     echo "Fold method set to: " . &foldmethod
 endfunction
+
 function! Rot13()
     normal mkggg?G'k
 endfunction
 command! Rot13 call Rot13()
+
 function! DeflateWhitespace(string)
     let i = 0
     let newString = ""
@@ -419,6 +414,7 @@ function! DeflateWhitespace(string)
     endwhile
     return newString
 endfunction
+
 function! SmartInsertModeEnter()
     if len(getline('.')) == 0
         return "cc"
@@ -426,15 +422,18 @@ function! SmartInsertModeEnter()
         return "i"
     endif
 endfunction
+
 function! ShowWhitespace()
     /\s\+$
 endfunction
 command! ShowWhitespace call ShowWhitespace()
+
 function! RemoveWhitespace() range
     execute "silent!" . a:firstline . ',' . a:lastline . "s/\\s\\+$"
 endfunction
 command! -range=% RemoveWhitespace <line1>,<line2>call RemoveWhitespace()
-function! SyntaxToggle()
+
+function! ToggleSyntax()
     if exists('g:syntax_on')
         syntax off
         echo "Syntax: Disabled"
@@ -444,8 +443,9 @@ function! SyntaxToggle()
         call ColorschemeInit()
     endif
 endfunction
-command! SyntaxToggle call SyntaxToggle()
-function! ColorColumnToggle()
+command! ToggleSyntax call ToggleSyntax()
+
+function! ToggleColorColumn()
     if exists('b:current_mode') && b:current_mode == "wpm" && &colorcolumn != 120
         set colorcolumn=120
     elseif (!exists('b:current_mode') || b:current_mode == "default") && &colorcolumn != 100
@@ -454,8 +454,9 @@ function! ColorColumnToggle()
         set colorcolumn=""
     endif
 endfunction
-command! ColorColumnToggle call ColorColumnToggle()
-function! EOLToggle()
+command! ToggleColorColumn call ToggleColorColumn()
+
+function! ToggleEOL()
     if &endofline == 1
         set noendofline
         echo "Disabled eol"
@@ -464,12 +465,10 @@ function! EOLToggle()
         echo "Enabled eol"
     endif
 endfunction
-command! EOLToggle call EOLToggle()
-function! OpenInExternalProgram()
-    call system('xdg-open "' . expand('%') . '" &')
-endfunction
+command! ToggleEOL call ToggleEOL()
+
 let g:original_conceallevel=&conceallevel
-function! ConcealToggle()
+function! ToggleConceal()
     if &conceallevel == 0
         let &conceallevel=g:original_conceallevel
     else
@@ -477,8 +476,13 @@ function! ConcealToggle()
         set conceallevel=0
     endif
 endfunction
-command! ConcealToggle call ConcealToggle()
+command! ToggleConceal call ToggleConceal()
+
+function! OpenInExternalProgram()
+    call system('xdg-open "' . expand('%') . '" &')
+endfunction
 command! OpenInExternalProgram call OpenInExternalProgram()
+
 function! GetVisualSelection()
     try
         " Save old v register contents
@@ -492,6 +496,7 @@ function! GetVisualSelection()
         let @v = v_save
     endtry
 endfunction
+
 " Adapted from: http://stackoverflow.com/a/26140622
 function! CenterSelection()
     let v = GetVisualSelection()
@@ -531,6 +536,7 @@ function! CenterSelection()
     " Restore virtualedit setting
     let &virtualedit = ve_save
 endfunction
+
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf) &"
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf)"
 
@@ -852,7 +858,7 @@ try
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-notes'
-    Plug 'gu-fan/riv.vim'
+    Plug 'plasticboy/vim-markdown'
     Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle']
@@ -883,6 +889,7 @@ try
         Plug 'roxma/nvim-yarp'
         Plug 'roxma/vim-hug-neovim-rpc'
     endif
+
     Plug 'autozimu/LanguageClient-neovim', {
         \'branch': 'next',
         \'do': 'bash install.sh',
@@ -924,15 +931,46 @@ try
     " Initialize plugin system
     call plug#end()
 
-    " }}}
+    " indentLine settings {{{
     let g:indentLine_char = '┆'
     let g:indentLine_setColors = 0
+    " }}}
+    " vim-notes settings {{{
+    let g:notes_directories = ['~/T/vim/Shared Notes']
+    let g:notes_word_boundaries = 1
+    nnoremap <Leader>n :Note 
+    " }}}
+    " Markdown settings {{{
+    let g:vim_markdown_math = 1
+    " }}}
     " Neomake settings {{{
     " Quick leader toggle for Neomake checking
     nnoremap <Leader>tc :NeomakeToggle<CR>
     nnoremap <Leader>m :Neomake
     " Automatically run neomake when writing a buffer
     call neomake#configure#automake('w')
+    " }}}
+    " NERDTree settings {{{
+    command! Tree NERDTreeToggle
+    nnoremap <LocalLeader>t :Tree<CR>
+    " }}}
+    " Denite settings {{{
+    nnoremap <Leader>u :Denite 
+    nnoremap <Leader>ur :Denite file buffer file_rec<CR>
+    nnoremap <Leader>uo :Denite output:
+    nnoremap <Leader>ug :Denite grep<CR>
+    nnoremap <Leader>ul :Denite line<CR>
+    nnoremap <Leader>umru :Denite output:ol<CR>
+    " }}}
+    " Gundo settings {{{
+    let g:gundo_width = 30
+    let g:gundo_preview_height = 20
+    let g:gundo_right = 1
+    let g:gundo_preview_bottom = 1
+    command! DiffTree GundoToggle
+    " }}}
+    " Tagbar settings {{{
+    nnoremap <F8> :TagbarToggle<CR>
     " }}}
     " Deoplete settings {{{
     let g:deoplete#enable_at_startup = 1
@@ -945,55 +983,46 @@ try
         \'python': ['pyls'],
         \'javascript': ['javascript-typescript-stdio'],
         \'javascript.jsx': ['javascript-typescript-stdio'],
-        \'c': ['cquery', '--log-file=/tmp/cq.log'],
-        \'cpp': ['cquery', '--log-file=/tmp/cq.log'],
+        \'c': ['clangd-6.0'],
+        \'cpp': ['clangd-6.0'],
     \}
-    nnoremap <silent> K :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> gd :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> gr :call LanguageClient#textDocument_references()<CR>
-    nnoremap <silent> <F2> :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
+    nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
+    nnoremap <silent> <Leader>lr :call LanguageClient#textDocument_references()<CR>
+    nnoremap <silent> <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
+    nnoremap <silent> <Leader>lR :call LanguageClient#textDocument_rename()<CR>
     " }}}
-    " NERDTree settings {{{
-    command! Tree NERDTreeToggle
-    nnoremap <Leader>t :Tree<CR>
+    " FZF settings {{{
+    nnoremap <Leader>f :FZF 
     " }}}
-    let g:gundo_width = 30
-    let g:gundo_preview_height = 20
-    let g:gundo_right = 1
-    let g:gundo_preview_bottom = 1
-    command! DiffTree GundoToggle
-    let g:notes_directories = ['~/T/vim/Shared Notes']
-    let g:notes_word_boundaries = 1
-    nnoremap <Leader>n :Note 
-    let g:calendar_google_calendar = 1
-    let g:calendar_google_task = 0
-    let g:calendar_cache_directory = expand('~/T/vim/calendar.vim')
-    let g:ycm_semantic_triggers = {'haskell' : ['.']}
-    " python-syntax configuration
-    let g:python_highlight_all = 1
+    " Ultisnips settings {{{
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
     let g:UltiSnipsListSnippets = "<LocalLeader><LocalLeader>"
     let g:UltiSnipsJumpForwardTrigger = "<Tab>"
     let g:UltiSnipsJumpBackwardTrigger = "<S-Tab>"
     let g:UltiSnipsEditSplit = "vertical"
+    " }}}
+    " vim-polyglot settings {{{
+    " python-syntax configuration
+    let g:python_highlight_all = 1
+    " }}}
+    " Rainbow settings {{{
     let g:rainbow_active = 0
     let g:rainbow_conf = {
         \'guifgs': ['195', '33', '178', '69'],
         \'ctermfgs': ['195', '33', '178', '69']
     \}
+    " }}}
+    " Neosolarized settings {{{
     let g:neosolarized_contrast = "high"
     let g:neosolarized_bold = 1
     let g:neosolarized_underline = 1
     let g:neosolarized_italic = 1
+    " }}}
+    " Onedark settings {{{
     let g:onedark_terminal_italics = 1
-    nnoremap <Leader>u :Denite 
-    nnoremap <Leader>ur :Denite file buffer file_rec<CR>
-    nnoremap <Leader>uo :Denite output:
-    nnoremap <Leader>ug :Denite grep<CR>
-    nnoremap <Leader>ul :Denite line<CR>
-    nnoremap <Leader>umru :Denite output:ol<CR>
-    nnoremap <F8> :TagbarToggle<CR>
-    nnoremap <Leader>f :FZF 
+    " }}}
+    " }}}
 catch /:E117:/
     echom "Error initializing plugins -- plugin manager not installed?"
     echom v:exception
@@ -1111,6 +1140,7 @@ function! MyTabLine()
 endfunction
 " }}}
 " Filetype-specific settings/abbreviations {{{
+" Java {{{
 augroup ft_java
     autocmd Filetype java call s:FileType_Java()
 augroup END
@@ -1120,19 +1150,25 @@ function! s:FileType_Java()
     inoreabbrev sysout System.out.println("");<esc>2hi
     inoreabbrev syserr System.err.println("");<esc>2hi
 endfunction
+" }}}
+" C {{{
 augroup ft_c
     autocmd Filetype c call s:FileType_C()
 augroup END
 function! s:FileType_C()
     inoreabbrev #<defaults> #include <stdio.h><CR>#include <stdlib.h>
 endfunction
+" }}}
+" Notes {{{
+augroup ft_notes
+    autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
+augroup END
 function! CustomNotesFoldText()
     " Show number of lines in fold
     return xolox#notes#foldtext() . '(' . (v:foldend - v:foldstart) . ')'
 endfunction
-augroup ft_notes
-    autocmd Filetype notes setlocal foldtext=CustomNotesFoldText()
-augroup END
+" }}}
+" Haskell {{{
 augroup ft_haskell
     " Disable haskell-vim omnifunc
     let g:haskellmode_completion_ghc = 0
@@ -1140,13 +1176,14 @@ augroup ft_haskell
     let g:necoghc_enable_detailed_browse = 1
 augroup END
 " }}}
+" }}}
 " Pre-start function calls (non-autocommand) {{{
 if has("gui_running")
     call Custom()
 elseif empty($DISPLAY) "If running in a tty, use solarized theme for better colors
     call Solarized()
 " Automatically apply Solarized colorscheme if true-color is available
-elseif &termguicolors == 1
+elseif exists('&termguicolors') && &termguicolors == 1
     call Solarized()
 else
     call Custom()
