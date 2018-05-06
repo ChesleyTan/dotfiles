@@ -22,7 +22,7 @@ set laststatus=2 " Always show statusline on last window
 set pastetoggle=<F3> " Toggle paste mode
 set mouse=nvc " Allow using mouse to change cursor position in normal, visual,
               " and command line modes
-set notimeout " No timeout for completing keymapping
+set timeoutlen=300 " Timeout for completing keymapping
 set t_Co=256 " Enable 256 colors
 set textwidth=100 " Maximum width in characters
 set synmaxcol=150 " Limit syntax highlight parsing to first 150 columns
