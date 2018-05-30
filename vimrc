@@ -948,7 +948,9 @@ try
     nnoremap <Leader>tc :NeomakeToggle<CR>
     nnoremap <Leader>m :Neomake
     " Automatically run neomake when writing a buffer
-    call neomake#configure#automake('w')
+    if exists('*neomake#configure#automake')
+        call neomake#configure#automake('w')
+    endif
     " }}}
     " NERDTree settings {{{
     command! Tree NERDTreeToggle
