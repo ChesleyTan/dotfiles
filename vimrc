@@ -355,13 +355,13 @@ let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
 function! ToggleTransparentTerminalBackground()
     if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == ""
         if g:original_bg_color == ""
-            if &termguicolors == 1 || has('gui_running')
+            if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
                 execute "highlight Normal guibg=NONE"
             else
                 execute "highlight Normal ctermbg=NONE"
             endif
         else
-            if &termguicolors == 1 || has('gui_running')
+            if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
                 execute "highlight Normal guibg=" . g:original_bg_color
             else
                 execute "highlight Normal ctermbg=" . g:original_bg_color
@@ -369,7 +369,7 @@ function! ToggleTransparentTerminalBackground()
         endif
     else
         let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
-        if &termguicolors == 1 || has('gui_running')
+        if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
             highlight Normal guibg=NONE
         else
             highlight Normal ctermbg=NONE
