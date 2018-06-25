@@ -241,6 +241,10 @@ showTime=true
 showSysInfo=false
 shortenPath=false
 showHostname=false
+# Show hostname if inside ssh session
+if [[ -n "$SSH_TTY" || -n "$SSH_CLIENT" || -n "$SSH_CONNECTION" ]]; then
+    showHostname=true
+fi
 showUsername=true
 alias syson="export showSysInfo=true"
 alias sysoff="export showSysInfo=false"
