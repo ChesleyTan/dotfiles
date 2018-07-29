@@ -859,6 +859,7 @@ try
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-notes'
     Plug 'plasticboy/vim-markdown'
+    Plug 'JamshedVesuna/vim-markdown-preview'
     Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle']
@@ -942,6 +943,10 @@ try
     " }}}
     " Markdown settings {{{
     let g:vim_markdown_math = 1
+    let g:vim_markdown_preview_toggle = 1
+    let g:vim_markdown_preview_browser='firefox'
+    command! MarkdownPreview call Vim_Markdown_Preview()
+    nnoremap <LocalLeader>p :call Vim_Markdown_Preview()<CR>
     " }}}
     " Neomake settings {{{
     " Quick leader toggle for Neomake checking
