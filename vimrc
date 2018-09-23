@@ -993,6 +993,7 @@ try
         \'javascript.jsx': ['javascript-typescript-stdio'],
         \'c': ['clangd-6.0'],
         \'cpp': ['clangd-6.0'],
+        \'ocaml': ['ocaml-language-server', '--stdio'],
     \}
     nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
@@ -1182,6 +1183,13 @@ augroup ft_haskell
     let g:haskellmode_completion_ghc = 0
     autocmd Filetype haskell setlocal omnifunc=necoghc#omnifunc
     let g:necoghc_enable_detailed_browse = 1
+augroup END
+" }}}
+" Ocaml {{{
+augroup ft_ocaml
+    set tabstop=2
+    set softtabstop=2
+    set shiftwidth=2
 augroup END
 " }}}
 " }}}
