@@ -944,7 +944,8 @@ try
     " Markdown settings {{{
     let g:vim_markdown_math = 1
     let g:vim_markdown_preview_toggle = 1
-    let g:vim_markdown_preview_browser='firefox'
+    let g:vim_markdown_preview_browser = 'firefox'
+    let g:vim_markdown_preview_pandoc = 1
     command! MarkdownPreview call Vim_Markdown_Preview()
     nnoremap <LocalLeader>p :call Vim_Markdown_Preview()<CR>
     " }}}
