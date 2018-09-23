@@ -9,56 +9,69 @@ ADDRESS = sys.argv[1]
 PWD = sys.argv[2]
 nvim = attach('socket', path=ADDRESS)
 
+CHECK = "\u2714"
+CROSS = "\u2718"
+DELTA = "\u0394"
+STASH = "\u26c1"
+
 s = ""
 branch_name = ""
 remote_name = ""
+state_icons = []
+stash_size = ""
+remote_status = ""
 
 def finish():
     nvim.command('let g:gitInfo="%s"' % s)
     sys.exit(0)
 
+def run_cmd(cmd):
+    return subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE, cwd=PWD)\
+                     .stdout.read().strip().replace('"', '\\"')
+
 # Ported from ~/.vimrc, so we're not using python's regex libraries
 ########## Git Branch ##########
-output = subprocess.Popen("cd '%s' && git branch | grep '*' | grep -o '[^* ]*'" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"').replace('\n','')
-if output == "" or "fatal" in output:
+output = run_cmd("git branch | grep '*' | grep -o '[^* ]*'")
+if not output or "fatal" in output:
     sys.exit(0)
 else:
-    branch_name = output
-    s += "[Git][" + branch_name + " " # Excludes trailing newline
+    branch_name = output.strip()
 
 ########## Git Status ##########
-output = subprocess.Popen("cd '%s' && git status" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
-if output == "":
+output = run_cmd("git status")
+if not output:
     pass
 else:
     if "Changes to be committed" in output:
-        s += "\u2718"
+        state_icons.append(CROSS)
     else:
-        s += "\u2714"
+        state_icons.append(CHECK)
     if "modified" in output:
-        s += " \u0394"
+        state_icons.append(DELTA)
 
 ########## Git Stash ##########
-output = subprocess.Popen("cd '%s' && git stash list | wc -l" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"').replace('\n', '')
+output = run_cmd("git stash list | wc -l").strip()
 if output != "0":
-    s += " \u26c1 " + output
-
-s += "]"
+    stash_size = output
 
 ########## Git Remote ##########
-output = subprocess.Popen("cd '%s' && git remote" % PWD, shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
+output = run_cmd("git remote")
 remotes = output.split(' ')
 if remotes == []:
-    s += "no remotes"
+    remote_status = "no remotes"
 else:
     remote_name = remotes[0].strip() # Get the name of the first remote
-    output = subprocess.Popen("cd '%s' && git remote show '%s' | grep '%s'" % (PWD,
-        remote_name, branch_name), shell=True, stdout=subprocess.PIPE).stdout.read().replace('"', '\\"')
-    if output == "" or "fatal" in output:
+    output = run_cmd("GIT_TERMINAL_PROMPT=0 git remote show '%s' | grep '%s'" % (remote_name, branch_name))
+    if not output or "fatal" in output:
         pass
     elif "local out of date" in output:
-        s += "(!)Local repo out of date"
-    else:
-        pass # Local is up to date
+        remote_status = "(!) Local out of date"
+
+components = [branch_name, ' '.join(state_icons)]
+if stash_size:
+    components.append(STASH + ' ' + stash_size)
+if remote_status:
+    components.append(remote_status)
+s += "[Git][{}]".format(' '.join(components))
 
 finish()
