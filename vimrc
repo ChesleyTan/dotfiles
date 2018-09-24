@@ -1187,9 +1187,9 @@ augroup END
 " }}}
 " Ocaml {{{
 augroup ft_ocaml
-    set tabstop=2
-    set softtabstop=2
-    set shiftwidth=2
+    autocmd Filetype ocaml set tabstop=2
+    autocmd Filetype ocaml set softtabstop=2
+    autocmd Filetype ocaml set shiftwidth=2
 augroup END
 " }}}
 " }}}
