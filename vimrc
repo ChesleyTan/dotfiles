@@ -1050,13 +1050,7 @@ function! MyTabLine()
     " Iterate through each tab page
     let numTabs = tabpagenr('$')
     let currentTab = tabpagenr()
-    let winWidth = 0
-    for winNr in range(winnr('$'))
-        let w = winwidth(winNr + 1)
-        if w > winWidth
-            let winWidth = w
-        endif
-    endfor
+    let winWidth = &columns
     let maxTabsDisplayed = winWidth / 20
     let LRPadding = maxTabsDisplayed / 2
     let evenOddOffset = (maxTabsDisplayed % 2 == 0) ? 0 : 1
