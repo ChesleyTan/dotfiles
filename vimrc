@@ -1000,6 +1000,11 @@ try
     nnoremap <silent> <Leader>lr :call LanguageClient#textDocument_references()<CR>
     nnoremap <silent> <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
     nnoremap <silent> <Leader>lR :call LanguageClient#textDocument_rename()<CR>
+    nnoremap <silent> <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
+    nnoremap <silent> <Leader>lm :call LanguageClient_contextMenu()<CR>
+    nnoremap <silent> <Leader>lh :call LanguageClient#textDocument_documentHighlight()<CR>
+    nnoremap <silent> <Leader>lH :call LanguageClient_clearDocumentHighlight()<CR>
+    vnoremap <silent> <Leader>lf :call LanguageClient#textDocument_rangeFormatting()<CR>
     " }}}
     " FZF settings {{{
     nnoremap <Leader>f :FZF 
