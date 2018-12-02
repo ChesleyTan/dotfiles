@@ -928,6 +928,9 @@ try
     Plug 'ChesleyTan/wordCount.vim', {
         \'on': 'WordCount'
     \}
+    Plug 'liuchengxu/vim-which-key', {
+        \'on': ['WhichKey', 'WhichKey!', 'WhichKeyVisual', 'WhichKeyVisual!']
+    \}
 
     " Initialize plugin system
     call plug#end()
@@ -1020,6 +1023,16 @@ try
     " python-syntax configuration
     let g:python_highlight_all = 1
     " }}}
+" vim-which-key settings {{{
+nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
+nnoremap <silent> <localleader> :<c-u>WhichKey  '\\'<CR>
+vnoremap <silent> <leader>      :<c-u>WhichKeyVisual '<Space>'<CR>
+vnoremap <silent> <localleader> :<c-u>WhichKeyVisual '\\'<CR>
+" Hide vim-which-key statusline
+autocmd! FileType which_key
+autocmd  FileType which_key set laststatus=0 noshowmode noruler
+    \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+" }}}
     " Rainbow settings {{{
     let g:rainbow_active = 0
     let g:rainbow_conf = {
