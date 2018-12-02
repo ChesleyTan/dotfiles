@@ -896,6 +896,9 @@ try
         \'do': 'bash install.sh',
     \}
     Plug 'junegunn/fzf'
+    Plug 'zchee/deoplete-jedi', {
+        \'for': 'python'
+    \}
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
     \}
