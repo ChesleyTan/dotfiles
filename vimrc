@@ -858,8 +858,12 @@ try
     Plug 'ludovicchabant/vim-gutentags'
     Plug 'xolox/vim-misc'
     Plug 'xolox/vim-notes'
-    Plug 'plasticboy/vim-markdown'
-    Plug 'JamshedVesuna/vim-markdown-preview'
+    Plug 'plasticboy/vim-markdown', {
+        \'for': 'markdown'
+    \}
+    Plug 'JamshedVesuna/vim-markdown-preview', {
+        \'for': 'markdown'
+    \}
     Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle']
@@ -953,7 +957,7 @@ try
     let g:vim_markdown_preview_browser = 'firefox'
     let g:vim_markdown_preview_pandoc = 1
     command! MarkdownPreview call Vim_Markdown_Preview()
-    nnoremap <LocalLeader>p :call Vim_Markdown_Preview()<CR>
+    nnoremap <Leader>mp :call Vim_Markdown_Preview()<CR>
     " }}}
     " Neomake settings {{{
     " Quick leader toggle for Neomake checking
