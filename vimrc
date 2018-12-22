@@ -256,16 +256,16 @@ endfunction
 
 " This function is called by autocmd when vim starts
 function! PluginConfig()
-    " Javacomplete config {{{
-        function! s:InitJavaComplete()
-            setlocal omnifunc=javacomplete#Complete
-        endfunction
-        augroup javacomplete
-            autocmd Filetype java call s:InitJavaComplete()
-        augroup END
-        if &filetype ==? 'java'
-            call s:InitJavaComplete()
-        endif
+    " Javacomplete {{{
+    function! s:InitJavaComplete()
+        setlocal omnifunc=javacomplete#Complete
+    endfunction
+    augroup javacomplete
+        autocmd Filetype java call s:InitJavaComplete()
+    augroup END
+    if &filetype ==? 'java'
+        call s:InitJavaComplete()
+    endif
     "}}}
 endfunction
 
@@ -827,6 +827,13 @@ function! RefreshColors(ctermfg, guifg, ctermbg, guibg)
     call s:Highlight('StatusLineNC', 'bold', 'bold', '255', a:ctermbg, 'bold', '#EEEEEE', a:guibg, '', '')
     "Line numbers
     call s:Highlight('LineNr', '', '', a:ctermfg, a:ctermbg, '', a:guifg, a:guibg, '', '')
+    call s:Highlight('SignColumn', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('NeomakeErrorSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('NeomakeInfoSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('NeomakeWarningSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('ALEErrorSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('ALEInfoSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
+    call s:Highlight('ALEWarningSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
     "Vertical split divider
     call s:Highlight('VertSplit', 'bold', 'bold', '43', a:ctermbg, 'bold', '#00D7AF', a:guibg, '', '')
     "Nonselected tabs
@@ -880,9 +887,7 @@ try
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle']
     \}
-    Plug 'Shougo/denite.nvim', {
-        \'do': ':UpdateRemotePlugins'
-    \}
+    Plug 'Shougo/denite.nvim'
     Plug 'sjl/gundo.vim', {
         \'on': 'GundoToggle'
     \}
@@ -975,10 +980,6 @@ try
     " Quick leader toggle for Neomake checking
     nnoremap <Leader>tc :NeomakeToggle<CR>
     nnoremap <Leader>m :Neomake
-    " Automatically run neomake when writing a buffer
-    if exists('*neomake#configure#automake')
-        call neomake#configure#automake('w')
-    endif
     " }}}
     " NERDTree settings {{{
     command! Tree NERDTreeToggle
