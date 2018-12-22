@@ -1016,6 +1016,7 @@ try
         \'c': ['clangd-6.0'],
         \'cpp': ['clangd-6.0'],
         \'ocaml': ['ocaml-language-server', '--stdio'],
+        \'rust': ['rustup', 'run', 'stable', 'rls'],
     \}
     nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
