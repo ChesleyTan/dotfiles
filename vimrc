@@ -775,7 +775,7 @@ call RefreshGitInfo()
 function! SetStatusline()
     let bufName = bufname('%')
     " Do not modify the statusline for plugin-handled windows
-    if bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
+    if &buftype ==# "quickfix" || &buftype ==# "terminal" || bufName == "" || bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
         return
     endif
     let winWidth = winwidth(0)
