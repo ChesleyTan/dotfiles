@@ -119,14 +119,6 @@ let g:scriptsDirectory = expand("$HOME/.vim/scripts/")
 let g:showGitInfo = 1 " This determines whether to show git info in statusline
 let g:inGitRepo = 0
 let g:gitInfo = "" " Placeholder value to initialize variable
-let g:defaultStatusLineColor_ctermfg = 118
-let g:defaultStatusLineColor_guifg = '#87FF00'
-let g:defaultStatusLineColor_ctermbg = 235
-let g:defaultStatusLineColor_guibg = '#262626'
-let g:insertModeStatusLineColor_ctermfg = 118
-let g:insertModeStatusLineColor_guifg = '#87FF00'
-let g:insertModeStatusLineColor_ctermbg = 23
-let g:insertModeStatusLineColor_guibg = '#005F5F'
 " }}}
 " Custom mappings {{{
 function! s:SetMappings()
@@ -314,12 +306,14 @@ command! DiffQuit diffoff | b#
 function! Solarized()
     set background=dark
     colorscheme NeoSolarized
+    highlight NormalNC guibg=#00202A
     highlight ErrorMsg term=NONE cterm=NONE gui=NONE
     highlight Conceal ctermfg=239 guifg=#4E4E4E
     highlight SpellBad guifg=#DC322F
     highlight SpellCap guifg=#6C71C4
     highlight SpellLocal guifg=#B58900
     highlight SpellRare guifg=#2AA198
+    call SetDefaultStatusLineColors()
     let g:defaultStatusLineColor_ctermbg = 8
     let g:defaultStatusLineColor_guibg = '#073642'
     let g:insertModeStatusLineColor_ctermbg = 30
@@ -331,6 +325,7 @@ command! Solarized call Solarized()
 function! OneDark()
     set background=dark
     colorscheme onedark
+    call SetDefaultStatusLineColors()
     let g:defaultStatusLineColor_ctermbg = 235
     let g:defaultStatusLineColor_guibg = '#262626'
     let g:insertModeStatusLineColor_ctermbg = 23
@@ -345,10 +340,22 @@ endfunction
 command! ToggleStatuslineColor call ToggleStatuslineColor()
 
 function! Custom()
+    call SetDefaultStatusLineColors()
     call ColorschemeInit()
     call ToggleStatuslineColor()
 endfunction
 command! Custom call Custom()
+
+function! SetDefaultStatusLineColors()
+    let g:defaultStatusLineColor_ctermfg = 118
+    let g:defaultStatusLineColor_guifg = '#87FF00'
+    let g:defaultStatusLineColor_ctermbg = 235
+    let g:defaultStatusLineColor_guibg = '#262626'
+    let g:insertModeStatusLineColor_ctermfg = 118
+    let g:insertModeStatusLineColor_guifg = '#87FF00'
+    let g:insertModeStatusLineColor_ctermbg = 23
+    let g:insertModeStatusLineColor_guibg = '#005F5F'
+endfunction
 
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
@@ -580,6 +587,7 @@ endfunction
 function! ColorschemeInit()
     " Colors inspired by flatcolor colorscheme created by Max St
     call s:Highlight('Normal', '', '', '15', '234', '', '#FFFFFF', '#1C1C1C', '', '')
+    call s:Highlight('NormalNC', '', '', '15', '235', '', '#FFFFFF', '#262626', '', '')
     call s:Highlight('Statement', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
     call s:Highlight('Conditional', 'bold', 'bold', '197', '', 'bold', '#FF005F', '', '', '')
     call s:Highlight('Operator', '', '', '197', '', '', '#FF005F', '', '', '')
