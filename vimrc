@@ -245,7 +245,11 @@ function! s:SetMappings()
     " Quick toggle for color column at 80 characters
     nnoremap <Leader>t8 :call ToggleColorColumn()<CR>
     " Quick toggle for automatic newline insertion at end of line
-    nnoremap <Leader>tl :call ToggleEOL()<CR>
+    nnoremap <Leader>te :call ToggleEOL()<CR>
+    " Quick toggle for quickfix window
+    nnoremap <Leader>tc :cwindow<CR><C-w>p
+    " Quick toggle for location window
+    nnoremap <Leader>tl :lwindow<CR><C-w>p
 endfunction
 " }}}
 " Custom functions {{{
@@ -1023,6 +1027,7 @@ try
     nnoremap <silent> <Leader>lh :call LanguageClient#textDocument_documentHighlight()<CR>
     nnoremap <silent> <Leader>lH :call LanguageClient_clearDocumentHighlight()<CR>
     vnoremap <silent> <Leader>lf :call LanguageClient#textDocument_rangeFormatting()<CR>
+    nnoremap <silent> <Leader>lt :LanguageClientStop<CR>:LanguageClientStart<CR>
     " }}}
     " FZF settings {{{
     nnoremap <Leader>f :FZF 
@@ -1236,7 +1241,10 @@ call s:SetMappings()
 " Neovim {{{
 if has('nvim')
     tnoremap <Esc> <C-\><C-n>   " Escape to exit terminal insert mode
+    tnoremap jj <C-\><C-n>      " jj to exit terminal insert mode
+    tnoremap jk <C-\><C-n>      " jk to exit terminal insert mode
     " Use :terminal to execute shell command
     nnoremap <Leader>c :terminal 
+    nnoremap <Leader>cc :below split \| terminal<CR>
 endif
 " }}}
