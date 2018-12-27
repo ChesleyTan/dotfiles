@@ -363,27 +363,35 @@ endfunction
 
 " Store default bg color
 let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
+let g:original_nc_bg_color = synIDattr(synIDtrans(hlID('NormalNC')), 'bg')
 function! ToggleTransparentTerminalBackground()
     if (synIDattr(synIDtrans(hlID('Normal')), 'bg')) == ""
         if g:original_bg_color == ""
             if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
                 execute "highlight Normal guibg=NONE"
+                execute "highlight NormalNC guibg=NONE"
             else
                 execute "highlight Normal ctermbg=NONE"
+                execute "highlight NormalNC ctermbg=NONE"
             endif
         else
             if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
                 execute "highlight Normal guibg=" . g:original_bg_color
+                execute "highlight NormalNC guibg=" . g:original_nc_bg_color
             else
                 execute "highlight Normal ctermbg=" . g:original_bg_color
+                execute "highlight NormalNC ctermbg=" . g:original_nc_bg_color
             endif
         endif
     else
         let g:original_bg_color = synIDattr(synIDtrans(hlID('Normal')), 'bg')
+        let g:original_nc_bg_color = synIDattr(synIDtrans(hlID('NormalNC')), 'bg')
         if (has('termguicolors') && &termguicolors == 1) || has('gui_running')
             highlight Normal guibg=NONE
+            highlight NormalNC guibg=NONE
         else
             highlight Normal ctermbg=NONE
+            highlight NormalNC ctermbg=NONE
         endif
     endif
 endfunction
