@@ -939,6 +939,9 @@ try
     Plug 'artur-shaik/vim-javacomplete2', {
         \'for': 'java'
     \}
+    Plug 'rust-lang/rust.vim', {
+        \'for': 'rust'
+    \}
 
     Plug 'SirVer/ultisnips'
     Plug 'honza/vim-snippets'
@@ -1030,7 +1033,7 @@ try
         \'c': ['clangd-6.0'],
         \'cpp': ['clangd-6.0'],
         \'ocaml': ['ocaml-language-server', '--stdio'],
-        \'rust': ['rustup', 'run', 'stable', 'rls'],
+        \'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
     \}
     nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
     nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
