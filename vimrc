@@ -783,7 +783,7 @@ call RefreshGitInfo()
 function! SetStatusline()
     let bufName = bufname('%')
     " Do not modify the statusline for plugin-handled windows
-    if &buftype ==# "quickfix" || &buftype ==# "terminal" || bufName == "" || bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
+    if &buftype ==# "quickfix" || bufName =~# "NERD" || bufName =~# "Gundo" || bufName =~# "__Tagbar__"
         return
     endif
     let winWidth = winwidth(0)
@@ -806,9 +806,14 @@ function! SetStatusline()
     if winWidth > 100
         setlocal statusline+=\ %#Green_34#%{g:gitInfo}%## " Git info
     endif
-    setlocal statusline+=%=                                        " Left/right separator
-    "setlocal statusline+=%3*%F%*\ %4*\|%*\                        " File path with full names
-    setlocal statusline+=%#Blue_39#%{pathshorten(fnamemodify(expand('%:p'),':~:h'))}%##%#Green_41#\|%##  " File path with truncated names
+    setlocal statusline+=%=                      " Left/right separator
+    setlocal statusline+=%#Blue_39#             " File path begin
+    if &buftype ==# "terminal"
+        setlocal statusline+=%{expand('%:p')}     " Full path
+    else
+        setlocal statusline+=%{pathshorten(expand('%:p:~:h'))} " File path with truncated names
+    endif
+    setlocal statusline+=%##%#Green_41#\|%##     " File path end
     setlocal statusline+=C:%2c\                  " Cursor column, reserve 2 spaces
     setlocal statusline+=R:%3l/%3L               " Cursor line/total lines, reserve 3 spaces for each
     setlocal statusline+=%#Green_41#\|%##%3p     " Percent through file, reserve 3 spaces
@@ -1256,5 +1261,6 @@ if has('nvim')
     " Use :terminal to execute shell command
     nnoremap <Leader>c :terminal 
     nnoremap <Leader>cc :below split \| terminal<CR>
+    autocmd TermOpen * call SetStatusline()
 endif
 " }}}
