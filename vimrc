@@ -1146,6 +1146,8 @@ function! MyTabLine()
                 let tmp .= '[H]' . fnamemodify(currentBufName, ':t:s/.txt$//')
             elseif getbufvar(bufIndex, "&buftype") == 'quickfix'
                 let tmp .= '[Q]'
+            elseif getbufvar(bufIndex, "&buftype") == 'terminal'
+                let tmp .= '[T]' . fnamemodify(currentBufName, ':t')
             else
                 " Do not show plugin-handled windows in the bufferlist
                 if (currentBufName =~# "NERD"
