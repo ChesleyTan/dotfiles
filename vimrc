@@ -841,9 +841,6 @@ function! RefreshColors(ctermfg, guifg, ctermbg, guibg)
     "Line numbers
     call s:Highlight('LineNr', '', '', a:ctermfg, a:ctermbg, '', a:guifg, a:guibg, '', '')
     call s:Highlight('SignColumn', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
-    call s:Highlight('NeomakeErrorSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
-    call s:Highlight('NeomakeInfoSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
-    call s:Highlight('NeomakeWarningSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
     call s:Highlight('ALEErrorSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
     call s:Highlight('ALEInfoSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
     call s:Highlight('ALEWarningSign', '', '', '', a:ctermbg, '', '', a:guibg, '', '')
@@ -896,7 +893,6 @@ try
     Plug 'JamshedVesuna/vim-markdown-preview', {
         \'for': 'markdown'
     \}
-    Plug 'benekastah/neomake'
     Plug 'scrooloose/nerdtree', {
         \'on': ['NERDTreeToggle']
     \}
@@ -929,6 +925,7 @@ try
         \'branch': 'next',
         \'do': 'bash install.sh',
     \}
+    Plug 'w0rp/ale'
     Plug 'junegunn/fzf'
     Plug 'zchee/deoplete-jedi', {
         \'for': 'python'
@@ -992,10 +989,13 @@ try
     command! MarkdownPreview call Vim_Markdown_Preview()
     nnoremap <Leader>mp :call Vim_Markdown_Preview()<CR>
     " }}}
-    " Neomake settings {{{
-    " Quick leader toggle for Neomake checking
-    nnoremap <Leader>tc :NeomakeToggle<CR>
-    nnoremap <Leader>m :Neomake
+    " ALE settings {{{
+    " Quick leader toggle for ALE checking
+    nnoremap <Leader>ta :ALEToggle<CR>
+    nnoremap <Leader>an :ALENextWrap<CR>
+    nnoremap <Leader>ap :ALEPreviousWrap<CR>
+    let g:ale_sign_error = '✖ '
+    let g:ale_sign_warning = '⚠ '
     " }}}
     " NERDTree settings {{{
     command! Tree NERDTreeToggle
@@ -1023,7 +1023,7 @@ try
     let g:deoplete#enable_at_startup = 1
     let g:deoplete#max_list = 50
     " Quick leader toggle for autocompletion
-    nnoremap <Leader>ta :call deoplete#toggle()<CR>
+    nnoremap <Leader>td :call deoplete#toggle()<CR>
     " }}}
     " LanguageClient settings {{{
     let g:LanguageClient_serverCommands = {
