@@ -42,6 +42,9 @@ filetype plugin on " Enable filetype-specific plugins
 colorscheme default " Set default colors
 if has('nvim') || has('termguicolors')
     set termguicolors " Enable gui colors in terminal (i.e., 24-bit color)
+    " set Vim-specific sequences for RGB colors
+    let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+    let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 endif
 
 " List/listchars
