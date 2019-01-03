@@ -8,6 +8,8 @@ set wrap " Wrap lines
 set linebreak " Break line on word
 set hlsearch " Highlight search term in text
 set incsearch " Show search matches as you type
+set ignorecase " Perform case-insensitive search by default
+set smartcase " Perform case-insensitive search unless query has capital letters
 set wrapscan " Automatically wrap search when hitting bottom
 set autoindent " Enable autoindenting
 set copyindent " Copy indent of previous line when autoindenting
