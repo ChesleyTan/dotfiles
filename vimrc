@@ -267,6 +267,11 @@ function! PluginConfig()
         call s:InitJavaComplete()
     endif
     "}}}
+    " vim-gutentags {{{
+    if exists('g:gutentags_project_info')
+        call add(g:gutentags_project_info, { 'type': 'rust', 'file': 'Cargo.toml' })
+    endif
+    " }}}
 endfunction
 
 function! WordProcessorMode()
@@ -1060,6 +1065,7 @@ try
     " vim-polyglot settings {{{
     " python-syntax configuration
     let g:python_highlight_all = 1
+    let g:polyglot_disabled = ['rust']
     " }}}
 " vim-which-key settings {{{
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
