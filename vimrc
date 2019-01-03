@@ -811,6 +811,7 @@ try
         \'on': ['NERDTreeToggle']
     \}
     Plug 'Shougo/denite.nvim'
+    Plug 'junegunn/fzf'
     Plug 'sjl/gundo.vim', {
         \'on': 'GundoToggle'
     \}
@@ -840,7 +841,7 @@ try
         \'do': 'bash install.sh',
     \}
     Plug 'w0rp/ale'
-    Plug 'junegunn/fzf'
+
     Plug 'zchee/deoplete-jedi', {
         \'for': 'python'
     \}
@@ -858,9 +859,7 @@ try
     Plug 'honza/vim-snippets'
 
     Plug 'sheerun/vim-polyglot'
-    Plug 'luochen1990/rainbow', {
-        \'on': 'RainbowToggle'
-    \}
+    Plug 'luochen1990/rainbow'
     Plug 'chrisbra/Colorizer', {
         \'on': 'ColorToggle'
     \}
@@ -987,9 +986,9 @@ autocmd  FileType which_key set laststatus=0 noshowmode noruler
     \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 " }}}
     " Rainbow settings {{{
-    let g:rainbow_active = 0
+    let g:rainbow_active = 1
     let g:rainbow_conf = {
-        \'guifgs': ['195', '33', '178', '69'],
+        \'guifgs': ['#DFFFFF', '#0087FF', '#DFAF00', '#5F87FF'],
         \'ctermfgs': ['195', '33', '178', '69']
     \}
     " }}}
