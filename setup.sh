@@ -1,5 +1,5 @@
 #!/bin/bash
-SCRIPT_DIR=$(dirname "$0")
+SCRIPT_DIR="$(dirname $(realpath "$0"))"
 # ANSI Escape Codes
 RED="\033[1;31m"
 GREEN="\033[1;32m"
