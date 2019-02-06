@@ -7,19 +7,28 @@ YELLOW="\033[1;33m"
 MAGENTA="\033[1;35m"
 RESET="\033[m"
 
+backup_if_exists() {
+    if [[ -a "$1" ]]; then
+        printf "${RED}${1} already exists! Backing it up...${RESET}\n"
+        mv "$1" "$1.bak"
+    fi
+}
+
+update_submodules() {
+    echo "Updating submodules...."
+    git submodule init
+    git submodule update
+}
+
 echo "Using vim? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.vimrc ]]; then
-        printf "${RED}~/.vimrc already exists!${RESET}\n"
-    elif [[ -a ~/.vim/ ]]; then
-        printf "${RED}~/.vim/ already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/vimrc $HOME/.vimrc
-        printf "${GREEN}Linked ~/.vimrc${RESET}\n"
-        ln -s $SCRIPT_DIR/vim $HOME/.vim
-        printf "${GREEN}Linked ~/.vim/${RESET}\n"
-    fi
+    backup_if_exists ~/.vimrc
+    backup_if_exists ~/.vim/
+    ln -s $SCRIPT_DIR/vimrc ~/.vimrc
+    printf "${GREEN}Linked ~/.vimrc${RESET}\n"
+    ln -s $SCRIPT_DIR/vim ~/.vim
+    printf "${GREEN}Linked ~/.vim/${RESET}\n"
 fi
 
 echo "Using nvim? (y/n)"
@@ -36,114 +45,83 @@ fi
 echo "Using emacs? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.emacs.d/ ]]; then
-        printf "${RED}~/.emacs.d/ already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/emacs.d $HOME/.emacs.d
-        printf "${GREEN}Linked ~/.emacs.d/${RESET}\n"
-    fi
+    backup_if_exists ~/.emacs.d/
+    ln -s $SCRIPT_DIR/emacs.d ~/.emacs.d
+    printf "${GREEN}Linked ~/.emacs.d/${RESET}\n"
 fi
 
 echo "Using GNU readline? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.inputrc ]]; then
-        printf "${RED}~/.inputrc already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/inputrc $HOME/.inputrc
-        printf "${GREEN}Linked ~/.inputrc${RESET}\n"
-    fi
+    backup_if_exists ~/.inputrc
+    ln -s $SCRIPT_DIR/inputrc ~/.inputrc
+    printf "${GREEN}Linked ~/.inputrc${RESET}\n"
 fi
 
 echo "Using bash? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.bashrc ]]; then
-        printf "${RED}~/.bashrc already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/bashrc $HOME/.bashrc
-        printf "${GREEN}Linked ~/.bashrc${RESET}\n"
-    fi
+    backup_if_exists ~/.bashrc
+    ln -s $SCRIPT_DIR/bashrc ~/.bashrc
+    printf "${GREEN}Linked ~/.bashrc${RESET}\n"
 fi
 
 echo "Using zsh? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.zshrc ]]; then
-        printf "${RED}~/.zshrc already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/zshrc $HOME/.zshrc
-        printf "${GREEN}Linked ~/.zshrc${RESET}\n"
-    fi
-    if [[ -a ~/.zsh/ ]]; then
-        printf "${RED}~/.zsh/ already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/include/zsh $HOME/.zsh
-        printf "${GREEN}Linked ~/.zsh/${RESET}\n"
-        echo "Updating submodules...."
-        git submodule init
-        git submodule update
-    fi
+    backup_if_exists ~/.zshrc
+    ln -s $SCRIPT_DIR/zshrc ~/.zshrc
+    printf "${GREEN}Linked ~/.zshrc${RESET}\n"
+
+    backup_if_exists ~/.zsh/
+    ln -s $SCRIPT_DIR/include/zsh ~/.zsh
+    printf "${GREEN}Linked ~/.zsh/${RESET}\n"
+
+    update_submodules
 fi
 
 echo "Using tmux? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.tmux.conf ]]; then
-        printf "${RED}~/.tmux.conf already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/tmux.conf $HOME/.tmux.conf
-        printf "${GREEN}Linked ~/.tmux.conf${RESET}\n"
-    fi
-    if [[ -a ~/.tmux/ ]]; then
-        printf "${RED}~/.tmux/ already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/include/tmux $HOME/.tmux
-        printf "${GREEN}Linked ~/.tmux/${RESET}\n"
-        echo "Updating submodules...."
-        git submodule init
-        git submodule update
-    fi
+    backup_if_exists ~/.tmux.conf
+    ln -s $SCRIPT_DIR/tmux.conf ~/.tmux.conf
+    printf "${GREEN}Linked ~/.tmux.conf${RESET}\n"
+
+    backup_if_exists ~/.tmux/
+    ln -s $SCRIPT_DIR/include/tmux ~/.tmux
+    printf "${GREEN}Linked ~/.tmux/${RESET}\n"
+
+    update_submodules
 fi
 
 echo "Using xmobar for system info? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.xmobarrc_bottom ]]; then
-        printf "${RED}~/.xmobarrc_bottom already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/xmobarrc_bottom $HOME/.xmobarrc_bottom
-        printf "${GREEN}Linked ~/.xmobarrc_bottom${RESET}\n"
-    fi
+    backup_if_exists ~/.xmobarrc_bottom
+    ln -s $SCRIPT_DIR/xmobarrc_bottom ~/.xmobarrc_bottom
+    printf "${GREEN}Linked ~/.xmobarrc_bottom${RESET}\n"
 fi
 
 echo "Using xmobar for xmonad integration? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.xmobarrc_top ]]; then
-        printf "${RED}~/.xmobarrc_top already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/xmobarrc_top $HOME/.xmobarrc_top
-        printf "${GREEN}Linked ~/.xmobarrc_top${RESET}\n"
-    fi
+    backup_if_exists ~/.xmobarrc_top
+    ln -s $SCRIPT_DIR/xmobarrc_top ~/.xmobarrc_top
+    printf "${GREEN}Linked ~/.xmobarrc_top${RESET}\n"
 fi
 
 echo "Using xmonad (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    if [[ -a ~/.xmonad/ ]]; then
-        printf "${RED}~/.xmonad/ already exists!${RESET}\n"
-    else
-        ln -s $SCRIPT_DIR/xmonad $HOME/.xmonad
-        printf "${GREEN}Linked ~/.xmonad/${RESET}\n"
-    fi
+    backup_if_exists ~/.xmonad/
+    ln -s $SCRIPT_DIR/xmonad ~/.xmonad
+    printf "${GREEN}Linked ~/.xmonad/${RESET}\n"
 fi
 
 echo "Using fzf? (y/n)"
 read ans
 if [[ $ans == "y" ]]; then
-    git submodule init
-    git submodule update
+    update_submodules
     $SCRIPT_DIR/include/fzf/install
     printf "${GREEN}Installed fzf${RESET}\n"
 fi
