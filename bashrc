@@ -59,6 +59,9 @@ export LS_COLORS
 
 function GitBranch() {
     # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
+    if ! $showGitInfo; then
+        return
+    fi
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
         echo " $(tput bold)$(tput setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate)$(GitStashLength))$(tput sgr0)" # Extracts current git branch using grep and regexes
     fi
@@ -199,6 +202,7 @@ fi
 showUsername=true
 alias syson="export showSysInfo=true"
 alias sysoff="export showSysInfo=false"
+showGitInfo=true
 
 # }}}
 # Custom xterm Title {{{
