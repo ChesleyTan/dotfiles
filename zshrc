@@ -99,6 +99,9 @@ export LS_COLORS
 # }}}
 # }}}
 # Custom Prompt {{{
+function style() {
+    echo "%{$(tput $@)%}"
+}
 
 function GitBranch() {
 # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
@@ -106,7 +109,7 @@ function GitBranch() {
         return
     fi
     if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
-        echo " $(tput bold)$(tput setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate)$(GitStashLength))$(tput sgr0)" # Extracts current git branch using grep and regexes
+        echo " $(style bold)$(style setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate)$(GitStashLength))$(style sgr0)" # Extracts current git branch using grep and regexes
     fi
 }
 function GitUpToDate() {
@@ -133,12 +136,12 @@ function SensorTemp() {
 # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
 # Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output
     if [ $showSysInfo == true ]; then
-        echo "$(tput bold)$(tput setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(tput sgr0)"
+        echo "$(style bold)$(style setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(style sgr0)"
     fi
 }
 function ramUsage() {
     if [[ $showSysInfo == true ]]; then
-        echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -6 | tail -1) MB | $(tput sgr0)"
+        echo "$(style bold)$(style setaf 166)$(free -m | grep -Eo '[0-9]*' | head -6 | tail -1) MB | $(style sgr0)"
     fi
 }
 function batteryInfo() {
@@ -149,7 +152,7 @@ function batteryInfo() {
         if [ "$batTime" == "" ]; then
             batTime="Full"
         fi
-        echo "$(tput bold)$(tput setaf 166)$perc% ($batTime)> $(tput sgr0)"
+        echo "$(style bold)$(style setaf 166)$perc% ($batTime)> $(style sgr0)"
     fi
 }
 function CatchExitCode() {
@@ -157,12 +160,12 @@ function CatchExitCode() {
 }
 function Sign() {
     if [[ $UID == 0 ]]; then
-        echo "$(tput bold)$(tput setaf 9) #$(tput sgr0)"
+        echo "$(style bold)$(style setaf 9) #$(style sgr0)"
     else
         if [[ $exitStatus == 0 ]]; then
-            echo "$(tput bold)$(tput setaf 15) \$$(tput sgr0)"
+            echo "$(style bold)$(style setaf 15) \$$(style sgr0)"
         else
-            echo "$(tput bold)$(tput setaf 9) \$$(tput sgr0)"
+            echo "$(style bold)$(style setaf 9) \$$(style sgr0)"
         fi
     fi
 }
@@ -172,13 +175,13 @@ function Pwd() {
     else
         color=6
     fi
-    echo -n "$(tput bold)$(tput setaf $color)"
+    echo -n "$(style bold)$(style setaf $color)"
     if [[ $shortenPath == true ]]; then
         echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s|/(.)[^/]*|/\1|g" # (.) holds the first letter and \1 recalls it
     else
         echo -n "$PWD" | sed -r "s|$HOME|~|g"
     fi
-    echo "$(tput sgr0)"
+    echo "$(style sgr0)"
 }
 function DateTime() {
     if [[ $showTime != true ]]; then
@@ -186,9 +189,9 @@ function DateTime() {
     fi
     date=$(date "+%I:%M %P")
     if [[ $is256ColorTerm == false ]]; then
-        echo "$(tput bold)$(tput setaf 1)[$date] $(tput sgr0)"
+        echo "$(style bold)$(style setaf 1)[$date] $(style sgr0)"
     else
-        echo "$(tput bold)$(tput setaf 196)[$date] $(tput sgr0)"
+        echo "$(style bold)$(style setaf 196)[$date] $(style sgr0)"
     fi
 }
 function User() {
@@ -198,11 +201,11 @@ function User() {
         else
             color=2
         fi
-        echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
+        echo -n "$(style bold)$(style setaf $color)$USER$(style sgr0)"
         if [[ $showHostname == true ]]; then
-            echo -n "$(tput bold)$(tput setaf 24)@$(hostname)$(tput sgr0)"
+            echo -n "$(style bold)$(style setaf 24)@$(hostname)$(style sgr0)"
         fi
-        echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
+        echo "$(style bold)$(style setaf $color):$(style sgr0)"
     fi
 }
 function SuspendedJobs() {
@@ -210,7 +213,7 @@ function SuspendedJobs() {
     if [[ "$jobs_suspended" == "0" ]]; then
         return
     else
-        echo -n "$(tput bold)$(tput setaf 35)(${jobs_suspended})$(tput sgr0) "
+        echo -n "$(style bold)$(style setaf 35)(${jobs_suspended})$(style sgr0) "
     fi
 }
 
@@ -272,12 +275,12 @@ function swp() {
 }
 
 function reminder(){
-    PS1="$PS1$(tput setaf 7)(Reminder: " # Add space to PS1, change text color
+    PS1="$PS1$(style setaf 7)(Reminder: " # Add space to PS1, change text color
     for word in "$@"
     do
         PS1="$PS1$word "
     done
-    PS1="${PS1:0:$[${#PS1}-1]})$(tput sgr0) " # Remove trailing space, reset font color, add close parentheses
+    PS1="${PS1:0:$[${#PS1}-1]})$(style sgr0) " # Remove trailing space, reset font color, add close parentheses
     echo "Reminder set: $@"
 }
 
