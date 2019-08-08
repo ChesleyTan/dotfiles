@@ -108,12 +108,13 @@ function GitBranch() {
     if ! $showGitInfo; then
         return
     fi
-    if [[ ! $(git status 2>&1) =~ "fatal" ]]; then
-        echo " $(style bold)$(style setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate)$(GitStashLength))$(style sgr0)" # Extracts current git branch using grep and regexes
+    output="$(git status 2>&1)"
+    if [[ ! "$output" =~ "fatal" ]]; then
+        echo " $(style bold)$(style setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate "$output")$(GitStashLength))$(style sgr0)" # Extracts current git branch using grep and regexes
     fi
 }
 function GitUpToDate() {
-    gitStatus=$(git status)
+    gitStatus="$1"
     if [[ $gitStatus =~ "Changes to be committed" ]]; then
         echo -ne "\u2718" # unicode character cross
     else
