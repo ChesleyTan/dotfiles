@@ -22,7 +22,7 @@ bindkey "^[[3~" delete-char
 
 # User configuration
 
-export PATH="${PATH}:/bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin:/usr/bin/vendor_perl:/usr/bin/core_perl"
+export PATH="${PATH}:/bin:/sbin:/usr/local/sbin:/usr/local/bin:/usr/bin"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 if type nvim > /dev/null; then
