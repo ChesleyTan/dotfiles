@@ -54,7 +54,7 @@ set list
 execute "set listchars=tab:\u2592\u2592,trail:\u2591"
 
 " Autocompletion settings
-set completeopt=longest,menuone,preview
+set completeopt=noinsert,menuone,preview
 set pumheight=10 " Maximum height of pop-up menu window
 
 " Command line completion settings
