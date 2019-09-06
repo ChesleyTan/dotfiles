@@ -73,7 +73,7 @@ if [[ $ans == "y" ]]; then
     ln -s $SCRIPT_DIR/zshrc ~/.zshrc
     printf "${GREEN}Linked ~/.zshrc${RESET}\n"
 
-    backup_if_exists ~/.zsh/
+    backup_if_exists ~/.zsh
     ln -s $SCRIPT_DIR/include/zsh ~/.zsh
     printf "${GREEN}Linked ~/.zsh/${RESET}\n"
 
