@@ -255,6 +255,8 @@ function! s:SetMappings()
     nnoremap <Leader>tc :cwindow<CR><C-w>p
     " Quick toggle for location window
     nnoremap <Leader>tl :lwindow<CR><C-w>p
+    " Shortcut to count the number of search matches
+    command CountMatches :%s///n
 endfunction
 " }}}
 " Custom functions {{{
@@ -275,6 +277,80 @@ function! PluginConfig()
     " vim-gutentags {{{
     if exists('g:gutentags_project_info')
         call add(g:gutentags_project_info, { 'type': 'rust', 'file': 'Cargo.toml' })
+    endif
+    " }}}
+    " coc {{{
+    if exists(':CocEnable')
+        set updatetime=300
+
+        nmap <silent> <Leader>lA <Plug>(coc-codeaction-selected)
+        nmap <silent> <Leader>lD <Plug>(coc-declaration)
+        nmap <silent> <Leader>ld <Plug>(coc-definition)
+        nmap <silent> <Leader>lf <Plug>(coc-format-selected)
+        nmap <silent> <Leader>li <Plug>(coc-implementation)
+        nmap <silent> <Leader>ln <Plug>(coc-diagnostic-next)
+        nmap <silent> <Leader>lp <Plug>(coc-diagnostic-prev)
+        nmap <silent> <Leader>lq <Plug>(coc-fix-current)
+        nmap <silent> <Leader>lr <Plug>(coc-references)
+        nmap <silent> <Leader>lR <Plug>(coc-rename)
+        nmap <silent> <Leader>lRR <Plug>(coc-refactor)
+        nnoremap <silent> <Leader>la :CocList actions<CR>
+        nnoremap <silent> <Leader>lc :CocList commands<CR>
+        nnoremap <silent> <Leader>lh :call CocAction('doHover')<CR>
+        nnoremap <silent> <Leader>ll :CocListResume<CR>
+        nnoremap <silent> <Leader>lS :CocList sources<CR>
+        nnoremap <silent> <Leader>ls :CocList symbols<CR>
+        nnoremap <silent> <Leader>lt :CocRestart<CR>
+        vmap <silent> <Leader>lA <Plug>(coc-codeaction-selected)
+        vmap <silent> <Leader>lf <Plug>(coc-format-selected)
+
+        " Highlight symbol under cursor on CursorHold
+        autocmd CursorHold * silent call CocActionAsync('highlight')
+        " Show signature help on CursorHoldI
+        autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
+    endif
+    " }}}
+    " LanguageClient {{{
+    if exists(':LanguageClientStart')
+        let g:LanguageClient_serverCommands = {
+            \'python': ['pyls'],
+            \'javascript': ['javascript-typescript-stdio'],
+            \'javascript.jsx': ['javascript-typescript-stdio'],
+            \'c': ['ccls'],
+            \'cpp': ['ccls'],
+            \'ocaml': ['ocaml-language-server', '--stdio'],
+            \'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
+        \}
+        nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
+        nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
+        nnoremap <silent> <Leader>lr :call LanguageClient#textDocument_references()<CR>
+        nnoremap <silent> <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
+        nnoremap <silent> <Leader>lR :call LanguageClient#textDocument_rename()<CR>
+        nnoremap <silent> <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
+        nnoremap <silent> <Leader>lm :call LanguageClient_contextMenu()<CR>
+        nnoremap <silent> <Leader>lh :call LanguageClient#textDocument_documentHighlight()<CR>
+        nnoremap <silent> <Leader>lH :call LanguageClient_clearDocumentHighlight()<CR>
+        vnoremap <silent> <Leader>lf :call LanguageClient#textDocument_rangeFormatting()<CR>
+        nnoremap <silent> <Leader>lt :LanguageClientStop<CR>:LanguageClientStart<CR>
+    endif
+    " }}}
+    " ALE {{{
+    if exists(':ALEToggle')
+        nnoremap <Leader>ta :ALEToggle<CR>
+        nnoremap <Leader>ad :ALEDocumentation<CR>
+        nnoremap <Leader>af :ALEFix<CR>
+        nnoremap <Leader>afs :ALEFixSuggest<CR>
+        nnoremap <Leader>agd :ALEGoToDefinition<CR>
+        nnoremap <Leader>ags :ALEGoToDefinitionInSplit<CR>
+        nnoremap <Leader>agt :ALEGoToTypeDefinitionInSplit<CR>
+        nnoremap <Leader>ai :ALEInfo<CR>
+        nnoremap <Leader>ak :ALEHover<CR>
+        nnoremap <Leader>an :ALENextWrap<CR>
+        nnoremap <Leader>ap :ALEPreviousWrap<CR>
+        nnoremap <Leader>ar :ALEFindReferences<CR>
+        nnoremap <Leader>as :ALESymbolSearch<CR>
+        let g:ale_linters_explicit = 1
+        let g:ale_linters = {'c': ['ccls'], 'cpp', ['ccls']}
     endif
     " }}}
 endfunction
@@ -831,25 +907,29 @@ try
     "    \'branch': 'stable',
     "    \'for': 'YcmGenerateConfig'
     "\}
-    if has('nvim')
-        Plug 'Shougo/deoplete.nvim', {
-            \'do': ':UpdateRemotePlugins'
-        \}
-    else
-        Plug 'Shougo/deoplete.nvim'
-        Plug 'roxma/nvim-yarp'
-        Plug 'roxma/vim-hug-neovim-rpc'
-    endif
 
-    Plug 'autozimu/LanguageClient-neovim', {
-        \'branch': 'next',
-        \'do': 'bash install.sh',
-    \}
-    Plug 'w0rp/ale'
+    "if has('nvim')
+    "    Plug 'Shougo/deoplete.nvim', {
+    "        \'do': ':UpdateRemotePlugins'
+    "    \}
+    "else
+    "    Plug 'Shougo/deoplete.nvim'
+    "    Plug 'roxma/nvim-yarp'
+    "    Plug 'roxma/vim-hug-neovim-rpc'
+    "endif
 
-    Plug 'zchee/deoplete-jedi', {
-        \'for': 'python'
+    Plug 'neoclide/coc.nvim', {
+        \'branch': 'release'
     \}
+    "Plug 'autozimu/LanguageClient-neovim', {
+    "    \'branch': 'next',
+    "    \'do': 'bash install.sh',
+    "\}
+    "Plug 'w0rp/ale'
+
+    "Plug 'zchee/deoplete-jedi', {
+    "    \'for': 'python'
+    "\}
     Plug 'eagletmt/neco-ghc', {
         \'for': 'haskell'
     \}
@@ -908,10 +988,6 @@ try
     nnoremap <Leader>mp :call Vim_Markdown_Preview()<CR>
     " }}}
     " ALE settings {{{
-    " Quick leader toggle for ALE checking
-    nnoremap <Leader>ta :ALEToggle<CR>
-    nnoremap <Leader>an :ALENextWrap<CR>
-    nnoremap <Leader>ap :ALEPreviousWrap<CR>
     let g:ale_sign_error = '✖ '
     let g:ale_sign_warning = '⚠ '
     " }}}
@@ -942,28 +1018,6 @@ try
     let g:deoplete#max_list = 50
     " Quick leader toggle for autocompletion
     nnoremap <Leader>td :call deoplete#toggle()<CR>
-    " }}}
-    " LanguageClient settings {{{
-    let g:LanguageClient_serverCommands = {
-        \'python': ['pyls'],
-        \'javascript': ['javascript-typescript-stdio'],
-        \'javascript.jsx': ['javascript-typescript-stdio'],
-        \'c': ['clangd-6.0'],
-        \'cpp': ['clangd-6.0'],
-        \'ocaml': ['ocaml-language-server', '--stdio'],
-        \'rust': ['~/.cargo/bin/rustup', 'run', 'stable', 'rls'],
-    \}
-    nnoremap <silent> <Leader>lk :call LanguageClient#textDocument_hover()<CR>
-    nnoremap <silent> <Leader>ld :call LanguageClient#textDocument_definition()<CR>
-    nnoremap <silent> <Leader>lr :call LanguageClient#textDocument_references()<CR>
-    nnoremap <silent> <Leader>la :call LanguageClient#textDocument_codeAction()<CR>
-    nnoremap <silent> <Leader>lR :call LanguageClient#textDocument_rename()<CR>
-    nnoremap <silent> <Leader>lf :call LanguageClient#textDocument_formatting()<CR>
-    nnoremap <silent> <Leader>lm :call LanguageClient_contextMenu()<CR>
-    nnoremap <silent> <Leader>lh :call LanguageClient#textDocument_documentHighlight()<CR>
-    nnoremap <silent> <Leader>lH :call LanguageClient_clearDocumentHighlight()<CR>
-    vnoremap <silent> <Leader>lf :call LanguageClient#textDocument_rangeFormatting()<CR>
-    nnoremap <silent> <Leader>lt :LanguageClientStop<CR>:LanguageClientStart<CR>
     " }}}
     " FZF settings {{{
     nnoremap <Leader>f :FZF 
