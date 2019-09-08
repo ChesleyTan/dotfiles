@@ -353,6 +353,17 @@ function! PluginConfig()
         let g:ale_linters = {'c': ['ccls'], 'cpp', ['ccls']}
     endif
     " }}}
+    " Denite {{{
+    autocmd FileType denite call s:DeniteSettings()
+    function! s:DeniteSettings() abort
+        nnoremap <silent><buffer><expr> <CR> denite#do_map('do_action')
+        nnoremap <silent><buffer><expr> d denite#do_map('do_action', 'delete')
+        nnoremap <silent><buffer><expr> p denite#do_map('do_action', 'preview')
+        nnoremap <silent><buffer><expr> q denite#do_map('quit')
+        nnoremap <silent><buffer><expr> i denite#do_map('open_filter_buffer')
+        nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
+    endfunction
+    " }}}
 endfunction
 
 function! WordProcessorMode()
@@ -997,7 +1008,7 @@ try
     " }}}
     " Denite settings {{{
     nnoremap <Leader>u :Denite 
-    nnoremap <Leader>ur :Denite file buffer file_rec<CR>
+    nnoremap <Leader>ur :Denite file buffer file/rec<CR>
     nnoremap <Leader>uo :Denite output:
     nnoremap <Leader>ug :Denite grep<CR>
     nnoremap <Leader>ul :Denite line<CR>
