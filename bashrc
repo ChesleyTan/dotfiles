@@ -56,165 +56,162 @@ export LS_COLORS
 # }}}
 # }}}
 # Custom Bash Prompt {{{
+function _style() {
+    echo "$(tput $@)"
+}
 
-function GitBranch() {
-    # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
-    if ! $showGitInfo; then
+BOLD="$(_style bold)"
+RESET="$(_style sgr0)"
+
+function _prompt_git_branch() {
+    if ! $show_git_info; then
         return
     fi
-    output="$(git status 2>&1)"
-    if [[ ! "$output" =~ "fatal" ]]; then
-        echo " $(tput bold)$(tput setaf 34)($(git branch | grep '* ' | cut -c3-) $(GitUpToDate "$output")$(GitStashLength))$(tput sgr0)" # Extracts current git branch using grep and regexes
+    output="$(git rev-parse --is-inside-work-tree 2>&1)"
+    if [[ "$output" == "true" ]]; then
+        output="$(git status 2>&1)"
+        branch="$(git branch | grep '* ' | cut -c3-)"
+        echo " ${BOLD}$(_style setaf 34)(${branch} $(_git_up_to_date "$output")$(_git_stash_length))${RESET}"
     fi
 }
-function GitUpToDate() {
-    status="$1"
-    if [[ $status =~ "Changes to be committed" ]]; then
+
+function _git_up_to_date() {
+    git_status="$1"
+    if [[ $git_status =~ "Changes to be committed" ]]; then
         echo -ne "\u2718" # unicode character cross
     else
         echo -ne "\u2714" # unicode character check
     fi
-    if [[ $status =~ "Changes not staged for commit" ]]; then
+    if [[ $git_status =~ "Changes not staged for commit" ]]; then
         echo -ne " \u0394" # unicode character delta
     fi
     echo -ne "\n"
 }
-function GitStashLength() {
-    gitStashLength=$(git stash list | wc -l)
-    if [[ "$gitStashLength" != "0" ]]; then
-        echo -ne " \u26c1 $gitStashLength\n"
-    else
-        echo -ne ""
+
+function _git_stash_length() {
+    git_stash_length=$(git stash list | wc -l)
+    if [[ "$git_stash_length" != "0" ]]; then
+        echo -ne " \u26c1 $git_stash_length\n"
     fi
 }
-function SensorTemp() {
-    # Note on usage 1: you must prepend an escape character onto $(SensorTemp) so the prompt dynamically updates the temperature
-    # Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output
-    if [ $showSysInfo == true ]; then
-        echo "$(tput bold)$(tput setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | $(tput sgr0)"
+
+function _prompt_sensor_temp() {
+# Note on usage 1: you must prepend an escape character onto $(_prompt_sensor_temp) so the prompt dynamically updates the temperature
+# Note on usage 2: modify the arguments for head and tail to select a specific temperature in the output
+    echo "${BOLD}$(_style setaf 166)<$(sensors | grep -Eo '[0-9][0-9]\.[0-9]°C' | head -1) | ${RESET}"
+}
+
+function _prompt_ram_usage() {
+    echo "${BOLD}$(_style setaf 166)$(free -m | grep -Eo '[0-9]*' | head -6 | tail -1) MB | ${RESET}"
+}
+
+function _prompt_battery_info() {
+    data="$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")"
+    perc="$(echo "$data" | grep -Eo "[0-9]*%" | grep -o "[0-9]*" | paste -sd "/")"
+    bat_time="$(echo "$data" | grep -Eo "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")"
+    if [ "$bat_time" == "" ]; then
+        bat_time="Full"
+    fi
+    echo "${BOLD}$(_style setaf 166)$perc% ($bat_time)> ${RESET}"
+}
+
+function _prompt_sys_info() {
+    if $show_sys_info; then
+        echo "$(_prompt_sensor_temp)$(_prompt_ram_usage)$(_prompt_battery_info)"
     fi
 }
-function ramUsage() {
-    if [[ $showSysInfo == true ]]; then
-        echo "$(tput bold)$(tput setaf 166)$(free -m | grep -Eo '[0-9]*' | head -6 | tail -1) MB | $(tput sgr0)"
-    fi
+
+function _prompt_catch_exit_code() {
+    exit_status=$?
 }
-function batteryInfo() {
-    if [[ $showSysInfo == true ]]; then
-        data=$(acpi | grep -Eo "[0-9]*%|[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
-        perc=$(echo $data | grep -Eo "[0-9]*%")
-        batTime=$(echo $data | grep -Eo "[0-9][0-9]:[0-9][0-9]:[0-9][0-9]")
-        if [ "$batTime" == "" ]; then
-            batTime="Full"
-        fi
-        echo "$(tput bold)$(tput setaf 166)$perc ($batTime)> $(tput sgr0)"
-    fi
-}
-function CatchExitCode() {
-    status=$?
-}
-function Sign() {
+
+function _prompt_sign() {
     if [[ $UID == 0 ]]; then
-        echo "$(tput bold)$(tput setaf 9) #$(tput sgr0)"
+        echo "${BOLD}$(_style setaf 9) #${RESET}"
     else
-        if [[ $status == 0 ]]; then
-            echo "$(tput bold)$(tput setaf 15) \$$(tput sgr0)"
+        if [[ $exit_status == 0 ]]; then
+            echo "${BOLD}$(_style setaf 15) \$${RESET}"
         else
-            echo "$(tput bold)$(tput setaf 9) \$$(tput sgr0)"
+            echo "${BOLD}$(_style setaf 9) \$${RESET}"
         fi
     fi
 }
-function Pwd() {
-    if [[ $is256ColorTerm == true ]]; then
+
+function _prompt_pwd() {
+    if $is_256_color_term; then
         color=39
     else
         color=6
     fi
-    echo -n "$(tput bold)$(tput setaf $color)"
-    if [[ $shortenPath == true ]]; then
+    echo -n "${BOLD}$(_style setaf $color)"
+    if $shorten_path; then
         echo -n "$PWD" | sed -r "s|$HOME|~|g" | sed -r "s|/(.)[^/]*|/\1|g" # (.) holds the first letter and \1 recalls it
     else
         echo -n "$PWD" | sed -r "s|$HOME|~|g"
     fi
-    echo "$(tput sgr0)"
+    echo "${RESET}"
 }
-function DateTime() {
-    if [[ $showTime != true ]]; then
+
+function _prompt_datetime() {
+    if ! $show_time; then
         return
     fi
-    date=$(date "+%I:%M %P")
-    if [[ $is256ColorTerm == false ]]; then
-        echo "$(tput bold)$(tput setaf 1)[$date] $(tput sgr0)"
+    date="$(date "+%I:%M %P")"
+    if ! $is_256_color_term; then
+        echo "${BOLD}$(_style setaf 1)[$date] ${RESET}"
     else
-        echo "$(tput bold)$(tput setaf 196)[$date] $(tput sgr0)"
+        echo "${BOLD}$(_style setaf 196)[$date] ${RESET}"
     fi
 }
-function User() {
-    if [[ $showUsername == true ]]; then
-        if [[ $is256ColorTerm == true ]]; then
+
+function _prompt_user() {
+    if $show_username; then
+        if $is_256_color_term; then
             color=118
         else
             color=2
         fi
-        echo -n "$(tput bold)$(tput setaf $color)$USER$(tput sgr0)"
-        if [[ $showHostname == true ]]; then
-            echo -n "$(tput bold)$(tput setaf 24)@$(hostname)$(tput sgr0)"
+        echo -n "${BOLD}$(_style setaf $color)${USER}${RESET}"
+        if $show_hostname; then
+            echo -n "${BOLD}$(_style setaf 24)@${HOST}${RESET}"
         fi
-        echo "$(tput bold)$(tput setaf $color):$(tput sgr0)"
+        echo "${BOLD}$(_style setaf $color):${RESET}"
     fi
 }
-function StoppedJobs() {
+
+function _prompt_stopped_jobs() {
     jobs_stopped="$(jobs | grep Stopped | wc -l)"
     if [[ "$jobs_stopped" == "0" ]]; then
         return
     else
-        echo -n "$(tput bold)$(tput setaf 35)(${jobs_stopped})$(tput sgr0) "
+        echo -n "${BOLD}$(tput setaf 35)(${jobs_stopped})${RESET} "
     fi
 }
 
 # Store last exit status code before generating a prompt
-status=0
-PROMPT_COMMAND="CatchExitCode"
+exit_status=0
+PROMPT_COMMAND="_prompt_catch_exit_code"
 #Note: the prompt function is not allowed to globally change any variable values; only the PROMPT_COMMAND is able
+is_256_color_term=false
 if [[ "$TERM" =~ "256color" ]]; then
-    is256ColorTerm=true
-else
-    is256ColorTerm=false
+    is_256_color_term=true
 fi
 
-prompt1="\$(DateTime)\$(SensorTemp)\$(ramUsage)\$(batteryInfo)\$(User)\$(Pwd)\$(GitBranch)\$(Sign)\n\$(StoppedJobs)>> "
+prompt1="\$(_prompt_datetime)\$(_prompt_sys_info)\$(_prompt_user)\$(_prompt_pwd)\$(_prompt_git_branch)\$(_prompt_sign)\n\$(_prompt_stopped_jobs)>> "
 PS1=$prompt1
 
-#if [ "$TERM" == "linux" ]; then
-#   export PS1=$prompt1
-#else
-#   export PS1=$prompt2
-#fi
-
 # Configuration options
-showTime=true
-showSysInfo=false
-shortenPath=false
-showHostname=false
+show_time=true
+show_sys_info=false
+shorten_path=false
+show_hostname=false
 # Show hostname if inside ssh session
 if [[ -n "$SSH_TTY" || -n "$SSH_CLIENT" || -n "$SSH_CONNECTION" ]]; then
-    showHostname=true
+    show_hostname=true
 fi
-showUsername=true
-alias syson="export showSysInfo=true"
-alias sysoff="export showSysInfo=false"
-showGitInfo=true
+show_username=true
+show_git_info=true
 
-# }}}
-# Custom xterm Title {{{
-case "$TERM" in
-xterm*)
-    PS1="\[\e]0;[\u@\h]: \w\a\]$PS1"
-    # Note \e expands to ASCII escape \033 and \a expands to ASCII bell \007
-    ;;
-*)
-    ;;
-esac
 # }}}
 # Global functions {{{
 function mkcd() {
@@ -233,19 +230,15 @@ function swp() {
     mv $TMP_FILE $2
 }
 
-function reminder(){
-    PS1="$PS1\[$(tput setaf 7)\](Reminder: " # Add space to PS1, change text color
-    for word in "$@"
-    do
+function reminder() {
+    PS1="$PS1$(_style setaf 7)(Reminder: " # Add space to PS1, change text color
+    for word in "$@"; do
         PS1="$PS1$word "
     done
-    PS1="${PS1:0:$[${#PS1}-1]})\[$(tput sgr0)\] " # Remove trailing space, reset font color, add close parentheses
+    PS1="${PS1:0:$[${#PS1}-1]})${RESET} " # Remove trailing space, reset font color, add close parentheses
     echo "Reminder set: $@"
 }
 
-function sourcebash(){
-    source ~/.bashrc
-}
 # }}}
 # Global aliases {{{
 #alias sudo='sudo ' # Allow use sudo on aliases because aliases are only checked on the first word in the command
