@@ -904,8 +904,8 @@ try
     \}
     Plug 'Shougo/denite.nvim'
     Plug 'junegunn/fzf'
-    Plug 'sjl/gundo.vim', {
-        \'on': 'GundoToggle'
+    Plug 'simnalamburt/vim-mundo', {
+        \'on': 'MundoToggle'
     \}
     Plug 'majutsushi/tagbar', {
         \'on': 'TagbarToggle'
@@ -1014,12 +1014,12 @@ try
     nnoremap <Leader>ul :Denite line<CR>
     nnoremap <Leader>umru :Denite output:ol<CR>
     " }}}
-    " Gundo settings {{{
-    let g:gundo_width = 30
-    let g:gundo_preview_height = 20
-    let g:gundo_right = 1
-    let g:gundo_preview_bottom = 1
-    command! DiffTree GundoToggle
+    " vim-mundo settings {{{
+    let g:mundo_width = 30
+    let g:mundo_preview_height = 20
+    let g:mundo_right = 1
+    let g:mundo_preview_bottom = 1
+    command! UndoTree MundoToggle
     " }}}
     " Tagbar settings {{{
     nnoremap <F8> :TagbarToggle<CR>
