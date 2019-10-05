@@ -650,6 +650,16 @@ endfunction
 command! MarkdownToPDF execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf) &"
 command! MarkdownToPDFSync execute "!(pandoc --latex-engine=xelatex " . shellescape(expand('%:p')) . " -o /tmp/" . shellescape(expand('%:t:r')) . ".pdf --variable mainfont='DejaVu Serif'" . " && xdg-open /tmp/" . shellescape(expand('%:t:r')) . ".pdf)"
 
+function IndentN(width)
+    execute 'set softtabstop=' . a:width
+    execute 'set tabstop=' . a:width
+    execute 'set shiftwidth=' . a:width
+    if exists(':IndentLinesReset')
+        execute 'IndentLinesReset'
+    endif
+endfunction
+command! -nargs=1 IndentN call IndentN(<f-args>)
+
 " }}}
 " Custom colorscheme {{{
 " Note that these highlight commands have to be formed with concatenation and then
