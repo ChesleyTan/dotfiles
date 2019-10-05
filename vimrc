@@ -67,10 +67,15 @@ if !isdirectory($HOME . '/.vim/')
 endif
 
 " Backup settings
-set directory=. "Store swapfiles in the same directory as the file
+set directory=. " Store swapfiles in the same directory as the file
+set directory+=$HOME/.vim/swap// " Alternatively, store swapfiles in a central directory
 set backup " Back up previous versions of files
 set backupdir=$HOME/.vim/backup// " Store backups in a central directory
 set backupdir+=. " Alternatively, store backups in the same directory as the file
+" Create swapfiles directory if it does not exist
+if !isdirectory($HOME . '/.vim/swap/')
+    call mkdir($HOME . '/.vim/swap/')
+endif
 " Create backup directory if it does not exist
 if !isdirectory($HOME . '/.vim/backup/')
     call mkdir($HOME . '/.vim/backup/')
