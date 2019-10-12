@@ -157,7 +157,7 @@ function! s:SetMappings()
     " Smart indent when entering insert mode
     nnoremap <expr> i SmartInsertModeEnter()
     " Easy buffer switching
-    nnoremap <Leader>b :buffers<CR>:buffer<Space>
+    nnoremap <silent> <Leader>b :call ShowBuffers()<CR>
     nnoremap t :tabnew 
     " Clear hlsearch using Return/Enter
     nnoremap <CR> :noh<CR><CR>
@@ -369,6 +369,16 @@ function! PluginConfig()
         nnoremap <silent><buffer><expr> <Space> denite#do_map('toggle_select').'j'
     endfunction
     " }}}
+endfunction
+
+function! ShowBuffers()
+    " Use FZF plugin if available
+    if exists(':Buffers')
+        execute 'Buffers'
+    else
+        execute 'buffers'
+        call feedkeys(':buffer ', 'n')
+    endif
 endfunction
 
 function! WordProcessorMode()
@@ -919,6 +929,7 @@ try
     \}
     Plug 'Shougo/denite.nvim'
     Plug 'junegunn/fzf'
+    Plug 'junegunn/fzf.vim'
     Plug 'simnalamburt/vim-mundo', {
         \'on': 'MundoToggle'
     \}
