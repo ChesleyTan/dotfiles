@@ -214,6 +214,8 @@ function! s:SetMappings()
     " Navigation mappings
     nnoremap <Tab> gt
     nnoremap <S-Tab> gT
+    " Remap <C-i> because it gets shadowed by <Tab>
+    nnoremap <C-p> <C-i>
     " Easy system clipboard copy/paste
     vnoremap <C-c> "+y
     vnoremap <C-x> "+x
