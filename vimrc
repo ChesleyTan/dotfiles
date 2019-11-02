@@ -1059,7 +1059,7 @@ try
     nnoremap <Leader>td :call deoplete#toggle()<CR>
     " }}}
     " FZF settings {{{
-    nnoremap <Leader>f :FZF 
+    nnoremap <Leader>f :FZF<CR>
     " }}}
     " Ultisnips settings {{{
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
