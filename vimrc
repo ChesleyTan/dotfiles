@@ -383,6 +383,22 @@ function! ShowBuffers()
     endif
 endfunction
 
+function! FzfCurrentWord()
+    let token=expand('<cword>')
+    call fzf#run()
+    call feedkeys(token, 't')
+endfunction
+
+command! FzfCurrentWord call FzfCurrentWord()
+
+function! FzfCurrentFullWord()
+    let token=expand('<cWORD>')
+    call fzf#run()
+    call feedkeys(token, 't')
+endfunction
+
+command! FzfCurrentFullWord call FzfCurrentFullWord()
+
 function! WordProcessorMode()
     if !exists('b:current_mode')
         let b:current_mode="default"
@@ -1060,6 +1076,8 @@ try
     " }}}
     " FZF settings {{{
     nnoremap <Leader>f :FZF<CR>
+    nnoremap <silent> <Leader>q :call FzfCurrentWord()<CR>
+    nnoremap <silent> <Leader>Q :call FzfCurrentFullWord()<CR>
     " }}}
     " Ultisnips settings {{{
     let g:UltiSnipsExpandTrigger = "<LocalLeader><Tab>"
