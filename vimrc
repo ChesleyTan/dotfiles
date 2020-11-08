@@ -927,10 +927,10 @@ command! ReverseColors call ReverseColors()
 " Plugins configuration/constants {{{
 try
     " Add locally installed bundles to runtimepath
-    " Plugin Scripts {{{
 
     call plug#begin(expand('$HOME/.vim/plugged'))
 
+    " Plugin Scripts {{{
     Plug 'Yggdroot/indentLine'
     Plug 'Raimondi/delimitMate'
     Plug 'ludovicchabant/vim-gutentags'
@@ -1021,10 +1021,18 @@ try
     Plug 'liuchengxu/vim-which-key', {
         \'on': ['WhichKey', 'WhichKey!', 'WhichKeyVisual', 'WhichKeyVisual!']
     \}
+    " }}}
+
+    " Pre-load settings {{{
+    " vim-polyglot settings {{{
+    let g:polyglot_disabled = ['rust']
+    " }}}
+    " }}}
 
     " Initialize plugin system
     call plug#end()
 
+    " Post-load settings {{{
     " indentLine settings {{{
     let g:indentLine_char = '┆'
     let g:indentLine_setColors = 0
@@ -1089,7 +1097,6 @@ try
     " vim-polyglot settings {{{
     " python-syntax configuration
     let g:python_highlight_all = 1
-    let g:polyglot_disabled = ['rust']
     " }}}
 " vim-which-key settings {{{
 nnoremap <silent> <leader>      :<c-u>WhichKey '<Space>'<CR>
