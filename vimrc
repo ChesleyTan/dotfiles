@@ -14,7 +14,7 @@ set wrapscan " Automatically wrap search when hitting bottom
 set autoindent " Enable autoindenting
 set copyindent " Copy indent of previous line when autoindenting
 set history=1000 " Command history
-set wildignore=*.class " Ignore .class files
+set wildignore=*.class,*.o,*.d " Ignore .class files
 set tabstop=4 " Tab size
 set expandtab " Spaces instead of tabs
 set softtabstop=4 " Treat n spaces as a tab
@@ -310,11 +310,17 @@ function! PluginConfig()
         nnoremap <silent> <Leader>lt :CocRestart<CR>
         vmap <silent> <Leader>lA <Plug>(coc-codeaction-selected)
         vmap <silent> <Leader>lf <Plug>(coc-format-selected)
+        inoremap <silent><expr> <C-k> coc#pum#visible() ? coc#pum#prev(0) : "\<Up>"
+        inoremap <silent><expr> <C-j> coc#pum#visible() ? coc#pum#next(0) : "\<Down>"
+        inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<CR>"
+        nnoremap <Esc> :call coc#float#close_all()<CR>
 
         " Highlight symbol under cursor on CursorHold
         autocmd CursorHold * silent call CocActionAsync('highlight')
         " Show signature help on CursorHoldI
         autocmd CursorHoldI * silent call CocActionAsync('showSignatureHelp')
+
+        command! CclsCall call CocLocations('ccls', '$ccls/call')
     endif
     " }}}
     " LanguageClient {{{
@@ -692,6 +698,38 @@ function IndentN(width)
     endif
 endfunction
 command! -nargs=1 IndentN call IndentN(<f-args>)
+
+function CSource()
+    let f=expand('%')
+    execute 'edit ' . substitute(f, '\.[ch]\+$', '.c', 'a')
+endfunction
+command! CSource call CSource()
+
+function CHeader()
+    let f=expand('%')
+    execute 'edit ' . substitute(f, '\.[ch]\+$', '.h', 'a')
+endfunction
+command! CHeader call CHeader()
+
+function ChHeader()
+    let f=expand('%')
+    execute 'edit ' . substitute(f, '\.[ch]\+$', '.ch', 'a')
+endfunction
+command! ChHeader call ChHeader()
+
+function GitBlame()
+    let current_line = line('.')
+    terminal git --no-pager blame %
+    sleep 500m
+    execute current_line
+endfunction
+command! GitBlame call GitBlame()
+
+function GitLog()
+    let revision=expand('<cword>')
+    execute 'terminal git --no-pager show ' . revision
+endfunction
+command! GitLog call GitLog()
 
 " }}}
 " Custom colorscheme {{{
@@ -1082,8 +1120,12 @@ try
     " Quick leader toggle for autocompletion
     nnoremap <Leader>td :call deoplete#toggle()<CR>
     " }}}
+    " coc settings {{{
+    let g:coc_disable_startup_warning = 1
+    " }}}
     " FZF settings {{{
     nnoremap <Leader>f :FZF<CR>
+    let g:fzf_layout = {'down': '~40%'}
     nnoremap <silent> <Leader>q :call FzfCurrentWord()<CR>
     nnoremap <silent> <Leader>Q :call FzfCurrentFullWord()<CR>
     " }}}
