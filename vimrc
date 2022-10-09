@@ -578,7 +578,9 @@ endfunction
 command! ShowWhitespace call ShowWhitespace()
 
 function! RemoveWhitespace() range
+    normal mk
     execute "silent!" . a:firstline . ',' . a:lastline . "s/\\s\\+$"
+    normal 'k
 endfunction
 command! -range=% RemoveWhitespace <line1>,<line2>call RemoveWhitespace()
 
@@ -716,6 +718,14 @@ function ChHeader()
     execute 'edit ' . substitute(f, '\.[ch]\+$', '.ch', 'a')
 endfunction
 command! ChHeader call ChHeader()
+
+command! HgBlame :terminal hg blame -duc %
+
+function HgLog()
+    let revision=expand('<cword>')
+    execute 'terminal hg log -pr ' . revision . ' | colordiff'
+endfunction
+command! HgLog call HgLog()
 
 function GitBlame()
     let current_line = line('.')
