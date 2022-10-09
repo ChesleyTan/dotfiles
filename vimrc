@@ -14,7 +14,7 @@ set wrapscan " Automatically wrap search when hitting bottom
 set autoindent " Enable autoindenting
 set copyindent " Copy indent of previous line when autoindenting
 set history=1000 " Command history
-set wildignore=*.class,*.o,*.d " Ignore .class files
+set wildignore=*.class,*.o,*.d " Ignore these files for autocompletion
 set tabstop=4 " Tab size
 set expandtab " Spaces instead of tabs
 set softtabstop=4 " Treat n spaces as a tab
