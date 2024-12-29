@@ -222,7 +222,7 @@ function _prompt_user() {
 }
 
 function _prompt_suspended_jobs() {
-    jobs_suspended="$(jobs | grep suspended | wc -l)"
+    jobs_suspended="${#jobstates}"
     if [[ "$jobs_suspended" == "0" ]]; then
         return
     else
